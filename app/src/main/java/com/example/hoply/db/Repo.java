@@ -17,20 +17,31 @@ public class Repo {
         dao = db.hoplyDao();
     }
 
-    public void insertUser(HoplyUser user){
-        dao.insertUser(user);
+    void insertUser(HoplyUser user){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+            dao.insertUser(user);
+        });
     }
 
-    public void insertPost(HoplyPost post){
-        dao.insertPost(post);
+    void insertPost(HoplyPost post){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+            dao.insertPost(post);
+        });
+
     }
 
-    public void insertReaction(HoplyReaction reaction){
-        dao.insertReaction(reaction);
+    void insertReaction(HoplyReaction reaction){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+            dao.insertReaction(reaction);
+        });
+
     }
 
-    public HoplyUser returnUserFromId(String userId){
-        return dao.returnUserFromId(userId);
+    HoplyUser returnUserFromId(String userId){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+           returnUser =  dao.returnUserFromId(userId);
+        });
+        return returnUser;
     }
 
 }
