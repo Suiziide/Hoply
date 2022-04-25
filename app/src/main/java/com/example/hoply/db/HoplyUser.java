@@ -22,9 +22,9 @@ public class HoplyUser {
     @ColumnInfo(name = "stamp")
     long timestamp;
 
-    public HoplyUser(@NonNull String userName, @NonNull String name){
+    public HoplyUser(@NonNull String userId, @NonNull String userName){
+        this.userId = userId;
         this.userName = userName;
-        this.userName = name;
         this.timestamp = System.nanoTime();
     }
 
