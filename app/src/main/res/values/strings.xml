@@ -12,7 +12,7 @@
     <string name="create_account">Create account</string>
     <string name="login">Login</string>
     <string name="post">Post</string>
-    <string name="this_activity_is_for_creating_posts">This post is for creating posts</string>
+    <string name="this_activity_is_for_creating_posts">This activity is for creating posts</string>
     <string name="confirm_password">Confirm password</string>
     <string name="enter_password">Enter password</string>
     <string name="enter_username">Enter username</string>
