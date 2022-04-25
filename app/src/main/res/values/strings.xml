@@ -8,13 +8,11 @@
     <string name="save_changes">Save Changes</string>
     <string name="profile_page">Profile Page</string>
     <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="enter_name">Enter name</string>
     <string name="create_account">Create account</string>
     <string name="login">Login</string>
     <string name="post">Post</string>
     <string name="this_activity_is_for_creating_posts">This activity is for creating posts</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="enter_password">Enter password</string>
     <string name="enter_username">Enter username</string>
     <string name="hoplylogo">HoplyLogo</string>
 </resources>

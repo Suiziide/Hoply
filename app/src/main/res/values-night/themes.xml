@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.Hoply" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryVariant">@color/dark_orange</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/dark_orange</item>
+        <item name="colorPrimaryVariant">@color/orange</item>
+        <item name="colorOnPrimary">@color/bright_orange</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/emerald_green</item>
-        <item name="colorSecondaryVariant">@color/dark_emerald_green</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/dark_emerald_green</item>
+        <item name="colorSecondaryVariant">@color/emerald_green</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSecondaryVariant</item>
         <!-- Customize your theme here. -->

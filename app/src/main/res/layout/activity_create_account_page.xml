@@ -21,14 +21,14 @@
 
 
     <EditText
-        android:id="@+id/usernameInput"
+        android:id="@+id/Name"
         android:layout_width="210dp"
         android:layout_height="30dp"
         android:ems="10"
-        android:hint="@string/enter_username"
+        android:hint="@string/enter_name"
         android:background="@color/white"
         android:inputType="textPersonName"
-        android:autofillHints="@sting/enter_username"
+        android:autofillHints="@sting/enter_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -38,35 +38,19 @@
 
 
     <EditText
-        android:id="@+id/editTextTextPassword1"
+        android:id="@+id/EnterUserName"
         android:layout_width="210dp"
         android:layout_height="30dp"
         android:background="@color/white"
         android:ems="10"
-        android:hint="@string/enter_password"
+        android:hint="@string/enter_username"
         android:inputType="textPassword"
-        android:autofillHints="@sting/enter_password"
+        android:autofillHints="@sting/enter_username"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameInput"
-        app:layout_constraintVertical_bias="0.01" />
-
-    <EditText
-        android:id="@+id/editTextTextPassword3"
-        android:layout_width="210dp"
-        android:layout_height="30dp"
-        android:background="@color/white"
-        android:ems="10"
-        android:hint="@string/confirm_password"
-        android:inputType="textPassword"
-        android:autofillHints="@sting/confirm_password"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword1"
+        app:layout_constraintTop_toBottomOf="@+id/Name"
         app:layout_constraintVertical_bias="0.01" />
 
     <Button
