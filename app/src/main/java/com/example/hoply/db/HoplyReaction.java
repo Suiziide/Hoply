@@ -1,5 +1,7 @@
 package com.example.hoply.db;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -13,11 +15,13 @@ import java.sql.Timestamp;
                 @ForeignKey(
                         entity = HoplyUser.class,
                         parentColumns = "id",
-                        childColumns = "user_id"),
+                        childColumns = "user_id",
+                        onDelete = CASCADE),
                 @ForeignKey(
                         entity = HoplyPost.class,
                         parentColumns = "id",
-                        childColumns = "post_id")
+                        childColumns = "post_id",
+                        onDelete = CASCADE)
         })
 public class HoplyReaction {
 
