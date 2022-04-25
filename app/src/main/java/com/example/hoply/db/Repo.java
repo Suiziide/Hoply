@@ -17,19 +17,19 @@ public class Repo {
         dao = db.hoplyDao();
     }
 
-    void insertUser(HoplyUser user){
+    public void insertUser(HoplyUser user){
         dao.insertUser(user);
     }
 
-    void insertPost(HoplyPost post){
+    public void insertPost(HoplyPost post){
         dao.insertPost(post);
     }
 
-    void insertReaction(HoplyReaction reaction){
+    public void insertReaction(HoplyReaction reaction){
         dao.insertReaction(reaction);
     }
 
-    boolean compareUser(String userId){
+    public boolean compareUser(String userId){
         return userId.equals(dao.compareUser(userId));
     }
 

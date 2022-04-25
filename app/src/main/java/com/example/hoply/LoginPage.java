@@ -4,13 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hoply.db.HoplyUser;
+import com.example.hoply.db.Repo;
+
 public class LoginPage extends AppCompatActivity {
+    public static HoplyUser currentUser;
+    private Repo myRepo;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -23,13 +30,19 @@ public class LoginPage extends AppCompatActivity {
             hideKeyboard(view);
             return false;
         });
+        myRepo = new Repo(this.getApplication());
     }
 
 
     public void tryLogin(View v) {
-        // if (username && and password match recorded user && password)
-        //  clear username and password data;
-        goToHomePage(v);
+        EditText userid = findViewById(R.id.loginPageUsername);
+        Log.d("userid", userid.getText().toString());
+        /*
+        if (myRepo.compareUser(userid.getText().toString())) {
+            goToHomePage(v);
+            // currentUser = database kalde, which returns user.
+        }
+        */
         // else
         // inform user that either password or username wasn't correct
     }
