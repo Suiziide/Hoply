@@ -11,33 +11,34 @@ import com.example.hoply.db.HoplyDatabase;
 
 public class Repo {
     private HoplyDao dao;
+    private HoplyUser returnUser;
 
     public Repo(Application application) {
         HoplyDatabase db = HoplyDatabase.getDatabase(application);
         dao = db.hoplyDao();
     }
 
-    void insertUser(HoplyUser user){
+    public void insertUser(HoplyUser user){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertUser(user);
         });
     }
 
-    void insertPost(HoplyPost post){
+    public void insertPost(HoplyPost post){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertPost(post);
         });
 
     }
 
-    void insertReaction(HoplyReaction reaction){
+    public void insertReaction(HoplyReaction reaction){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertReaction(reaction);
         });
 
     }
 
-    HoplyUser returnUserFromId(String userId){
+    public HoplyUser returnUserFromId(String userId){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
            returnUser =  dao.returnUserFromId(userId);
         });
