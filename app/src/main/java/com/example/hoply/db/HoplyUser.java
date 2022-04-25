@@ -19,12 +19,12 @@ public class HoplyUser {
     String userName;
 
     @NonNull
-    @ColumnInfo(name = "timestamp")
+    @ColumnInfo(name = "stamp")
     Timestamp timestamp;
 
-    public HoplyUser(String name, Timestamp stamp){
+    public HoplyUser(@NonNull String name, @NonNull Timestamp timestamp){
         this.userName = name;
-        this.timestamp = stamp;
+        this.timestamp = timestamp;
     }
 
     @NonNull
