@@ -16,11 +16,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hoply">
         <activity
-            android:name=".MainActivity"
+            android:name=".ProfilePage"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountPage"
+            android:exported="false" />
+        <activity
+            android:name=".LiveFeed"
+
+            android:exported="false" />
+        <activity
+            android:name=".CreatePostPage"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,5 +40,4 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
     </application>
-
 </manifest>
