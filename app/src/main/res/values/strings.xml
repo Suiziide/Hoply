@@ -15,4 +15,5 @@
     <string name="this_activity_is_for_creating_posts">This activity is for creating posts</string>
     <string name="enter_username">Enter username</string>
     <string name="hoplylogo">HoplyLogo</string>
+    <string name="somethingWrong">User not found</string>
 </resources>

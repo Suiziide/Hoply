@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,15 +37,13 @@ public class LoginPage extends AppCompatActivity {
 
     public void tryLogin(View v) {
         EditText userid = findViewById(R.id.loginPageUsername);
-        Log.d("userid", userid.getText().toString());
-        /*
-        if (myRepo.compareUser(userid.getText().toString())) {
+
+        HoplyUser userToCheck = myRepo.returnUserFromId(userid.getText().toString());
+        if (userToCheck != null) {
+            currentUser = userToCheck;
             goToHomePage(v);
-            // currentUser = database kalde, which returns user.
-        }
-        */
-        // else
-        // inform user that either password or username wasn't correct
+        } else
+            Toast.makeText(getApplication(),R.string.somethingWrong, Toast.LENGTH_LONG).show();
     }
 
     public void goToCreateAccount(View v) {
