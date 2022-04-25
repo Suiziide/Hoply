@@ -20,11 +20,11 @@ public class HoplyUser {
 
     @NonNull
     @ColumnInfo(name = "stamp")
-    Timestamp timestamp;
+    long timestamp;
 
-    public HoplyUser(@NonNull String name, @NonNull Timestamp timestamp){
-        this.userName = name;
-        this.timestamp = timestamp;
+    public HoplyUser(@NonNull String userName, @NonNull long timestamp){
+        this.userName = userName;
+        this.timestamp = System.nanoTime();
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class HoplyUser {
     }
 
     @NonNull
-    public Timestamp getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 }
