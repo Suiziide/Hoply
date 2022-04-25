@@ -29,8 +29,8 @@ public class Repo {
         dao.insertReaction(reaction);
     }
 
-    boolean compareUser(String userId){
-        return userId.equals(dao.compareUser(userId));
+    HoplyUser returnUserFromId(String userId){
+        return dao.returnUserFromId(userId);
     }
 
 }

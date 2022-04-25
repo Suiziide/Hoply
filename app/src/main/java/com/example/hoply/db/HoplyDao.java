@@ -20,6 +20,6 @@ public interface HoplyDao {
     void insertReaction(HoplyReaction reaction);
 
 
-    @Query("SELECT id FROM users WHERE id = :userId")
-    String compareUser(String userId);
+    @Query("SELECT * FROM users WHERE id = :userId")
+    HoplyUser returnUserFromId(String userId);
 }
