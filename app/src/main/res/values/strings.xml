@@ -18,4 +18,6 @@
     <string name="somethingWrong">User not found</string>
     <string name="userAlreadyExists">The user already exists!</string>
     <string name="userCreated">User created, please login</string>
+    <string name="locationOn">LOCATION: ON</string>
+    <string name="locationOff">LOCATION: OFF</string>
 </resources>

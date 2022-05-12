@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -35,18 +36,19 @@ public class LoginPage extends AppCompatActivity {
 
 
     public void tryLogin(View v) {
+        HoplyUser userToCheck = null;
         EditText userid = findViewById(R.id.loginPageName);
-        HoplyUser userToCheck = myRepo.returnUserFromId(userid.getText().toString());
-        try {
-            wait(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        int tries = 0;
+        while (userToCheck == null && tries < 10000) {
+            userToCheck = myRepo.returnUserFromId(userid.getText().toString());
+            tries++;
         }
         if (userToCheck != null) {
             currentUser = userToCheck;
             goToHomePage(v);
         } else
             Toast.makeText(getApplication(),R.string.somethingWrong, Toast.LENGTH_LONG).show();
+        Log.d("AGRAGRAGRAGR", "" + tries);
     }
 
     public void goToCreateAccount(View v) {
