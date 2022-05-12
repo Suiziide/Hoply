@@ -13,15 +13,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.hoply.db.HoplyPost;
 import com.example.hoply.viewmodel.LivefeedViewmodel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LiveFeed extends AppCompatActivity {
 
+    private int ADD_NOTE_REQUEST = 1;
     private LivefeedViewmodel viewModel;
     private PostAdapter adapter;
     private RecyclerView recyclerView;
@@ -39,7 +43,16 @@ public class LiveFeed extends AppCompatActivity {
         });
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        adapter = new PostAdapter();
+
+        FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
+        createPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST);
+            }
+        });
+
+        adapter = new PostAdapter(this.getApplication());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(adapter);
@@ -54,6 +67,20 @@ public class LiveFeed extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK){
+            HoplyPost post = new HoplyPost(LoginPage.currentUser.getUserId(), data.getStringExtra("CONTENT"));
+            viewModel.insertPost(post);
+
+            Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     public void signOut(View v) {
         startActivity(new Intent(LiveFeed.this, LoginPage.class));
@@ -61,10 +88,6 @@ public class LiveFeed extends AppCompatActivity {
 
     public void goToProfilePage(View v) {
         startActivity(new Intent(LiveFeed.this, ProfilePage.class));
-    }
-
-    public void goToCreatePostPage(View v) {
-        startActivity(new Intent(LiveFeed.this, CreatePostPage.class));
     }
 
     public void hideKeyboard(View view) {

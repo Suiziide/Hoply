@@ -1,5 +1,6 @@
 package com.example.hoply;
 
+import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.hoply.db.HoplyPost;
+import com.example.hoply.db.HoplyUser;
+import com.example.hoply.db.Repo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +18,12 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHolder>{
 
     private List<HoplyPost> postList = new ArrayList<>();
+    private Application application;
+    private Repo repo;
 
-    public PostAdapter(){
+    public PostAdapter(Application application){
+        this.application = application;
+        repo = new Repo(application);
     }
 
 
@@ -29,7 +36,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         HoplyPost hoplyPost = postList.get(position);
-        holder.user.setText(hoplyPost.getUserId());
+        HoplyUser user = repo.returnUserFromId(hoplyPost.getUserId());
+        while (user == null){
+            user = repo.returnUserFromId(hoplyPost.getUserId());
+        }
+        holder.user.setText(user.getUserName());
         holder.content.setText(hoplyPost.getContent());
     }
 

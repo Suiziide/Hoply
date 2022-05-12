@@ -10,10 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -40,16 +42,19 @@ public class CreatePostPage extends AppCompatActivity {
             hideKeyboard(view);
             return false;
         });
-    }
 
-
-
-    public void createPost(View v) {
-        // if (all values match needed values for creating a post)
-        //    INSERT INTO 'Table_name' VALUES ('VALUES FROM CREATED POST')
-        goToLiveFeed(v);
-        // else
-        //    tell user that some required information is missing
+        Button createPost = findViewById(R.id.create_post_button);
+        createPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent data = new Intent(CreatePostPage.this, LiveFeed.class);
+                EditText text = (EditText) findViewById(R.id.post_content);
+                Log.d("DFDFDFDF - createpostpage", text.getText().toString());
+                data.putExtra("CONTENT",text.getText().toString());
+                setResult(Activity.RESULT_OK, data);
+                finish();
+            }
+        });
     }
 
     public void goToLiveFeed(View v) {
