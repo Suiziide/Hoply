@@ -49,9 +49,6 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:onClick="takePicture"
-        android:rotation="177"
-        android:rotationX="-360"
-        android:rotationY="-360"
         android:text="Take Picture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,6 +69,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.541" />
+
+    <EditText
+        android:id="@+id/post_content"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="120dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

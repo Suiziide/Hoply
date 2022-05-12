@@ -70,17 +70,17 @@
                 android:id="@+id/floatingActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="40dp"
+                android:backgroundTint="@color/orange"
                 android:clickable="true"
                 android:onClick="goToCreatePostPage"
+                android:rotation="20"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="40dp"
-                android:layout_marginEnd="40dp"
                 app:rippleColor="@color/emerald_green"
-                android:backgroundTint="@color/orange"
                 app:srcCompat="@drawable/addpostbutton"
-                tools:layout_editor_absoluteX="118dp"
-                tools:layout_editor_absoluteY="80dp" />
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
