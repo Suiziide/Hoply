@@ -63,7 +63,7 @@ public class LiveFeed extends AppCompatActivity {
         startActivity(new Intent(LiveFeed.this, ProfilePage.class));
     }
 
-    public void createNewPost(View v) {
+    public void goToCreatePostPage(View v) {
         startActivity(new Intent(LiveFeed.this, CreatePostPage.class));
     }
 
