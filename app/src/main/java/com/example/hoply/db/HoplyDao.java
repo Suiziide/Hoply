@@ -6,6 +6,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.List;
+
 @Dao
 public interface HoplyDao {
 
@@ -19,6 +21,8 @@ public interface HoplyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertReaction(HoplyReaction reaction);
 
+    @Query("SELECT * FROM posts")
+    LiveData<List<HoplyPost>> getAllPosts();
 
     @Query("SELECT * FROM users WHERE id = :userId")
     HoplyUser returnUserFromId(String userId);

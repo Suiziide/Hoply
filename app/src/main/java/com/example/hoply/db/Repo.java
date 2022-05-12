@@ -3,6 +3,7 @@ package com.example.hoply.db;
 import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -10,13 +11,17 @@ import androidx.room.Query;
 import com.example.hoply.db.HoplyDao;
 import com.example.hoply.db.HoplyDatabase;
 
+import java.util.List;
+
 public class Repo {
-    private HoplyDao dao;
+    private final HoplyDao dao;
     private HoplyUser returnUser;
+    private LiveData<List<HoplyPost>> allPosts;
 
     public Repo(Application application) {
         HoplyDatabase db = HoplyDatabase.getDatabase(application);
         dao = db.hoplyDao();
+        allPosts = dao.getAllPosts();
     }
 
     public void insertUser(HoplyUser user) {
@@ -51,4 +56,7 @@ public class Repo {
         return returnUser;
     }
 
+    public LiveData<List<HoplyPost>> getAllPosts() {
+        return allPosts;
+    }
 }

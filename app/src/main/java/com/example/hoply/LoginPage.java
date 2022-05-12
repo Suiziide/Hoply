@@ -36,14 +36,9 @@ public class LoginPage extends AppCompatActivity {
 
     public void tryLogin(View v) {
         EditText userid = findViewById(R.id.loginPageName);
-        HoplyUser userToCheck = myRepo.returnUserFromId(userid.getText().toString());
-        try {
-            wait(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (userToCheck != null) {
-            currentUser = userToCheck;
+        HoplyUser writtenUser = myRepo.returnUserFromId(userid.getText().toString());
+      if (myRepo.returnUserFromId(userid.getText().toString()) != null) {
+            currentUser = writtenUser;
             goToHomePage(v);
         } else
             Toast.makeText(getApplication(),R.string.somethingWrong, Toast.LENGTH_LONG).show();
