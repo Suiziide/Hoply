@@ -16,4 +16,6 @@
     <string name="enter_username">Enter username</string>
     <string name="hoplylogo">HoplyLogo</string>
     <string name="somethingWrong">User not found</string>
+    <string name="userAlreadyExists">The user already exists!</string>
+    <string name="userCreated">User created, please login</string>
 </resources>

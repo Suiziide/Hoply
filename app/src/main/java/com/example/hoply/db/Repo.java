@@ -1,6 +1,7 @@
 package com.example.hoply.db;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -18,9 +19,14 @@ public class Repo {
         dao = db.hoplyDao();
     }
 
-    public void insertUser(HoplyUser user){
+    public void insertUser(HoplyUser user) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.insertUser(user);
+            try {
+                dao.insertUser(user);
+            } catch (SQLiteConstraintException e) {
+                throw e;
+            }
+
         });
     }
 

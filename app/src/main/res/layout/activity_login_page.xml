@@ -22,7 +22,7 @@
 
 
     <EditText
-        android:id="@+id/loginPageUsername"
+        android:id="@+id/loginPageName"
         android:layout_width="210dp"
         android:layout_height="30dp"
         android:ems="10"

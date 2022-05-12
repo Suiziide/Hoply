@@ -10,7 +10,7 @@ import androidx.room.Query;
 public interface HoplyDao {
 
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertUser(HoplyUser user);
 
     @Insert()

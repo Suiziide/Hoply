@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -36,9 +35,13 @@ public class LoginPage extends AppCompatActivity {
 
 
     public void tryLogin(View v) {
-        EditText userid = findViewById(R.id.loginPageUsername);
-
+        EditText userid = findViewById(R.id.loginPageName);
         HoplyUser userToCheck = myRepo.returnUserFromId(userid.getText().toString());
+        try {
+            wait(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (userToCheck != null) {
             currentUser = userToCheck;
             goToHomePage(v);

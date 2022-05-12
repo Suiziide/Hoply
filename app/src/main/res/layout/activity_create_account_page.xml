@@ -22,7 +22,7 @@
 
 
     <EditText
-        android:id="@+id/loginPageUsername"
+        android:id="@+id/loginPageName"
         android:layout_width="210dp"
         android:layout_height="30dp"
         android:ems="10"
@@ -41,7 +41,7 @@
 
 
     <EditText
-        android:id="@+id/EnterUserName"
+        android:id="@+id/loginPageUsername"
         android:layout_width="210dp"
         android:layout_height="30dp"
         android:ems="10"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPageUsername"
+        app:layout_constraintTop_toBottomOf="@+id/loginPageName"
         app:layout_constraintVertical_bias="0.01" />
 
     <Button
