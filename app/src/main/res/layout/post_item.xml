@@ -25,13 +25,18 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="User"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/darker_orange"
+            />
+
 
         <TextView
             android:id="@+id/text_view_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Content" />
+            android:text="Content"
+            android:textColor="@color/darker_orange"
+            />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

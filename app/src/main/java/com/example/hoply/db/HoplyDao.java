@@ -21,7 +21,7 @@ public interface HoplyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertReaction(HoplyReaction reaction);
 
-    @Query("SELECT * FROM posts")
+    @Query("SELECT * FROM posts ORDER BY stamp DESC")
     LiveData<List<HoplyPost>> getAllPosts();
 
     @Query("SELECT * FROM users WHERE id = :userId")
