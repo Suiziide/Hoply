@@ -22,7 +22,6 @@ public abstract class HoplyDatabase extends RoomDatabase {
     static final ExecutorService databaseWriteExecutor = new ThreadPoolExecutor(4,
             4, 0L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(10),
             new ThreadPoolExecutor.DiscardPolicy());
-/*            Executors.newFixedThreadPool(NUMBER_OF_THREADS);*/
 
     static HoplyDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
