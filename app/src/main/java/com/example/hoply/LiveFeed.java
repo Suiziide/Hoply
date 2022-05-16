@@ -78,7 +78,12 @@ public class LiveFeed extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(LoginPage.currentUser == null)
+            startActivity(new Intent(LiveFeed.this, LoginPage.class));
+    }
     public void signOut(View v) {
         LoginPage.currentUser = null;
         startActivity(new Intent(LiveFeed.this, LoginPage.class));

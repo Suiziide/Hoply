@@ -40,9 +40,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         while (user == null){
             user = repo.returnUserFromId(hoplyPost.getUserId());
         }
-
+        while(!(user.getUserId().equalsIgnoreCase(hoplyPost.getUserId()))){
+            user = repo.returnUserFromId(hoplyPost.getUserId());
+        }
         holder.user.setText(user.getUserName());
         holder.content.setText(hoplyPost.getContent());
+
     }
 
     @Override
@@ -54,7 +57,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         this.postList = postList;
         notifyDataSetChanged();
     }
-
 
     static class RecyclerViewHolder extends RecyclerView.ViewHolder{
         private TextView user;
