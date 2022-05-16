@@ -84,10 +84,6 @@ public class LiveFeed extends AppCompatActivity {
         startActivity(new Intent(LiveFeed.this, LoginPage.class));
     }
 
-    public void goToProfilePage(View v) {
-        startActivity(new Intent(LiveFeed.this, ProfilePage.class));
-    }
-
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
