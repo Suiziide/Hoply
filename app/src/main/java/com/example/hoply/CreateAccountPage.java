@@ -33,6 +33,7 @@ public class CreateAccountPage extends AppCompatActivity {
         myRepo = new Repo(this.getApplication());
     }
 
+
     public void tryToCreateAccount(View v) {
         boolean succeeded = tryCreateUser();
         if (succeeded){
@@ -62,6 +63,7 @@ public class CreateAccountPage extends AppCompatActivity {
     }
 
     private void goToLoginPage(View v) {
+
         startActivity(new Intent(CreateAccountPage.this, LoginPage.class));
     }
     public void hideKeyboard(View view) {
