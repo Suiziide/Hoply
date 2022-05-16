@@ -48,7 +48,6 @@ public class LoginPage extends AppCompatActivity {
             goToHomePage(v);
         } else
             Toast.makeText(getApplication(),R.string.somethingWrong, Toast.LENGTH_LONG).show();
-        Log.d("AGRAGRAGRAGR", "" + tries);
     }
 
     public void goToCreateAccount(View v) {

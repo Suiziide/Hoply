@@ -30,7 +30,6 @@ public class CreatePostPage extends AppCompatActivity {
     private static final int REQUEST_CODE = 104284;
     private static File takenPicture = null;
     private static final String FILE_NAME = "photo.jpg";
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +43,12 @@ public class CreatePostPage extends AppCompatActivity {
         });
 
         Button createPost = findViewById(R.id.create_post_button);
-        createPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent data = new Intent(CreatePostPage.this, LiveFeed.class);
-                EditText text = (EditText) findViewById(R.id.post_content);
-                Log.d("DFDFDFDF - createpostpage", text.getText().toString());
-                data.putExtra("CONTENT",text.getText().toString());
-                setResult(Activity.RESULT_OK, data);
-                finish();
-            }
+        createPost.setOnClickListener(view -> {
+            Intent data = new Intent(CreatePostPage.this, LiveFeed.class);
+            EditText text = findViewById(R.id.post_content);
+            data.putExtra("CONTENT",text.getText().toString());
+            setResult(Activity.RESULT_OK, data);
+            finish();
         });
     }
 

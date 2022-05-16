@@ -61,8 +61,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
 
         RecyclerViewHolder(View view) {
             super(view);
-            user = (TextView) view.findViewById(R.id.text_view_user);
-            content = (TextView) view.findViewById(R.id.text_view_content);
+            user = view.findViewById(R.id.text_view_user);
+            content = view.findViewById(R.id.text_view_content);
         }
     }
 }

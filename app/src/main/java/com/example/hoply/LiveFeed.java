@@ -42,15 +42,10 @@ public class LiveFeed extends AppCompatActivity {
             return false;
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
 
         FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
-        createPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST);
-            }
-        });
+        createPostButton.setOnClickListener(view -> startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST));
 
         adapter = new PostAdapter(this.getApplication());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
