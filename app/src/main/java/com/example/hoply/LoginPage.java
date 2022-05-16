@@ -17,6 +17,7 @@ import com.example.hoply.db.HoplyUser;
 import com.example.hoply.db.Repo;
 
 public class LoginPage extends AppCompatActivity {
+    HoplyUser userToCheck;
     public static HoplyUser currentUser;
     private Repo myRepo;
 
@@ -36,7 +37,6 @@ public class LoginPage extends AppCompatActivity {
 
 
     public void tryLogin(View v) {
-        HoplyUser userToCheck = null;
         EditText userid = findViewById(R.id.loginPageName);
             userToCheck = myRepo.returnUserFromId(userid.getText().toString());
 
@@ -56,7 +56,7 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
