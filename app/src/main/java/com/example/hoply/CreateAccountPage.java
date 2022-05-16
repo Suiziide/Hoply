@@ -51,7 +51,7 @@ public class CreateAccountPage extends AppCompatActivity {
         EditText name = findViewById(R.id.loginPageName);
         EditText username = findViewById(R.id.loginPageUsername);
         HoplyUser user = new HoplyUser(username.getText().toString(), name.getText().toString());
-        if (!name.getText().toString().matches("") || !username.getText().toString().matches("")) {
+        if (!(name.getText().toString().matches("") || username.getText().toString().matches(""))) {
             succeeded = true;
             try {
                 myRepo.insertUser(user);
