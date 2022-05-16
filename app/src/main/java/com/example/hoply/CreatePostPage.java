@@ -47,6 +47,8 @@ public class CreatePostPage extends AppCompatActivity {
             Intent data = new Intent(CreatePostPage.this, LiveFeed.class);
             EditText text = findViewById(R.id.post_content);
             data.putExtra("CONTENT",text.getText().toString());
+            if (takenPicture != null)
+                data.putExtra("IMAGEPATH", takenPicture.getAbsolutePath());
             setResult(Activity.RESULT_OK, data);
             finish();
         });
@@ -67,6 +69,8 @@ public class CreatePostPage extends AppCompatActivity {
     public void takePicture(View v) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takenPicture = getPhotoFile(FILE_NAME);
+        if (takenPicture != null)
+            takenPicture.deleteOnExit();
         Uri fileProvider = FileProvider.getUriForFile(this, "com.example.hoply.fileprovider", takenPicture);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         try {
@@ -90,6 +94,7 @@ public class CreatePostPage extends AppCompatActivity {
             Bitmap imageBitmap = BitmapFactory.decodeFile(takenPicture.getAbsolutePath());
             ImageView picture = findViewById(R.id.TakenPictureView);
             picture.setImageBitmap(imageBitmap);
+
         } else
             super.onActivityResult(requestCode, resultCode, data);
     }

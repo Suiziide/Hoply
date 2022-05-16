@@ -22,7 +22,7 @@ public class HoplyPost {
     Integer postId;
 
     @NonNull
-    @ColumnInfo(name = "user_id", index = true)
+    @ColumnInfo(name = "user_id")
     String userId;
 
     @NonNull

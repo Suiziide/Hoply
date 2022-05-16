@@ -20,6 +20,7 @@ import com.example.hoply.db.HoplyPost;
 import com.example.hoply.viewmodel.LivefeedViewmodel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class LiveFeed extends AppCompatActivity {
 
         if (requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK){
             HoplyPost post = new HoplyPost(LoginPage.currentUser.getUserId(), data.getStringExtra("CONTENT"));
+            String imagePath = data.getStringExtra("IMAGEPATH");
             viewModel.insertPost(post);
 
             Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
@@ -78,6 +80,7 @@ public class LiveFeed extends AppCompatActivity {
 
 
     public void signOut(View v) {
+        LoginPage.currentUser = null;
         startActivity(new Intent(LiveFeed.this, LoginPage.class));
     }
 

@@ -40,6 +40,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         while (user == null){
             user = repo.returnUserFromId(hoplyPost.getUserId());
         }
+
         holder.user.setText(user.getUserName());
         holder.content.setText(hoplyPost.getContent());
     }

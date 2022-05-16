@@ -38,11 +38,8 @@ public class LoginPage extends AppCompatActivity {
     public void tryLogin(View v) {
         HoplyUser userToCheck = null;
         EditText userid = findViewById(R.id.loginPageName);
-        int tries = 0;
-        while (userToCheck == null && tries < 10000) {
             userToCheck = myRepo.returnUserFromId(userid.getText().toString());
-            tries++;
-        }
+
         if (userToCheck != null) {
             currentUser = userToCheck;
             goToHomePage(v);

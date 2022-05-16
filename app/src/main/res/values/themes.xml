@@ -12,9 +12,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSecondaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:background" tools:targetApi="l">?attr/colorSecondary</item>
+        <item name="android:windowBackground" tools:targetApi="l">?attr/colorSecondary</item>
         <item name="android:textColorHint" tools:targetApi="l">@color/gray</item>
-        <item name="android:textViewStyle" tools:targestApi="æ">@color/white</item>
+        <item name="android:textViewStyle" tools:targestApi="l">@color/white</item>
     </style>
     <style name="Theme.Hoply.NoActionBar">
         <item name="windowActionBar">false</item>
