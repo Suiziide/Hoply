@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">Hoply</string>
     <string name="map_key">AIzaSyDZO95V0--jfJPU6VfsbqBYdWfcRyOh5sk</string>
-    <string name="go_to_profile">Go to profile</string>
     <string name="create_post">CreatePost</string>
-    <string name="sign_out">signout</string>
+    <string name="sign_out">Sign out</string>
     <string name="back">Back</string>
-    <string name="save_changes">Save Changes</string>
-    <string name="profile_page">Profile Page</string>
+    <string name="save_changes">Save changes</string>
     <string name="username">Username</string>
     <string name="enter_name">Enter name</string>
     <string name="create_account">Create account</string>
