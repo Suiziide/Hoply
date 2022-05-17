@@ -60,9 +60,14 @@ public class Repo {
     }
 
     public HoplyLocation returnLocationFromId(Integer postId){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.returnLocationFromId(postId);
-        });
+        ExecutorCompletionService<HoplyLocation> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.returnLocationFromId(postId));
+        try {
+            return completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
     }
 
     public HoplyUser returnUserFromId(String userId) {
@@ -70,7 +75,7 @@ public class Repo {
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnUserFromId(userId));
         try {
-            return (HoplyUser) completionService.take().get();
+            return completionService.take().get();
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
