@@ -49,6 +49,18 @@ public class Repo {
 
     }
 
+    public void insertLocation(HoplyLocation location){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+            dao.insertLocation(location);
+        });
+    }
+
+    public HoplyLocation returnLocationFromId(Integer postId){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+            dao.returnLocationFromId(postId);
+        });
+    }
+
     public HoplyUser returnUserFromId(String userId){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
            returnUser =  dao.returnUserFromId(userId);

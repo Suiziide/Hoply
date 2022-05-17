@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.hoply.db.HoplyLocation;
 import com.example.hoply.db.HoplyPost;
 import com.example.hoply.viewmodel.LivefeedViewmodel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -71,6 +72,13 @@ public class LiveFeed extends AppCompatActivity {
             HoplyPost post = new HoplyPost(LoginPage.currentUser.getUserId(), data.getStringExtra("CONTENT"));
             String imagePath = data.getStringExtra("IMAGEPATH");
             viewModel.insertPost(post);
+
+            double latitude = data.getDoubleExtra("LATITUDE", 0.0);
+            double longitude = data.getDoubleExtra("LONGITUDE", 0.0);
+            if (latitude != 0.0 && longitude != 0.0){
+                viewModel.insertLocation(new HoplyLocation(latitude, longitude, post.getPostId()));
+            }
+
 
             Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
         } else {

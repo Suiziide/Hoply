@@ -21,9 +21,15 @@ public interface HoplyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertReaction(HoplyReaction reaction);
 
+    @Insert()
+    void insertLocation(HoplyLocation location);
+
     @Query("SELECT * FROM posts ORDER BY stamp DESC")
     LiveData<List<HoplyPost>> getAllPosts();
 
     @Query("SELECT * FROM users WHERE id = :userId")
     HoplyUser returnUserFromId(String userId);
+
+    @Query("SELECT * FROM location WHERE postid = :postid")
+    HoplyLocation returnLocationFromId(Integer postid);
 }
