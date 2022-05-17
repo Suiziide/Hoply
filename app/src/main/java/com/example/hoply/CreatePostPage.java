@@ -46,11 +46,16 @@ public class CreatePostPage extends AppCompatActivity {
         createPost.setOnClickListener(view -> {
             Intent data = new Intent(CreatePostPage.this, LiveFeed.class);
             EditText text = findViewById(R.id.post_content);
-            data.putExtra("CONTENT",text.getText().toString());
-            if (takenPicture != null)
-                data.putExtra("IMAGEPATH", takenPicture.getAbsolutePath());
-            setResult(Activity.RESULT_OK, data);
-            finish();
+            if (text.getText().toString().matches("\\s+") ||
+                    text.getText().toString().isEmpty())
+                Toast.makeText(this, "Post is empty", Toast.LENGTH_SHORT).show();
+            else {
+                data.putExtra("CONTENT",text.getText().toString());
+                if (takenPicture != null)
+                    data.putExtra("IMAGEPATH", takenPicture.getAbsolutePath());
+                setResult(Activity.RESULT_OK, data);
+                finish();
+            }
         });
     }
 
@@ -103,5 +108,4 @@ public class CreatePostPage extends AppCompatActivity {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 }

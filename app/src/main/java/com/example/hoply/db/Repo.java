@@ -12,6 +12,11 @@ import com.example.hoply.db.HoplyDao;
 import com.example.hoply.db.HoplyDatabase;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Future;
 
 public class Repo {
     private final HoplyDao dao;
@@ -31,7 +36,6 @@ public class Repo {
             } catch (SQLiteConstraintException e) {
                 throw e;
             }
-
         });
     }
 
@@ -49,11 +53,15 @@ public class Repo {
 
     }
 
-    public HoplyUser returnUserFromId(String userId){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-           returnUser =  dao.returnUserFromId(userId);
-        });
-        return returnUser;
+    public HoplyUser returnUserFromId(String userId) {
+        ExecutorCompletionService<HoplyUser> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.returnUserFromId(userId));
+        try {
+            return (HoplyUser) completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
     }
 
     public LiveData<List<HoplyPost>> getAllPosts() {

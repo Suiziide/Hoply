@@ -37,12 +37,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         HoplyPost hoplyPost = postList.get(position);
         HoplyUser user = repo.returnUserFromId(hoplyPost.getUserId());
-        while (user == null){
-            user = repo.returnUserFromId(hoplyPost.getUserId());
-        }
-        while(!(user.getUserId().equalsIgnoreCase(hoplyPost.getUserId()))){
-            user = repo.returnUserFromId(hoplyPost.getUserId());
-        }
         holder.user.setText(user.getUserName());
         holder.content.setText(hoplyPost.getContent());
 
