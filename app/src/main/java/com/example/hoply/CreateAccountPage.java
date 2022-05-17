@@ -35,35 +35,28 @@ public class CreateAccountPage extends AppCompatActivity {
 
 
     public void tryToCreateAccount(View v) {
-        boolean succeeded = tryCreateUser();
-        if (succeeded){
-                Toast.makeText(getApplication(),R.string.userCreated, Toast.LENGTH_LONG).show();
-            goToLoginPage(v);
-        } else {
-                Toast.makeText(getApplication(),
-                        R.string.userAlreadyExists,
-                        Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private boolean tryCreateUser() {
-        boolean succeeded = false;
         EditText name = findViewById(R.id.loginPageName);
         EditText username = findViewById(R.id.loginPageUsername);
-        HoplyUser user = new HoplyUser(username.getText().toString(), name.getText().toString());
-        if (!(name.getText().toString().matches("") || username.getText().toString().matches(""))) {
-            succeeded = true;
+        String USERNAME_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,23}[a-zA-Z0-9]$";
+        String USERID_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){8,50}[a-zA-Z0-9]$";
+        if (name.getText().length() < 35 && name.getText().toString().matches(USERNAME_PATTERN) &&
+                username.getText().toString().matches(USERID_PATTERN)) {
+            HoplyUser user = new HoplyUser(username.getText().toString(), name.getText().toString());
+            Toast.makeText(getApplication(), R.string.userCreated, Toast.LENGTH_LONG).show();
+            goToLoginPage(v);
             try {
                 myRepo.insertUser(user);
             } catch (SQLiteConstraintException e) {
-                succeeded = false;
+                Toast.makeText(getApplication(),
+                        R.string.userAlreadyExists,
+                        Toast.LENGTH_LONG).show();
             }
+        } else {
+            Toast.makeText(getApplication(), "Illegal character use", Toast.LENGTH_LONG).show();
         }
-        return succeeded;
     }
 
     private void goToLoginPage(View v) {
-
         startActivity(new Intent(CreateAccountPage.this, LoginPage.class));
     }
     public void hideKeyboard(View view) {
