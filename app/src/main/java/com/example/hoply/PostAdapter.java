@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.hoply.db.HoplyDatabase;
+import com.example.hoply.db.HoplyLocation;
 import com.example.hoply.db.HoplyPost;
 import com.example.hoply.db.HoplyUser;
 import com.example.hoply.db.Repo;
@@ -41,8 +44,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         HoplyUser user = repo.returnUserFromId(hoplyPost.getUserId());
         holder.user.setText(user.getUserName());
         holder.content.setText(hoplyPost.getContent());
-
-
     }
 
     @Override
@@ -58,14 +59,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     static class RecyclerViewHolder extends RecyclerView.ViewHolder{
         private TextView user;
         private TextView content;
-        private FrameLayout frameLayout;
 
         RecyclerViewHolder(View view) {
             super(view);
             user = view.findViewById(R.id.text_view_user);
             content = view.findViewById(R.id.text_view_content);
-            frameLayout = view.findViewById(R.id.frame_layout);
-
         }
     }
 }
