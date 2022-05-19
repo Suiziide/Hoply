@@ -58,20 +58,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         });
         holder.postDislikeReactionsIMG.setOnClickListener(view -> {
             if(!hasReacted(user, hoplyPost.getPostId(), 2)) {
-                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 1));
+                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 2));
                 notifyDataSetChanged();
             }
         });
         holder.postNeutralReactionsIMG.setOnClickListener(view -> {
             if(!hasReacted(user, hoplyPost.getPostId(), 3)) {
-                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 1));
+                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 3));
                 notifyDataSetChanged();
             }
         });
     }
 
     private boolean hasReacted(HoplyUser user, Integer postId, int reactionType) {
-        return false; //work in progress
+
     }
 
     @Override
