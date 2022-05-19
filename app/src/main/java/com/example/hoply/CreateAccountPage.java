@@ -33,12 +33,11 @@ public class CreateAccountPage extends AppCompatActivity {
         myRepo = new Repo(this.getApplication());
     }
 
-
     public void tryToCreateAccount(View v) {
         EditText name = findViewById(R.id.loginPageName);
         EditText username = findViewById(R.id.loginPageUsername);
         String USERNAME_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,23}[a-zA-Z0-9]$";
-        String USERID_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){8,50}[a-zA-Z0-9]$";
+        String USERID_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,50}[a-zA-Z0-9]$";
         if (name.getText().length() < 35 && name.getText().toString().matches(USERNAME_PATTERN) &&
                 username.getText().toString().matches(USERID_PATTERN)) {
             HoplyUser user = new HoplyUser(username.getText().toString(), name.getText().toString());

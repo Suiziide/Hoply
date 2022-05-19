@@ -39,27 +39,25 @@ public class Repo {
         });
     }
 
-    public void insertPost(HoplyPost post){
+    public void insertPost(HoplyPost post) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertPost(post);
         });
 
     }
 
-    public void insertReaction(HoplyReaction reaction){
+    public void insertReaction(HoplyReaction reaction) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertReaction(reaction);
         });
 
     }
 
-    public void insertLocation(HoplyLocation location){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.insertLocation(location);
-        });
+    public void insertLocation(HoplyLocation location) {
+        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
     }
 
-    public HoplyLocation returnLocationFromId(Integer postId){
+    public HoplyLocation returnLocationFromId(Integer postId) {
         ExecutorCompletionService<HoplyLocation> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnLocationFromId(postId));
@@ -83,5 +81,17 @@ public class Repo {
 
     public LiveData<List<HoplyPost>> getAllPosts() {
         return allPosts;
+    }
+
+
+    public Integer returnReactionsFromTypeAndID(Integer postid, Integer reactionType) {
+        ExecutorCompletionService<Integer> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.returnReactionsFromTypeAndID(postid, reactionType));
+        try {
+            return completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
     }
 }

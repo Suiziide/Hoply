@@ -32,4 +32,8 @@ public interface HoplyDao {
 
     @Query("SELECT * FROM location WHERE postid = :postid")
     HoplyLocation returnLocationFromId(Integer postid);
+
+    @Query("SELECT COUNT(*) FROM reactions WHERE post_id = :postid AND type = :reactionType")
+    Integer returnReactionsFromTypeAndID(Integer postid, int reactionType);
+
 }
