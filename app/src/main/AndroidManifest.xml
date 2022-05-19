@@ -2,13 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hoply">
-
-    <!--Permissions related to location-->
+    <!-- Permissions related to location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,27 +15,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hoply">
+        <activity
+            android:name=".ViewPostPage"
+            android:exported="false" />
 
-        <provider tools:ignore="ExtraText"
-            android:authorities="com.example.hoply.fileprovider"
+        <provider
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.hoply.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:ignore="ExtraText">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/fileprovider">
-            </meta-data>
+                android:resource="@xml/fileprovider"/>
         </provider>
 
-        <activity
-            android:name=".ProfilePage"
-            android:exported="false" />
         <activity
             android:name=".CreateAccountPage"
             android:exported="false" />
         <activity
             android:name=".LiveFeed"
-
             android:exported="false" />
         <activity
             android:name=".CreatePostPage"
@@ -47,11 +44,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
     </application>
+
 </manifest>

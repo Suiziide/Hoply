@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.hoply.db.HoplyComment;
 import com.example.hoply.db.HoplyLocation;
 import com.example.hoply.db.HoplyPost;
 import com.example.hoply.db.HoplyUser;
@@ -13,12 +14,14 @@ import java.util.List;
 public class LivefeedViewmodel extends AndroidViewModel {
 
     private final LiveData<List<HoplyPost>> postList;
+    private final LiveData<List<HoplyComment>> commentList;
     private final Repo repo;
 
     public LivefeedViewmodel(Application application){
         super(application);
         repo = new Repo(application);
         postList = repo.getAllPosts();
+        commentList = repo.getAllComments();
     }
 
     public void insertPost(HoplyPost post){
@@ -31,5 +34,9 @@ public class LivefeedViewmodel extends AndroidViewModel {
 
     public LiveData<List<HoplyPost>> getPostList() {
         return postList;
+    }
+
+    public LiveData<List<HoplyComment>> getCommentList() {
+        return commentList;
     }
 }

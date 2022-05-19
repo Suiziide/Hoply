@@ -15,7 +15,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-@Database(entities = {HoplyUser.class, HoplyPost.class, HoplyReaction.class, HoplyLocation.class}, version = 1, exportSchema = false)
+@Database(entities = {HoplyUser.class, HoplyPost.class, HoplyReaction.class, HoplyLocation.class, HoplyComment.class}, version = 1, exportSchema = false)
 public abstract class HoplyDatabase extends RoomDatabase {
 
     public abstract HoplyDao hoplyDao();

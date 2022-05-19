@@ -12,7 +12,7 @@ import java.util.List;
 public interface HoplyDao {
 
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert()
     void insertUser(HoplyUser user);
 
     @Insert()
@@ -24,6 +24,9 @@ public interface HoplyDao {
     @Insert()
     void insertLocation(HoplyLocation location);
 
+    @Insert()
+    void insertComment(HoplyComment comment);
+
     @Query("SELECT * FROM posts ORDER BY stamp DESC")
     LiveData<List<HoplyPost>> getAllPosts();
 
@@ -32,4 +35,7 @@ public interface HoplyDao {
 
     @Query("SELECT * FROM location WHERE postid = :postid")
     HoplyLocation returnLocationFromId(Integer postid);
+
+    @Query("SELECT * FROM comments ORDER BY stamp DESC")
+    LiveData<List<HoplyComment>> getAllComments();
 }

@@ -20,13 +20,14 @@ import java.util.concurrent.Future;
 
 public class Repo {
     private final HoplyDao dao;
-    private HoplyUser returnUser;
     private LiveData<List<HoplyPost>> allPosts;
+    private LiveData<List<HoplyComment>> allComments;
 
     public Repo(Application application) {
         HoplyDatabase db = HoplyDatabase.getDatabase(application);
         dao = db.hoplyDao();
         allPosts = dao.getAllPosts();
+        allComments = dao.getAllComments();
     }
 
     public void insertUser(HoplyUser user) {
@@ -59,6 +60,12 @@ public class Repo {
         });
     }
 
+    public void insertComment(HoplyComment comment){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> {
+            dao.insertComment(comment);
+        });
+    }
+
     public HoplyLocation returnLocationFromId(Integer postId){
         ExecutorCompletionService<HoplyLocation> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
@@ -79,6 +86,10 @@ public class Repo {
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
+    }
+
+    public LiveData<List<HoplyComment>> getAllComments(){
+        return allComments;
     }
 
     public LiveData<List<HoplyPost>> getAllPosts() {
