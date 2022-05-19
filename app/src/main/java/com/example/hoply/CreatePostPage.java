@@ -3,50 +3,32 @@ package com.example.hoply;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 
-import com.example.hoply.db.HoplyLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-import java.io.File;
-import java.io.IOException;
-
 public class CreatePostPage extends AppCompatActivity {
-
-    private static final int REQUEST_CODE = 104284;
-    private static File takenPicture = null;
-    private static final String FILE_NAME = "photo.jpg";
 
     FusedLocationProviderClient flc;
     private Location lastKnownLocation;
@@ -74,8 +56,6 @@ public class CreatePostPage extends AppCompatActivity {
                 Toast.makeText(this, "Post is empty", Toast.LENGTH_SHORT).show();
             else {
                 data.putExtra("CONTENT",text.getText().toString());
-                if (takenPicture != null)
-                    data.putExtra("IMAGEPATH", takenPicture.getAbsolutePath());
                 if (lastKnownLocation != null) {
                     data.putExtra("LATITUDE", lastKnownLocation.getLatitude());
                     data.putExtra("LONGITUDE", lastKnownLocation.getLongitude());
@@ -100,39 +80,6 @@ public class CreatePostPage extends AppCompatActivity {
             b.setText(R.string.locationOff);
             lastKnownLocation = null;
         }
-    }
-
-    public void takePicture(View v) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takenPicture = getPhotoFile(FILE_NAME);
-        if (takenPicture != null)
-            takenPicture.deleteOnExit();
-        Uri fileProvider = FileProvider.getUriForFile(this, "com.example.hoply.fileprovider", takenPicture);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_CODE);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this,"No camera detected", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private File getPhotoFile(String fileName) {
-        try {
-            return File.createTempFile(fileName, ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(takenPicture.getAbsolutePath());
-            ImageView picture = findViewById(R.id.TakenPictureView);
-            picture.setImageBitmap(imageBitmap);
-
-        } else
-            super.onActivityResult(requestCode, resultCode, data);
     }
 
     @SuppressLint("MissingPermission")

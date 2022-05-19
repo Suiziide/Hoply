@@ -15,13 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:orientation="vertical"
-        android:background="?attr/colorPrimary">
+        android:background="?attr/colorPrimary"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_view_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="User"
@@ -29,55 +30,105 @@
             android:textColor="@color/darker_orange"
             />
 
+        <TextView
+            android:id="@+id/text_view_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="10"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:text="Content"
+            android:textColor="@color/darker_orange" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="133dp"
+                android:layout_width="128dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+
                 <ImageView
-                    android:layout_width="70dp"
+                    android:id="@+id/image_view_postLikeReactionsIMG"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
                     android:padding="3dp"
-                    android:src="@drawable/thumbsup" />
+                    app:tint="@color/dark_emerald_green"
+                    android:clickable="true"
+                    android:src="@drawable/ic_like" />
 
                 <TextView
-                    android:layout_width="63dp"
+                    android:id="@+id/text_view_postLikeReactions"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="bottom|center"
+                    android:gravity="center_horizontal|center"
 
                     android:padding="3dp"
-                    android:text="9999k"
+                    android:text="0"
 
                     android:textSize="15sp" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button7"
+            <LinearLayout
+                android:layout_width="128dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="hate" />
+                <ImageView
+                    android:id="@+id/image_view_postDislikeReactionsIMG"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:padding="3dp"
+                    app:tint="@color/darker_orange"
+                    android:clickable="true"
+                    android:src="@drawable/ic_dislike" />
 
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="idc" />
+                <TextView
+                    android:id="@+id/text_view_postDislikeReactions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center"
+
+                    android:padding="3dp"
+                    android:text="0"
+
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="128dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_view_postNeutralReactionsIMG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="3dp"
+                    app:tint="@color/dark_gray"
+                    android:clickable="true"
+                    android:src="@drawable/ic_neutral" />
+
+                <TextView
+                    android:id="@+id/text_view_postNeutralReactions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center"
+
+                    android:padding="3dp"
+                    android:text="0"
+
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_view_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Content"
-            android:textColor="@color/darker_orange"
-            />
-
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

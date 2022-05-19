@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -34,7 +33,6 @@ public class LoginPage extends AppCompatActivity {
         });
         myRepo = new Repo(this.getApplication());
     }
-
 
     public void tryLogin(View v) {
         EditText userid = findViewById(R.id.loginPageName);

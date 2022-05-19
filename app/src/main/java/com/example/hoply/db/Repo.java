@@ -4,19 +4,10 @@ import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import com.example.hoply.db.HoplyDao;
-import com.example.hoply.db.HoplyDatabase;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Future;
 
 public class Repo {
     private final HoplyDao dao;
@@ -47,19 +38,18 @@ public class Repo {
 
     }
 
-    public void insertReaction(HoplyReaction reaction){
+    public void insertReaction(HoplyReaction reaction) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertReaction(reaction);
         });
 
     }
 
-    public void insertLocation(HoplyLocation location){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.insertLocation(location);
-        });
+    public void insertLocation(HoplyLocation location) {
+        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
     }
 
+    public HoplyLocation returnLocationFromId(Integer postId) {
     public void insertComment(HoplyComment comment){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertComment(comment);
@@ -94,5 +84,16 @@ public class Repo {
 
     public LiveData<List<HoplyPost>> getAllPosts() {
         return allPosts;
+    }
+
+    public Integer returnReactionsFromTypeAndID(Integer postid, Integer reactionType) {
+        ExecutorCompletionService<Integer> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.returnReactionsFromTypeAndID(postid, reactionType));
+        try {
+            return completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
     }
 }

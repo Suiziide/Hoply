@@ -32,29 +32,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.945" />
 
-    <ImageView
-        android:id="@+id/TakenPictureView"
-        android:layout_width="253dp"
-        android:layout_height="342dp"
+    <EditText
+        android:id="@+id/post_content"
+        android:layout_width="379dp"
+        android:layout_height="362dp"
+        android:background="?attr/colorSecondaryVariant"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:textColor="?attr/colorPrimary"
+        android:hint="@string/commentHint"
+        android:textColorHint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
-
-    <Button
-        android:id="@+id/TakePictureBTN"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:onClick="takePicture"
-        android:text="Take Picture"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.133"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.498" />
 
     <Button
         android:id="@+id/AddLocationBTN"
@@ -64,23 +57,20 @@
         android:text="@string/locationOff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.828" />
 
-    <EditText
-        android:id="@+id/post_content"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="120dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:background="?attr/colorSecondaryVariant"
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="118dp"
+        android:layout_height="117dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.059"
+        app:srcCompat="@drawable/hoply" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

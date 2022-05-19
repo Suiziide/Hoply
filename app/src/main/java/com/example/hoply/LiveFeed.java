@@ -1,11 +1,5 @@
 package com.example.hoply;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,16 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hoply.db.HoplyLocation;
 import com.example.hoply.db.HoplyPost;
 import com.example.hoply.viewmodel.LivefeedViewmodel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LiveFeed extends AppCompatActivity {
@@ -56,12 +53,7 @@ public class LiveFeed extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(LivefeedViewmodel.class);
 
-        viewModel.getPostList().observe(LiveFeed.this, new Observer<List<HoplyPost>>() {
-            @Override
-            public void onChanged(List<HoplyPost> postList) {
-                adapter.addItems(postList);
-            }
-        });
+        viewModel.getPostList().observe(LiveFeed.this, postList -> adapter.addItems(postList));
     }
 
     @Override
@@ -79,7 +71,6 @@ public class LiveFeed extends AppCompatActivity {
                 viewModel.insertLocation(new HoplyLocation(latitude, longitude, post.getPostId()));
             }
 
-
             Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
@@ -92,6 +83,7 @@ public class LiveFeed extends AppCompatActivity {
         if(LoginPage.currentUser == null)
             startActivity(new Intent(LiveFeed.this, LoginPage.class));
     }
+
     public void signOut(View v) {
         LoginPage.currentUser = null;
         startActivity(new Intent(LiveFeed.this, LoginPage.class));

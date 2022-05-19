@@ -7,8 +7,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
-import java.sql.Timestamp;
-
 @Entity(tableName = "reactions",
         primaryKeys = {"user_id", "post_id", "stamp"},
         foreignKeys = {
