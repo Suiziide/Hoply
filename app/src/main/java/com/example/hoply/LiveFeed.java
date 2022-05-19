@@ -79,7 +79,6 @@ public class LiveFeed extends AppCompatActivity {
                 viewModel.insertLocation(new HoplyLocation(latitude, longitude, post.getPostId()));
             }
 
-
             Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
@@ -92,6 +91,7 @@ public class LiveFeed extends AppCompatActivity {
         if(LoginPage.currentUser == null)
             startActivity(new Intent(LiveFeed.this, LoginPage.class));
     }
+
     public void signOut(View v) {
         LoginPage.currentUser = null;
         startActivity(new Intent(LiveFeed.this, LoginPage.class));

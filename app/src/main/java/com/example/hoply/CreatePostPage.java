@@ -44,10 +44,6 @@ import java.io.IOException;
 
 public class CreatePostPage extends AppCompatActivity {
 
-    private static final int REQUEST_CODE = 104284;
-    private static File takenPicture = null;
-    private static final String FILE_NAME = "photo.jpg";
-
     FusedLocationProviderClient flc;
     private Location lastKnownLocation;
     int PERMISSION_ID = 22;
@@ -74,8 +70,6 @@ public class CreatePostPage extends AppCompatActivity {
                 Toast.makeText(this, "Post is empty", Toast.LENGTH_SHORT).show();
             else {
                 data.putExtra("CONTENT",text.getText().toString());
-                if (takenPicture != null)
-                    data.putExtra("IMAGEPATH", takenPicture.getAbsolutePath());
                 if (lastKnownLocation != null) {
                     data.putExtra("LATITUDE", lastKnownLocation.getLatitude());
                     data.putExtra("LONGITUDE", lastKnownLocation.getLongitude());
@@ -100,39 +94,6 @@ public class CreatePostPage extends AppCompatActivity {
             b.setText(R.string.locationOff);
             lastKnownLocation = null;
         }
-    }
-
-    public void takePicture(View v) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takenPicture = getPhotoFile(FILE_NAME);
-        if (takenPicture != null)
-            takenPicture.deleteOnExit();
-        Uri fileProvider = FileProvider.getUriForFile(this, "com.example.hoply.fileprovider", takenPicture);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_CODE);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(this,"No camera detected", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private File getPhotoFile(String fileName) {
-        try {
-            return File.createTempFile(fileName, ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(takenPicture.getAbsolutePath());
-            ImageView picture = findViewById(R.id.TakenPictureView);
-            picture.setImageBitmap(imageBitmap);
-
-        } else
-            super.onActivityResult(requestCode, resultCode, data);
     }
 
     @SuppressLint("MissingPermission")
