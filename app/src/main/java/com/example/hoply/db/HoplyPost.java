@@ -1,13 +1,12 @@
 package com.example.hoply.db;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import static androidx.room.ForeignKey.CASCADE;
 import androidx.room.PrimaryKey;
-
-import java.sql.Timestamp;
 
 @Entity(tableName = "posts",
         foreignKeys = {@ForeignKey(

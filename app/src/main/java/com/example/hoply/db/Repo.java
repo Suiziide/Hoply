@@ -4,19 +4,10 @@ import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import com.example.hoply.db.HoplyDao;
-import com.example.hoply.db.HoplyDatabase;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Future;
 
 public class Repo {
     private final HoplyDao dao;
@@ -39,7 +30,7 @@ public class Repo {
         });
     }
 
-    public void insertPost(HoplyPost post) {
+    public void insertPost(HoplyPost post){
         HoplyDatabase.databaseWriteExecutor.execute(() -> {
             dao.insertPost(post);
         });
@@ -82,7 +73,6 @@ public class Repo {
     public LiveData<List<HoplyPost>> getAllPosts() {
         return allPosts;
     }
-
 
     public Integer returnReactionsFromTypeAndID(Integer postid, Integer reactionType) {
         ExecutorCompletionService<Integer> completionService =
