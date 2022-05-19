@@ -53,12 +53,7 @@ public class LiveFeed extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(LivefeedViewmodel.class);
 
-        viewModel.getPostList().observe(LiveFeed.this, new Observer<List<HoplyPost>>() {
-            @Override
-            public void onChanged(List<HoplyPost> postList) {
-                adapter.addItems(postList);
-            }
-        });
+        viewModel.getPostList().observe(LiveFeed.this, postList -> adapter.addItems(postList));
     }
 
     @Override
