@@ -72,7 +72,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
 
     private boolean hasReacted(HoplyUser user, Integer postId, int reaction) {
         Integer reactionType = repo.returnUserReactionToPost(user.getUserId(), postId);
-        Log.d("case", "" + user.getUserId());
         if (reactionType == null) {
             return true;
         }else if (reactionType == reaction) {
