@@ -35,7 +35,6 @@ public class LoginPage extends AppCompatActivity {
         myRepo = new Repo(this.getApplication());
     }
 
-
     public void tryLogin(View v) {
         EditText userid = findViewById(R.id.loginPageName);
         userToCheck = myRepo.returnUserFromId(userid.getText().toString());

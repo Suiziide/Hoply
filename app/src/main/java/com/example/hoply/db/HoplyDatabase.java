@@ -20,12 +20,7 @@ public abstract class HoplyDatabase extends RoomDatabase {
 
     public abstract HoplyDao hoplyDao();
     private static volatile HoplyDatabase INSTANCE;
-    private static final int NUMBER_OF_THREADS = 1;
     public static final ExecutorService databaseWriteExecutor = Executors.newWorkStealingPool();
-
-
-
-
 
     static HoplyDatabase getDatabase(final Context context) {
         if (INSTANCE == null)

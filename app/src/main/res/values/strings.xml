@@ -10,7 +10,6 @@
     <string name="create_account">Create account</string>
     <string name="login">Login</string>
     <string name="post">Post</string>
-    <string name="this_activity_is_for_creating_posts">This activity is for creating posts</string>
     <string name="enter_username">Enter username</string>
     <string name="hoplylogo">HoplyLogo</string>
     <string name="somethingWrong">User not found</string>
@@ -18,4 +17,5 @@
     <string name="userCreated">User created, please login</string>
     <string name="locationOn">LOCATION: ON</string>
     <string name="locationOff">LOCATION: OFF</string>
+    <string name="commentHint">Write your comment here…</string>
 </resources>
