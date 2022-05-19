@@ -84,4 +84,27 @@ public class Repo {
             return null;
         }
     }
+
+    public Integer returnUserReactionToPost(String userId, Integer postId) {
+        ExecutorCompletionService<Integer> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.returnUserReactionToPost(userId, postId));
+        try {
+            return completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
+    }
+
+
+    public Integer removeUserReactionFromPost(String userId, Integer postId) {
+        ExecutorCompletionService<Integer> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.removeUserReactionFromPost(userId, postId));
+        try {
+            return completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
+    }
 }
