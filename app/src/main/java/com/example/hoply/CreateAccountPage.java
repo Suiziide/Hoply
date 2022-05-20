@@ -36,10 +36,10 @@ public class CreateAccountPage extends AppCompatActivity {
     public void tryToCreateAccount(View v) {
         EditText name = findViewById(R.id.loginPageName);
         EditText username = findViewById(R.id.loginPageUsername);
-        String USERNAME_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,25}[a-zA-Z0-9]$";
-        String USERID_PATTERN = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,50}[a-zA-Z0-9]$";
-        if (name.getText().toString().matches(USERNAME_PATTERN) &&
-                username.getText().toString().matches(USERID_PATTERN)) {
+        String USERNAME_PATTERN = "^[a-zA-Z0-9]{2,25}$";
+        String USERID_PATTERN = "^[a-zA-Z0-9]{2,50}$";
+        if (name.getText().toString().trim().matches(USERNAME_PATTERN) &&
+                username.getText().toString().trim().matches(USERID_PATTERN)) {
             HoplyUser user = new HoplyUser(username.getText().toString(), name.getText().toString());
             Toast.makeText(getApplication(), R.string.userCreated, Toast.LENGTH_LONG).show();
             goToLoginPage(v);
