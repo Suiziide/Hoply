@@ -31,32 +31,24 @@ public class Repo {
         });
     }
 
-    public void insertPost(HoplyPost post){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.insertPost(post);
-        });
+    public void insertPost(HoplyPost post) {
+        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertPost(post));
 
     }
 
     public void insertReaction(HoplyReaction reaction) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.insertReaction(reaction);
-        });
-
+        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertReaction(reaction));
     }
 
-    public void insertLocation(HoplyLocation location) {
+    public void insertLocation(HoplyLocation location){
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
     }
 
-    public HoplyLocation returnLocationFromId(Integer postId) {
-    public void insertComment(HoplyComment comment){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> {
-            dao.insertComment(comment);
-        });
+    public void insertComment (HoplyComment comment){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
     }
 
-    public HoplyLocation returnLocationFromId(Integer postId){
+    public HoplyLocation returnLocationFromId (Integer postId){
         ExecutorCompletionService<HoplyLocation> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnLocationFromId(postId));
@@ -67,7 +59,7 @@ public class Repo {
         }
     }
 
-    public HoplyUser returnUserFromId(String userId) {
+    public HoplyUser returnUserFromId (String userId){
         ExecutorCompletionService<HoplyUser> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnUserFromId(userId));
@@ -78,15 +70,15 @@ public class Repo {
         }
     }
 
-    public LiveData<List<HoplyComment>> getAllComments(){
+    public LiveData<List<HoplyComment>> getAllComments () {
         return allComments;
     }
 
-    public LiveData<List<HoplyPost>> getAllPosts() {
+    public LiveData<List<HoplyPost>> getAllPosts () {
         return allPosts;
     }
 
-    public Integer returnReactionsFromTypeAndID(Integer postid, Integer reactionType) {
+    public Integer returnReactionsFromTypeAndID (Integer postid, Integer reactionType){
         ExecutorCompletionService<Integer> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnReactionsFromTypeAndID(postid, reactionType));
@@ -97,7 +89,7 @@ public class Repo {
         }
     }
 
-    public Integer returnUserReactionToPost(String userId, Integer postId) {
+    public Integer returnUserReactionToPost (String userId, Integer postId){
         ExecutorCompletionService<Integer> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnUserReactionToPost(userId, postId));
@@ -109,7 +101,7 @@ public class Repo {
     }
 
 
-    public Integer removeUserReactionFromPost(String userId, Integer postId) {
+    public Integer removeUserReactionFromPost (String userId, Integer postId){
         ExecutorCompletionService<Integer> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.removeUserReactionFromPost(userId, postId));
