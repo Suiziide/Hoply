@@ -11,9 +11,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 
 import com.example.hoply.db.HoplyComment;
 import com.example.hoply.db.HoplyLocation;
@@ -31,7 +33,7 @@ public class ViewPostPage extends AppCompatActivity {
     private LivefeedViewmodel viewModel;
     private CommentAdapter adapter;
     private RecyclerView recyclerView;
-    private HoplyPost hoplyPost;
+    private Integer postId;
     private Repo myRepo;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -45,20 +47,25 @@ public class ViewPostPage extends AppCompatActivity {
             hideKeyboard(view);
             return false;
         });
+        Intent intent = getIntent();
+        postId = intent.getIntExtra("POSTID", -200);
+        if(postId == -200){
+            startActivity(new Intent(this.getApplication(), LiveFeed.class));
+        }
         myRepo = new Repo(this.getApplication());
-        HoplyLocation location = myRepo.returnLocationFromId(hoplyPost.getPostId());
+        HoplyLocation location = myRepo.returnLocationFromId(postId);
+            Log.d("ETTESTET", postId + ", " + location.getPostid() + ", " + location.getLatitude());
         Fragment fragment;
         if(location != null) {
+            FrameLayout frame = findViewById(R.id.frame_layout);
+            frame.setVisibility(View.VISIBLE);
             fragment = new MapFragment(location.getLatitude(), location.getLongitude());
             getSupportFragmentManager()
                     .beginTransaction().replace(R.id.frame_layout,fragment)
                     .commit();
         }
 
-        recyclerView = findViewById(R.id.recycler_view);
-
-        FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
-        createPostButton.setOnClickListener(view -> startActivityForResult(new Intent(ViewPostPage.this, CreatePostPage.class), ADD_NOTE_REQUEST));
+        recyclerView = findViewById(R.id.recycler_view_comments);
 
         adapter = new CommentAdapter(this.getApplication());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,7 +78,7 @@ public class ViewPostPage extends AppCompatActivity {
             @Override
             public void onChanged(List<HoplyComment> commentList) {
                 adapter.addItems(commentList.stream()
-                        .filter(hoplyComment -> hoplyComment.getPostId().equals(hoplyPost.getPostId()))
+                        .filter(hoplyComment -> hoplyComment.getPostId().equals(postId))
                         .collect(Collectors.toList()));
             }
         });

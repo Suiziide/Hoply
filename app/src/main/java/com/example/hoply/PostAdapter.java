@@ -1,13 +1,17 @@
 package com.example.hoply;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,6 +72,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             }
             notifyDataSetChanged();
         });
+
+        holder.postItem.setOnClickListener(view -> {
+            Context context = view.getContext();
+            Intent intent = new Intent(context, ViewPostPage.class);
+            intent.putExtra("POSTID", hoplyPost.getPostId().intValue());
+            context.startActivity(intent);
+        });
     }
 
     private boolean hasReacted(HoplyUser user, Integer postId, int reaction) {
@@ -101,6 +112,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         private final ImageView postLikeReactionsIMG;
         private final ImageView postDislikeReactionsIMG;
         private final ImageView postNeutralReactionsIMG;
+        private final LinearLayout postItem;
 
         RecyclerViewHolder(View view) {
             super(view);
@@ -112,6 +124,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             postLikeReactionsIMG = view.findViewById(R.id.image_view_postLikeReactionsIMG);
             postDislikeReactionsIMG = view.findViewById(R.id.image_view_postDislikeReactionsIMG);
             postNeutralReactionsIMG = view.findViewById(R.id.image_view_postNeutralReactionsIMG);
+            postItem = view.findViewById(R.id.ll1);
         }
     }
 }
