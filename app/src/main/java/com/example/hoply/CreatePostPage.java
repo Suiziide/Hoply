@@ -46,7 +46,7 @@ public class CreatePostPage extends AppCompatActivity {
             hideKeyboard(view);
             return false;
         });
-
+        lastKnownLocation = null;
         Button createPost = findViewById(R.id.create_post_button);
         createPost.setOnClickListener(view -> {
             Intent data = new Intent(CreatePostPage.this, LiveFeed.class);

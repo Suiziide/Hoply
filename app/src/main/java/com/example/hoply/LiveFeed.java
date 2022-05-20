@@ -65,9 +65,9 @@ public class LiveFeed extends AppCompatActivity {
             String imagePath = data.getStringExtra("IMAGEPATH");
             viewModel.insertPost(post);
 
-            double latitude = data.getDoubleExtra("LATITUDE", 0.0);
-            double longitude = data.getDoubleExtra("LONGITUDE", 0.0);
-            if (latitude != 0.0 && longitude != 0.0){
+            double latitude = data.getDoubleExtra("LATITUDE", 200);
+            double longitude = data.getDoubleExtra("LONGITUDE", 200);
+            if (latitude >= -180 && longitude <= 180 && longitude >= -180 && latitude <= 180){
                 viewModel.insertLocation(new HoplyLocation(latitude, longitude, post.getPostId()));
             }
 
