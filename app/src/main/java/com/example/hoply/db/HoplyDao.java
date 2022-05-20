@@ -27,7 +27,10 @@ public interface HoplyDao {
     @Insert()
     void insertComment(HoplyComment comment);
 
-    @Query("SELECT * FROM posts ORDER BY stamp DESC")
+    @Query("SELECT * FROM posts WHERE id = :postid")
+    HoplyPost returnPostFromId(Integer postid);
+
+    @Query("SELECT * FROM posts ORDER BY stamp DESC LIMIT 30")
     LiveData<List<HoplyPost>> getAllPosts();
 
     @Query("SELECT * FROM users WHERE id = :userId")
@@ -44,6 +47,7 @@ public interface HoplyDao {
 
     @Query("SELECT * FROM comments ORDER BY stamp DESC")
     LiveData<List<HoplyComment>> getAllComments();
+
     @Query("DELETE FROM REACTIONS WHERE user_id = :userid AND post_id = :postid;")
     Integer removeUserReactionFromPost(String userid, Integer postid);
 }

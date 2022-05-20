@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Hoply">
         <activity
             android:name=".ViewPostPage"
-            android:exported="false" />
+            android:exported="false"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

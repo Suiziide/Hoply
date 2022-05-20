@@ -16,10 +16,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.hoply.db.HoplyComment;
 import com.example.hoply.db.HoplyLocation;
 import com.example.hoply.db.HoplyPost;
+import com.example.hoply.db.HoplyUser;
 import com.example.hoply.db.Repo;
 import com.example.hoply.viewmodel.LivefeedViewmodel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,12 +51,19 @@ public class ViewPostPage extends AppCompatActivity {
         });
         Intent intent = getIntent();
         postId = intent.getIntExtra("POSTID", -200);
+        myRepo = new Repo(this.getApplication());
+        Log.d("TESTes", postId + "");
         if(postId == -200){
             startActivity(new Intent(this.getApplication(), LiveFeed.class));
         }
-        myRepo = new Repo(this.getApplication());
+        HoplyPost hoplyPost = myRepo.returnPostFromId(postId);
+        HoplyUser hoplyUser = myRepo.returnUserFromId(hoplyPost.getUserId());
+        TextView postUser = findViewById(R.id.post_user);
+        TextView postContent = findViewById(R.id.post_content);
+
+        postUser.setText(hoplyUser.getUserName());
+        postContent.setText(hoplyPost.getContent());
         HoplyLocation location = myRepo.returnLocationFromId(postId);
-            Log.d("ETTESTET", postId + ", " + location.getPostid() + ", " + location.getLatitude());
         Fragment fragment;
         if(location != null) {
             FrameLayout frame = findViewById(R.id.frame_layout);
@@ -66,14 +75,10 @@ public class ViewPostPage extends AppCompatActivity {
         }
 
         recyclerView = findViewById(R.id.recycler_view_comments);
-
         adapter = new CommentAdapter(this.getApplication());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerView.setAdapter(adapter);
-
         viewModel = new ViewModelProvider(this).get(LivefeedViewmodel.class);
-
         viewModel.getCommentList().observe(ViewPostPage.this, new Observer<List<HoplyComment>>() {
             @Override
             public void onChanged(List<HoplyComment> commentList) {

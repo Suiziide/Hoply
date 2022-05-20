@@ -73,7 +73,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             notifyDataSetChanged();
         });
 
-        holder.postItem.setOnClickListener(view -> {
+        holder.viewComments.setOnClickListener(view -> {
             Context context = view.getContext();
             Intent intent = new Intent(context, ViewPostPage.class);
             intent.putExtra("POSTID", hoplyPost.getPostId().intValue());
@@ -112,7 +112,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         private final ImageView postLikeReactionsIMG;
         private final ImageView postDislikeReactionsIMG;
         private final ImageView postNeutralReactionsIMG;
-        private final LinearLayout postItem;
+        private final TextView viewComments;
 
         RecyclerViewHolder(View view) {
             super(view);
@@ -124,7 +124,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             postLikeReactionsIMG = view.findViewById(R.id.image_view_postLikeReactionsIMG);
             postDislikeReactionsIMG = view.findViewById(R.id.image_view_postDislikeReactionsIMG);
             postNeutralReactionsIMG = view.findViewById(R.id.image_view_postNeutralReactionsIMG);
-            postItem = view.findViewById(R.id.ll1);
+            viewComments = view.findViewById(R.id.clickable_text_view_View_comments);
         }
     }
 }

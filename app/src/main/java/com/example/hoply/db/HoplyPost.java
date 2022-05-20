@@ -13,11 +13,12 @@ import androidx.room.PrimaryKey;
                 entity = HoplyUser.class,
                 parentColumns = "id",
                 childColumns = "user_id",
-            onDelete = CASCADE)})
+                onDelete = CASCADE)})
 public class HoplyPost {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo(name = "id")
+    @NonNull
     Integer postId;
 
     @NonNull
@@ -32,7 +33,8 @@ public class HoplyPost {
     @ColumnInfo(name = "stamp")
     long timestamp;
 
-    public HoplyPost(String userId, String content){
+    public HoplyPost(Integer postId, String userId, String content){
+        this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.timestamp = System.nanoTime();

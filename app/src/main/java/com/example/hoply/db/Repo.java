@@ -70,6 +70,17 @@ public class Repo {
         }
     }
 
+    public HoplyPost returnPostFromId (Integer postId){
+        ExecutorCompletionService<HoplyPost> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> dao.returnPostFromId(postId));
+        try {
+            return completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
+        }
+    }
+
     public LiveData<List<HoplyComment>> getAllComments () {
         return allComments;
     }
