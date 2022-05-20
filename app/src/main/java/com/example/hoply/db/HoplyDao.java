@@ -39,9 +39,13 @@ public interface HoplyDao {
     @Query("SELECT COUNT(*) FROM reactions WHERE post_id = :postid AND type = :reactionType")
     Integer returnReactionsFromTypeAndID(Integer postid, int reactionType);
 
+    @Query("SELECT type fROM REACTIONS WHERE user_id = :userid AND post_id = :postid")
+    Integer returnUserReactionToPost(String userid, Integer postid);
 
 
 
     @Query("SELECT * FROM comments ORDER BY stamp DESC")
     LiveData<List<HoplyComment>> getAllComments();
+    @Query("DELETE FROM REACTIONS WHERE user_id = :userid AND post_id = :postid;")
+    Integer removeUserReactionFromPost(String userid, Integer postid);
 }

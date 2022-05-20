@@ -1,7 +1,6 @@
 package com.example.hoply;
 
 import android.app.Application;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,38 +39,47 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         HoplyPost hoplyPost = postList.get(position);
-        HoplyUser user = repo.returnUserFromId(hoplyPost.getUserId());
+        HoplyUser userOnPost = repo.returnUserFromId(hoplyPost.getUserId());
+        HoplyUser currentUser = LoginPage.currentUser;
         Integer likes = repo.returnReactionsFromTypeAndID(hoplyPost.getPostId(), 1);
         Integer dislikes = repo.returnReactionsFromTypeAndID(hoplyPost.getPostId(), 2);
         Integer neutrals = repo.returnReactionsFromTypeAndID(hoplyPost.getPostId(), 3);
-        holder.user.setText(user.getUserName());
+        holder.user.setText(userOnPost.getUserName());
         holder.content.setText(hoplyPost.getContent());
         holder.postLikeReactions.setText(likes.toString());
         holder.postDislikeReactions.setText(dislikes.toString());
         holder.postNeutralReactions.setText(neutrals.toString());
 
         holder.postLikeReactionsIMG.setOnClickListener(view -> {
-            if(!hasReacted(user, hoplyPost.getPostId(), 1)) {
-                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 1));
-                notifyDataSetChanged();
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 1)) {
+                repo.insertReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 1));
             }
+            notifyDataSetChanged();
         });
         holder.postDislikeReactionsIMG.setOnClickListener(view -> {
-            if(!hasReacted(user, hoplyPost.getPostId(), 2)) {
-                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 1));
-                notifyDataSetChanged();
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 2)) {
+                repo.insertReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 2));
             }
+            notifyDataSetChanged();
         });
         holder.postNeutralReactionsIMG.setOnClickListener(view -> {
-            if(!hasReacted(user, hoplyPost.getPostId(), 3)) {
-                repo.insertReaction(new HoplyReaction(hoplyPost.getUserId(), hoplyPost.getPostId(), 1));
-                notifyDataSetChanged();
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 3)) {
+                repo.insertReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 3));
             }
+            notifyDataSetChanged();
         });
     }
 
-    private boolean hasReacted(HoplyUser user, Integer postId, int reactionType) {
-        return false; //work in progress
+    private boolean hasReacted(HoplyUser user, Integer postId, int reaction) {
+        Integer reactionType = repo.returnUserReactionToPost(user.getUserId(), postId);
+        if (reactionType == null) {
+            return true;
+        }else if (reactionType == reaction) {
+            repo.removeUserReactionFromPost(user.getUserId(), postId);
+            return false;
+        } else {
+            return repo.removeUserReactionFromPost(user.getUserId(), postId) > 0;
+        }
     }
 
     @Override
