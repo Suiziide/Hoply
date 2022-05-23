@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical"
-        android:background="@color/orange"
+        android:background="?attr/colorOnSecondary"
         >
 
     <TextView
@@ -32,7 +32,7 @@
         android:maxLines="1"
         android:text="User"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/darker_orange"
+        android:textColor="?attr/colorOnPrimary"
         />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Content"
-        android:textColor="@color/darker_orange"
+        android:textColor="#DDDDDD"
         />
     </LinearLayout>
 
@@ -67,8 +67,8 @@
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:minHeight="35dp"
-            android:background="?attr/colorSecondaryVariant"
-            android:textColor="?attr/colorPrimary"
+            android:background="?attr/colorOnSecondary"
+            android:textColor="#DDDDDD"
             />
         <ImageView
             android:id="@+id/submit_comment"
