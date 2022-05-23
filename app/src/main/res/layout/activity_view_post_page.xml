@@ -56,25 +56,26 @@
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="50dp"
         android:orientation="horizontal"
         android:gravity="center"
         >
         <EditText
+            android:id="@+id/comment_textfield"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
+            android:minHeight="35dp"
             android:background="?attr/colorOnSecondary"
             android:textColor="#DDDDDD"
             />
         <ImageView
+            android:id="@+id/submit_comment"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:padding="4dp"
             android:src="@drawable/send"
             app:tint="@color/darker_orange"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="right"
             />
-
-
     </LinearLayout>
 
     <ScrollView

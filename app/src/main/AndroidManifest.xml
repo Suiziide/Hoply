@@ -18,7 +18,8 @@
         android:theme="@style/Theme.Hoply">
         <activity
             android:name=".ViewPostPage"
-            android:exported="false"/>
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -33,16 +34,20 @@
 
         <activity
             android:name=".CreateAccountPage"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".LiveFeed"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".CreatePostPage"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".LoginPage"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

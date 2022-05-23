@@ -37,6 +37,10 @@ public class LivefeedViewmodel extends AndroidViewModel {
         return postList;
     }
 
+    public void insertComment(HoplyComment comment){
+        repo.insertComment(comment);
+    }
+
     public LiveData<List<HoplyComment>> getCommentList() {
         return commentList;
     }
