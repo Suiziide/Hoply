@@ -15,8 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hoply.db.HoplyComment;
 import com.example.hoply.db.HoplyLocation;
@@ -60,6 +63,8 @@ public class ViewPostPage extends AppCompatActivity {
         HoplyUser hoplyUser = myRepo.returnUserFromId(hoplyPost.getUserId());
         TextView postUser = findViewById(R.id.post_user);
         TextView postContent = findViewById(R.id.post_content);
+        EditText commentText = findViewById(R.id.comment_textfield);
+        ImageView submitComment = findViewById(R.id.submit_comment);
 
         postUser.setText(hoplyUser.getUserName());
         postContent.setText(hoplyPost.getContent());
@@ -73,7 +78,16 @@ public class ViewPostPage extends AppCompatActivity {
                     .beginTransaction().replace(R.id.frame_layout,fragment)
                     .commit();
         }
-
+        submitComment.setOnClickListener(view -> {
+            if (commentText.getText().toString().matches("\\s+") ||
+                    commentText.getText().toString().isEmpty())
+                Toast.makeText(commentText.getContext(), "Post is empty", Toast.LENGTH_SHORT).show();
+            else {
+                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString()));
+                commentText.setText("");
+                hideKeyboard(view);
+            }
+        });
         recyclerView = findViewById(R.id.recycler_view_comments);
         adapter = new CommentAdapter(this.getApplication());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

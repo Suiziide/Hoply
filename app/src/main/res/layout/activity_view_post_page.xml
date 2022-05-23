@@ -61,6 +61,7 @@
         android:gravity="center"
         >
         <EditText
+            android:id="@+id/comment_textfield"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:minHeight="35dp"
@@ -68,6 +69,7 @@
             android:textColor="?attr/colorPrimary"
             />
         <ImageView
+            android:id="@+id/submit_comment"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:src="@drawable/send"
