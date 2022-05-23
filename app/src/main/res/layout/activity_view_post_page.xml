@@ -3,13 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/view_post_content"
     tools:context=".ViewPostPage"
     android:orientation="vertical"
-    android:gravity="top"
-    >
+    android:gravity="top" >
 
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:textSize="20dp"
+        android:onClick="goToLiveFeed"
+        android:textColor="#DDDDDD"
+        android:layout_marginTop="10dp"
+        android:text="BACK" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,8 +63,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_marginTop="8dp"
@@ -71,6 +80,8 @@
             android:minHeight="35dp"
             android:layout_marginStart="20dp"
             android:background="?attr/colorOnSecondary"
+            android:hint="Write your comment here..."
+            android:textColorHint="#DDDDDD"
             android:textColor="#DDDDDD"
             />
         <ImageView
@@ -85,8 +96,8 @@
     </LinearLayout>
 
     <ScrollView
-        android:layout_width="400dp"
-        android:layout_height="371dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,18 +115,5 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </ScrollView>
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        android:onClick="goToLiveFeed"
-        android:gravity="center"
-        android:text="BACK"
-        android:textColor="#DDDDDD"
-        android:textSize="30dp" />
 
 </LinearLayout>
