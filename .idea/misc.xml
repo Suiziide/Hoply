@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.2866847826086957" />
-        <entry key="..\:/Users/mikke/OneDrive/Dokumenter/SDU/DM564 - Databasesystemer/Projekt/Hoply/app/src/main/res/layout/activity_create_post_page.xml" value="0.20652173913043478" />
+        <entry key="..\:/Users/mikke/OneDrive/Dokumenter/SDU/DM564 - Databasesystemer/Projekt/Hoply/app/src/main/res/layout/activity_create_post_page.xml" value="0.1" />
+        <entry key="..\:/Users/mikke/OneDrive/Dokumenter/SDU/DM564 - Databasesystemer/Projekt/Hoply/app/src/main/res/layout/activity_live_feed.xml" value="0.20878623188405798" />
+        <entry key="..\:/Users/mikke/OneDrive/Dokumenter/SDU/DM564 - Databasesystemer/Projekt/Hoply/app/src/main/res/layout/activity_view_post_page.xml" value="0.1" />
+        <entry key="..\:/Users/mikke/OneDrive/Dokumenter/SDU/DM564 - Databasesystemer/Projekt/Hoply/app/src/main/res/layout/comment_item.xml" value="0.1" />
+        <entry key="..\:/Users/mikke/OneDrive/Dokumenter/SDU/DM564 - Databasesystemer/Projekt/Hoply/app/src/main/res/layout/post_item.xml" value="0.1" />
         <entry key="..\:/Users/mikke/StudioProjects/Hoply/app/src/main/res/layout-w1240dp/activity_create_post_page.xml" value="0.121484375" />
         <entry key="..\:/Users/mikke/StudioProjects/Hoply/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.16331994645247658" />
         <entry key="..\:/Users/mikke/StudioProjects/Hoply/app/src/main/res/layout-w936dp/activity_login.xml" value="0.190625" />
@@ -27,17 +30,10 @@
         <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/activity_live_feed.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/activity_login_page.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/activity_profile_page.xml" value="0.24139492753623187" />
-        <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/activity_view_post_page.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/comment_item.xml" value="0.35885416666666664" />
         <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/fragment_map.xml" value="0.1828125" />
         <entry key="..\:/Users/nicol/OneDrive/AndroidStudioProjects/Hoply/app/src/main/res/layout/post_item.xml" value="0.3333333333333333" />
-        <entry key="app/src/main/res/drawable/ic_dislike.xml" value="0.246" />
-        <entry key="app/src/main/res/drawable/ic_like.xml" value="0.246" />
-        <entry key="app/src/main/res/drawable/ic_neutral.xml" value="0.246" />
         <entry key="app/src/main/res/layout/activity_create_post_page.xml" value="0.35778985507246375" />
         <entry key="app/src/main/res/layout/activity_live_feed.xml" value="0.2667572463768116" />
-        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.3723958333333333" />
-        <entry key="app/src/main/res/layout/post_item.xml" value="0.3723958333333333" />
       </map>
     </option>
   </component>

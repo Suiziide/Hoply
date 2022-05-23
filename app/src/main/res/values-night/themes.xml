@@ -2,19 +2,19 @@
     <!-- Base application theme. -->
     <style name="Theme.Hoply" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/dark_orange</item>
-        <item name="colorPrimaryVariant">@color/orange</item>
+        <item name="colorPrimary">@color/dark_emerald_green</item>
+        <item name="colorPrimaryVariant">@color/darker_orange</item>
         <item name="colorOnPrimary">@color/bright_orange</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/dark_emerald_green</item>
-        <item name="colorSecondaryVariant">@color/emerald_green</item>
-        <item name="colorOnSecondary">@color/dark_gray</item>
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">#1E1D1D</item>
+        <item name="colorOnSecondary">#505050</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSecondaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground" tools:targetApi="l">?attr/colorSecondary</item>
-        <item name="android:textAppearance" tools:targetApi="l">@color/emerald_green</item>
-        <item name="android:textColorHint" tools:targetApi="l">@color/gray</item>
+        <item name="android:windowBackground" tools:targetApi="l">?attr/colorSecondaryVariant</item>
+        <item name="android:textAppearance" tools:targetApi="l">@color/bright_orange</item>
+        <item name="android:textColorHint" tools:targetApi="l">#FFFF914E</item>
 
     </style>
 </resources>
