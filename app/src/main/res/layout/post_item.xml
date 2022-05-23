@@ -57,7 +57,7 @@
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:padding="3dp"
-                    app:tint="?attr/colorPrimary"
+                    app:tint="@color/orange"
                     android:clickable="true"
                     android:src="@drawable/ic_like" />
 
@@ -81,7 +81,7 @@
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:padding="3dp"
-                    app:tint="@color/darker_orange"
+                    app:tint="@color/orange"
                     android:clickable="true"
                     android:src="@drawable/ic_dislike" />
 
@@ -106,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="3dp"
-                    app:tint="@color/dark_gray"
+                    app:tint="@color/orange"
                     android:clickable="true"
                     android:src="@drawable/ic_neutral" />
 

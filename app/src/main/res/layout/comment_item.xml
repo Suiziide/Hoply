@@ -21,19 +21,21 @@
             android:id="@+id/comment_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="User"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#DDDDDD"
+            android:textColor="?attr/colorOnPrimary"
             />
 
         <TextView
             android:id="@+id/comment_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="Content"
-            android:textColor="@color/darker_orange"
+            android:textColor="#DDDDDD"
             />
 
 
