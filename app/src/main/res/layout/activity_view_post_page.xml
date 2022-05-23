@@ -77,6 +77,7 @@
             android:id="@+id/submit_comment"
             android:layout_width="50dp"
             android:layout_height="match_parent"
+            android:padding="4dp"
             android:src="@drawable/send"
             android:layout_marginStart="20dp"
             app:tint="@color/darker_orange"

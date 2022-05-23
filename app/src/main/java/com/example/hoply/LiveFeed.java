@@ -27,8 +27,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class LiveFeed extends AppCompatActivity {
-
-    private int ADD_NOTE_REQUEST = 1;
     private LivefeedViewmodel viewModel;
     private PostAdapter adapter;
     private RecyclerView recyclerView;
@@ -50,8 +48,8 @@ public class LiveFeed extends AppCompatActivity {
 
         FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
         createPostButton.setOnClickListener(view ->
-                startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST)
-/*                activityResultLaunch.launch(new Intent(LiveFeed.this, CreatePostPage.class))*/
+/*              startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST) */
+                activityResultLaunch.launch(new Intent(LiveFeed.this, CreatePostPage.class))
         );
 
         adapter = new PostAdapter(this.getApplication());
@@ -64,7 +62,7 @@ public class LiveFeed extends AppCompatActivity {
         viewModel.getPostList().observe(LiveFeed.this, postList -> adapter.addItems(postList));
     }
 
-/*    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
+    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
@@ -85,8 +83,8 @@ public class LiveFeed extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
                 }
-            });*/
-
+            });
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -109,7 +107,7 @@ public class LiveFeed extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
 
 
