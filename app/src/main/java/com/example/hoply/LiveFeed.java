@@ -11,6 +11,8 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -47,7 +49,10 @@ public class LiveFeed extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
 
         FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
-        createPostButton.setOnClickListener(view -> startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST));
+        createPostButton.setOnClickListener(view ->
+                startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST)
+/*                activityResultLaunch.launch(new Intent(LiveFeed.this, CreatePostPage.class))*/
+        );
 
         adapter = new PostAdapter(this.getApplication());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,6 +63,29 @@ public class LiveFeed extends AppCompatActivity {
 
         viewModel.getPostList().observe(LiveFeed.this, postList -> adapter.addItems(postList));
     }
+
+/*    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    int postId;
+                    if(viewModel.getPostList().getValue().size() == 0)
+                        postId = 1;
+                    else
+                        postId = viewModel.getPostList().getValue().get(0).getPostId() + 1;
+
+                    HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), result.getData().getStringExtra("CONTENT"));
+                    viewModel.insertPost(post);
+                    double latitude = result.getData().getDoubleExtra("LATITUDE", 200.0);
+                    double longitude = result.getData().getDoubleExtra("LONGITUDE", 200.0);
+                    Log.d("datdata", "" + latitude + ", " + longitude + ", " + postId);
+                    if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
+                        viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
+                    Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
+                }
+            });*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

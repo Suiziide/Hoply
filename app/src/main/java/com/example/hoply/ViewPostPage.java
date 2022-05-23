@@ -81,7 +81,7 @@ public class ViewPostPage extends AppCompatActivity {
         submitComment.setOnClickListener(view -> {
             if (commentText.getText().toString().matches("\\s+") ||
                     commentText.getText().toString().isEmpty())
-                Toast.makeText(commentText.getContext(), "Post is empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
                 viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString()));
                 commentText.setText("");
