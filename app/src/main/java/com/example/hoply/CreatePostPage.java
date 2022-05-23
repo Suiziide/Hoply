@@ -39,6 +39,7 @@ public class CreatePostPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        lastKnownLocation = null;
         flc = LocationServices.getFusedLocationProviderClient(this);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_create_post_page);
@@ -111,11 +112,11 @@ public class CreatePostPage extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
         // Initializing LocationRequest object
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5);
-        locationRequest.setFastestInterval(0);
-        locationRequest.setNumUpdates(1);
+        LocationRequest locationRequest = LocationRequest.create()
+                .setInterval(5)
+                .setFastestInterval(0)
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setNumUpdates(1);
 
         // setting LocationRequest on flc
         flc = LocationServices.getFusedLocationProviderClient(this);
@@ -164,8 +165,11 @@ public class CreatePostPage extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if(checkPermissions()){
+        Button locationButton = findViewById(R.id.AddLocationBTN);
+        if(checkPermissions() && locationButton.getText().equals("LOCATION: ON")){
             getLastLocation();
+        } else {
+            lastKnownLocation = null;
         }
     }
 
