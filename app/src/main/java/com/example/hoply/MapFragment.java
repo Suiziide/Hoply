@@ -1,6 +1,7 @@
 package com.example.hoply;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends Fragment {
@@ -42,37 +44,16 @@ public class MapFragment extends Fragment {
             @SuppressLint("MissingPermission")
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                int nightModeFlags =  view.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
+                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.darkmap));
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                /*// When map is loaded
-                LocationRoomDatabase db = LocationRoomDatabase.getDatabase(getActivity());
-                wordDao = db.wordDao();
-                double latitude = wordDao.getLatitude();
-                double longitude = wordDao.getLongitude();*/
-
                 Log.d("testet", "Latitude: " + latitude + ", Longitude: " + longitude);
                 LatLng latLng = new LatLng(latitude, longitude);
                 googleMap.addMarker(new MarkerOptions()
                         .position(latLng));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13 ));
 
-/*                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        // When clicked on map
-                        // Initialize marker options
-                        MarkerOptions markerOptions=new MarkerOptions();
-                        // Set position of marker
-                        markerOptions.position(latLng);
-                        // Set title of marker
-                        markerOptions.title(latLng.latitude+" : "+latLng.longitude);
-                        // Remove all marker
-                        googleMap.clear();
-                        // Animating to zoom the marker
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
-                        // Add marker on map
-                        googleMap.addMarker(markerOptions);
-                    }
-                });*/
             }
         });
         // Return view
