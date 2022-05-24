@@ -2,12 +2,24 @@ package com.example.hoply.db;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteConstraintException;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Repo {
     private final HoplyDao dao;
@@ -86,6 +98,27 @@ public class Repo {
     }
 
     public LiveData<List<HoplyPost>> getAllPosts () {
+        ExecutorService exec = Executors.newFixedThreadPool(4);
+
+        exec.execute(() -> {
+            URL url;
+            URLConnection con;
+            try {
+                url = new URL("https://caracal.imada.sdu.dk/app2022/posts");
+                con = url.openConnection();
+                con.setRequestProperty("Authorization" , "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwMjAyMiJ9.iEPYaqBPWoAxc7iyi507U3sexbkLHRKABQgYNDG4Awk");
+                InputStream response = con.getInputStream();
+
+                try (Scanner scanner = new Scanner(response)) {
+                    String responseBody = scanner.useDelimiter("\\A").next();
+                    Log.d("FLAHFH", responseBody);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         return allPosts;
     }
 
