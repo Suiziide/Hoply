@@ -55,9 +55,10 @@ public class CreateAccountPage extends AppCompatActivity {
         }
     }
 
-    private void goToLoginPage(View v) {
+    public void goToLoginPage(View v) { // musn't be private
         startActivity(new Intent(CreateAccountPage.this, LoginPage.class));
     }
+
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
