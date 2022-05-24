@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "users")
 public class HoplyUser {
     @PrimaryKey()
-    @NonNull
     @ColumnInfo(name = "id")
+    @NonNull
     String userId;
 
     @NonNull
@@ -23,7 +23,13 @@ public class HoplyUser {
     public HoplyUser(@NonNull String userId, @NonNull String userName){
         this.userId = userId;
         this.userName = userName;
-        this.timestamp = System.nanoTime();
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public HoplyUser(@NonNull String userId, String userName, long timeMillis){
+        this.userId = userId;
+        this.userName = userName;
+        this.timestamp = timeMillis;
     }
 
     @NonNull

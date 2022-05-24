@@ -8,18 +8,14 @@ import androidx.lifecycle.LiveData;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.net.URLConnection;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Repo {
     private final HoplyDao dao;
@@ -98,28 +94,99 @@ public class Repo {
     }
 
     public LiveData<List<HoplyPost>> getAllPosts () {
-        ExecutorService exec = Executors.newFixedThreadPool(4);
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(
+                (() -> {
+                    String[] responseBody = new String[0];
+                    try {
+                        URL url = new URL("https://caracal.imada.sdu.dk/app2022/users");
+                        URLConnection con = url.openConnection();
+                        con.setRequestProperty("Authorization" , "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwMjAyMiJ9.iEPYaqBPWoAxc7iyi507U3sexbkLHRKABQgYNDG4Awk");
+                        InputStream response = con.getInputStream();
+                        String res = "";
+                        try (Scanner scanner = new Scanner(response)) {
+                            res = (scanner.useDelimiter("\\A").next());
+                            res = res.substring(1,res.length()-1);
+                        }
+                        response.close();
+                        responseBody = extractData(res);
+                        createAndInsertUser(responseBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        exec.execute(() -> {
-            URL url;
-            URLConnection con;
-            try {
-                url = new URL("https://caracal.imada.sdu.dk/app2022/posts");
-                con = url.openConnection();
-                con.setRequestProperty("Authorization" , "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwMjAyMiJ9.iEPYaqBPWoAxc7iyi507U3sexbkLHRKABQgYNDG4Awk");
-                InputStream response = con.getInputStream();
-
-                try (Scanner scanner = new Scanner(response)) {
-                    String responseBody = scanner.useDelimiter("\\A").next();
-                    Log.d("FLAHFH", responseBody);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
+                    try {
+                        URL url = new URL("https://caracal.imada.sdu.dk/app2022/posts");
+                        URLConnection con = url.openConnection();
+                        con.setRequestProperty("Authorization" , "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwMjAyMiJ9.iEPYaqBPWoAxc7iyi507U3sexbkLHRKABQgYNDG4Awk");
+                        InputStream response = con.getInputStream();
+                        String res = "";
+                        try (Scanner scanner = new Scanner(response)) {
+                            res = (scanner.useDelimiter("\\A").next());
+                            res = res.substring(1,res.length()-1);
+                        }
+                        responseBody = extractData(res);
+                        createAndInsertPosts(responseBody);
+                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return responseBody.length > 0;
+                }));
         return allPosts;
+    }
+
+    private void createAndInsertUser(String[] responseBody) {
+        String currentUser = "";
+        for (String s : responseBody) {
+            currentUser = s;
+            String userId = currentUser.substring(currentUser.indexOf("\"id\"") + 6,
+                    currentUser.indexOf("\"name\"") - 2);
+            String userName = currentUser.substring(currentUser.indexOf("\"name\"") + 8,
+                    currentUser.indexOf("\"stamp\"") - 2);
+            long timeMillis = Timestamp.valueOf((currentUser.substring(currentUser.lastIndexOf("\"stamp\"") + 9,
+                    currentUser.length() - 7).replace("T", " "))).getTime();
+            Log.d("user", userId + ", " + userName + ", " + timeMillis);
+            insertUser(new HoplyUser(userId, userName, timeMillis));
+        }
+    }
+
+    private void createAndInsertPosts(String[] responseBody) {
+        String currentPost;
+        int lastId;
+        if (allPosts.getValue() != null) {
+            lastId = allPosts.getValue().get(0).postId;
+            Log.d("postpost", lastId + "lastId");
+        } else
+            lastId = 1;
+        for (int i = 0; i < responseBody.length; i++) {
+            currentPost = responseBody[i];
+            Integer postId = lastId + i;
+            String userId = currentPost.substring(currentPost.indexOf("\"user_id\"") + 11,
+                    currentPost.indexOf("\"content\"") - 2);
+            String content = currentPost.substring(currentPost.indexOf("\"content\"") + 11,
+                    currentPost.indexOf("\"stamp\"") - 2);
+            long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
+                    currentPost.length() - 7).replace("T", " "))).getTime();
+
+            Log.d("postpost", postId + ", " + userId + ", " + content + ", " + timeMillis);
+            insertPost(new HoplyPost(postId, userId, content, timeMillis));
+        }
+    }
+
+    private String[] extractData(String res) {
+        List<Integer> postStart = new ArrayList<>();
+        List<Integer> postEnd = new ArrayList<>();
+        for (int i = 0; i < res.length(); i++)
+            if (res.charAt(i) == '{')
+                postStart.add(i);
+            else if (res.charAt(i) == '}')
+                postEnd.add(i);
+        String[] postList = new String[postStart.size()];
+        for (int i = 0; i < postStart.size(); i++)
+            postList[i] = (res.substring(postStart.get(i)+1,postEnd.get(i)));
+        return postList;
     }
 
     public Integer returnReactionsFromTypeAndID (Integer postid, Integer reactionType){

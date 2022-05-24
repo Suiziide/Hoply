@@ -37,7 +37,14 @@ public class HoplyPost {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
-        this.timestamp = System.nanoTime();
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public HoplyPost(Integer postId, String userId, String content, long timeMillis){
+        this.postId = postId;
+        this.userId = userId;
+        this.content = content;
+        this.timestamp = timeMillis;
     }
 
     public Integer getPostId() {

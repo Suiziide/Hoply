@@ -12,25 +12,25 @@ import java.util.List;
 public interface HoplyDao {
 
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertUser(HoplyUser user);
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertPost(HoplyPost post);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertReaction(HoplyReaction reaction);
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertLocation(HoplyLocation location);
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertComment(HoplyComment comment);
 
     @Query("SELECT * FROM posts WHERE id = :postid")
     HoplyPost returnPostFromId(Integer postid);
 
-    @Query("SELECT * FROM posts ORDER BY stamp DESC LIMIT 30")
+    @Query("SELECT * FROM posts ORDER BY stamp")
     LiveData<List<HoplyPost>> getAllPosts();
 
     @Query("SELECT * FROM users WHERE id = :userId")
