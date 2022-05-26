@@ -20,7 +20,6 @@
         app:layout_constraintVertical_bias="0.05"
         app:srcCompat="@drawable/hoply" />
 
-
     <EditText
         android:id="@+id/loginPageName"
         android:layout_width="210dp"
@@ -30,14 +29,14 @@
         android:background="?attr/colorOnSecondary"
         android:inputType="textPersonName"
         android:autofillHints="@sting/enter_name"
-        android:textColor="@color/bright_orange"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.390" />
-
 
     <EditText
         android:id="@+id/loginPageUsername"
@@ -48,7 +47,8 @@
         android:background="?attr/colorOnSecondary"
         android:inputType="textPersonName"
         android:autofillHints="@sting/enter_username"
-        android:textColor="@color/bright_orange"
+        android:textColor="?attr/colorOnPrimary"
+        android:textColorHint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -62,6 +62,7 @@
         android:layout_height="40dp"
         android:onClick="tryToCreateAccount"
         android:text="@string/create_account"
+        android:textColor="#DDDDDD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -75,10 +76,12 @@
         android:layout_height="40dp"
         android:onClick="goToLoginPage"
         android:text="@string/back"
+        android:textColor="#DDDDDD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.638" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

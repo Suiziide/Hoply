@@ -25,19 +25,19 @@ public class HoplyReaction {
 
         @ColumnInfo(name = "user_id", index = true)
         @NonNull
-        String userId;
+        private String userId;
 
         @ColumnInfo(name = "post_id", index = true)
         @NonNull
-        Integer postId;
+        private Integer postId;
 
         @ColumnInfo(name = "type")
         @NonNull
-        int reactionType;
+        private int reactionType;
 
         @ColumnInfo(name = "stamp")
         @NonNull
-        long timestamp;
+        private long timestamp;
 
         public HoplyReaction(String userId, Integer postId, int reactionType){
                 this.userId = userId;
@@ -45,4 +45,27 @@ public class HoplyReaction {
                 this.reactionType = reactionType;
                 this.timestamp = System.nanoTime();
         }
+
+        public String getUserId() {return userId;}
+
+        public Integer getPostId() {return postId;}
+
+        public int getReactionType() {return reactionType;}
+
+        public long getTimestamp() {return timestamp;}
+
+        public void setUserId(String userId) {this.userId = userId;}
+
+        public void setPostId(Integer postId) {this.postId = postId;}
+
+        public void setReactionType(int reactionType) {this.reactionType = reactionType;}
+
+        public void setTimestamp(long timestamp) {this.timestamp = timestamp;}
+
+
+
+
+
+
+
 }

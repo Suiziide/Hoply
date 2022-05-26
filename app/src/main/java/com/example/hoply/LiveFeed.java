@@ -25,6 +25,7 @@ import com.example.hoply.viewmodel.LivefeedViewmodel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Objects;
 
 public class LiveFeed extends AppCompatActivity {
     private LivefeedViewmodel viewModel;
@@ -37,7 +38,7 @@ public class LiveFeed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_live_feed);
         findViewById(R.id.livefeed_content).setOnTouchListener((view, motionEvent) -> {
             hideKeyboard(view);
@@ -48,7 +49,7 @@ public class LiveFeed extends AppCompatActivity {
 
         FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
         createPostButton.setOnClickListener(view ->
-/*              startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST) */
+                /*              startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST) */
                 activityResultLaunch.launch(new Intent(LiveFeed.this, CreatePostPage.class))
         );
 
@@ -68,15 +69,14 @@ public class LiveFeed extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK) {
                     int postId;
                     if(viewModel.getPostList().getValue().size() == 0)
-                        postId = 1;
+                        postId = 1000000;
                     else
                         postId = viewModel.getPostList().getValue().get(0).getPostId() + 1;
-
+                    assert result.getData() != null;
                     HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), result.getData().getStringExtra("CONTENT"));
-                    viewModel.insertPost(post);
+                    viewModel.insertLocalPost(post);
                     double latitude = result.getData().getDoubleExtra("LATITUDE", 200.0);
                     double longitude = result.getData().getDoubleExtra("LONGITUDE", 200.0);
-                    Log.d("datdata", "" + latitude + ", " + longitude + ", " + postId);
                     if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
                         viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
                     Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
@@ -84,32 +84,6 @@ public class LiveFeed extends AppCompatActivity {
                     Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
                 }
             });
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK){
-            int postId;
-            if(viewModel.getPostList().getValue().size() == 0)
-                postId = 1;
-            else
-                postId = viewModel.getPostList().getValue().get(0).getPostId() + 1;
-
-            HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), data.getStringExtra("CONTENT"));
-            viewModel.insertPost(post);
-            double latitude = data.getDoubleExtra("LATITUDE", 200.0);
-            double longitude = data.getDoubleExtra("LONGITUDE", 200.0);
-            Log.d("datdata", "" + latitude + ", " + longitude + ", " + postId);
-            if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
-                viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
-            Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-
 
     @Override
     protected void onResume(){
@@ -127,8 +101,4 @@ public class LiveFeed extends AppCompatActivity {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
-
-
-
 }

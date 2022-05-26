@@ -19,34 +19,34 @@ public class HoplyPost {
     @PrimaryKey()
     @ColumnInfo(name = "id")
     @NonNull
-    Integer postId;
+    private Integer postId;
 
     @NonNull
     @ColumnInfo(name = "user_id", index = true)
-    String userId;
+    private String userId;
 
     @NonNull
     @ColumnInfo(name = "content")
-    String content;
+    private String content;
 
-    @NonNull
     @ColumnInfo(name = "stamp")
-    long timestamp;
+    private long timestamp;
 
-    public HoplyPost(Integer postId, String userId, String content){
+    public HoplyPost(@NonNull Integer postId, @NonNull String userId, @NonNull String content){
         this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.timestamp = System.currentTimeMillis();
     }
 
-    public HoplyPost(Integer postId, String userId, String content, long timeMillis){
+    public HoplyPost(@NonNull Integer postId, @NonNull String userId, @NonNull String content, long timeMillis){
         this.postId = postId;
         this.userId = userId;
         this.content = content;
         this.timestamp = timeMillis;
     }
 
+    @NonNull
     public Integer getPostId() {
         return postId;
     }
@@ -61,8 +61,23 @@ public class HoplyPost {
         return content;
     }
 
-    @NonNull
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public void setPostId(@NonNull Integer postId) {
+        this.postId = postId;
+    }
+
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
+    }
+
+    public void setContent(@NonNull String content) {
+        this.content = content;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

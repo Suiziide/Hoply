@@ -34,22 +34,19 @@ public class CreateAccountPage extends AppCompatActivity {
     }
 
     public void tryToCreateAccount(View v) {
-        EditText name = findViewById(R.id.loginPageName);
+        EditText id = findViewById(R.id.loginPageName);
         EditText username = findViewById(R.id.loginPageUsername);
         String USERNAME_PATTERN = "^[a-zA-Z0-9]{2,25}$";
         String USERID_PATTERN = "^[a-zA-Z0-9]{2,50}$";
-        if (name.getText().toString().trim().matches(USERNAME_PATTERN) &&
+        if (id.getText().toString().trim().matches(USERNAME_PATTERN) &&
                 username.getText().toString().trim().matches(USERID_PATTERN)) {
-            HoplyUser user = new HoplyUser(username.getText().toString(), name.getText().toString());
-            Toast.makeText(getApplication(), R.string.userCreated, Toast.LENGTH_LONG).show();
-            goToLoginPage(v);
-            try {
-                myRepo.insertUser(user);
-            } catch (SQLiteConstraintException e) {
-                Toast.makeText(getApplication(),
-                        R.string.userAlreadyExists,
-                        Toast.LENGTH_LONG).show();
-            }
+            if (myRepo.returnUserFromId(id.getText().toString().trim()) == null) {
+                HoplyUser user = new HoplyUser(username.getText().toString(), id.getText().toString());
+                Toast.makeText(getApplication(), R.string.userCreated, Toast.LENGTH_LONG).show();
+                goToLoginPage(v);
+                myRepo.insertLocalUser(user);
+            } else
+                Toast.makeText(getApplication(), R.string.userAlreadyExists, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplication(), "Illegal character use", Toast.LENGTH_LONG).show();
         }

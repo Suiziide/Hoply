@@ -25,19 +25,19 @@ public class HoplyComment {
 
         @ColumnInfo(name = "user_id", index = true)
         @NonNull
-        String userId;
+        private String userId;
 
         @ColumnInfo(name = "post_id", index = true)
         @NonNull
-        Integer postId;
+        private Integer postId;
 
         @ColumnInfo(name = "content")
         @NonNull
-        String content;
+        private String content;
 
         @ColumnInfo(name = "stamp")
         @NonNull
-        long timestamp;
+        private long timestamp;
 
         public HoplyComment(String userId, Integer postId, String content){
                 this.userId = userId;
@@ -60,4 +60,23 @@ public class HoplyComment {
         public String getContent() {
                 return content;
         }
+
+        public long getTimestamp() {return timestamp;}
+
+        @NonNull
+        public void setPostId(Integer postId) {
+                this.postId = postId;
+        }
+
+        @NonNull
+        public void setUserId(String userId) {
+                this.userId = userId;
+        }
+
+        @NonNull
+        public void setContent(String content) {
+                this.content = content;
+        }
+
+        public void setTimestamp(long timestamp) {this.timestamp = timestamp;}
 }

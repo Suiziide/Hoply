@@ -10,15 +10,15 @@ public class HoplyUser {
     @PrimaryKey()
     @ColumnInfo(name = "id")
     @NonNull
-    String userId;
+    private final String userId;
 
     @NonNull
     @ColumnInfo(name = "name")
-    String userName;
+    private final String userName;
 
     @NonNull
     @ColumnInfo(name = "stamp")
-    long timestamp;
+    private long timestamp;
 
     public HoplyUser(@NonNull String userId, @NonNull String userName){
         this.userId = userId;
@@ -26,7 +26,7 @@ public class HoplyUser {
         this.timestamp = System.currentTimeMillis();
     }
 
-    public HoplyUser(@NonNull String userId, String userName, long timeMillis){
+    public HoplyUser(@NonNull String userId, @NonNull String userName, long timeMillis){
         this.userId = userId;
         this.userName = userName;
         this.timestamp = timeMillis;
@@ -42,8 +42,11 @@ public class HoplyUser {
         return userName;
     }
 
-    @NonNull
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
