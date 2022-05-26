@@ -75,6 +75,10 @@ public class Repo {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertReaction(reaction));
     }
 
+
+
+
+
     public void insertLocation(HoplyLocation location){
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
     }
