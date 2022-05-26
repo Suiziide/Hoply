@@ -69,9 +69,9 @@ public class LiveFeed extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK) {
                     int postId;
                     if(viewModel.getPostList().getValue().size() == 0)
-                        postId = 1000000;
+                        postId = 1; // post id rework pls
                     else
-                        postId = viewModel.getPostList().getValue().get(0).getPostId() + 1;
+                        postId = viewModel.getLatestID() + 1;
                     assert result.getData() != null;
                     HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), result.getData().getStringExtra("CONTENT"));
                     viewModel.insertLocalPost(post);

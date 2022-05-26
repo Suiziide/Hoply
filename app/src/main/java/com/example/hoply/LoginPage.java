@@ -33,6 +33,7 @@ public class LoginPage extends AppCompatActivity {
         });
         myRepo = new Repo(this.getApplication());
         myRepo.getAllPosts();
+
     }
 
     public void tryLogin(View v) {

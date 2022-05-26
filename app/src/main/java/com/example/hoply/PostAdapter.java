@@ -86,12 +86,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
 
     private boolean hasReacted(HoplyUser user, Integer postId, int reaction) {
         Integer reactionType = repo.returnUserReactionToPost(user.getUserId(), postId);
+        String request = "https://caracal.imada.sdu.dk/app2022/reactions?user_id=eq." + user.getUserId() + "&post_id=eq." + postId;
         if (reactionType == null) {
             return true;
-        }else if (reactionType == reaction) {
+        } else if (reactionType == reaction) {
             repo.removeUserReactionFromPost(user.getUserId(), postId);
+            repo.deleteDataFromRemoteDB(request);
             return false;
         } else {
+            repo.deleteDataFromRemoteDB(request);
             return repo.removeUserReactionFromPost(user.getUserId(), postId) > 0;
         }
     }

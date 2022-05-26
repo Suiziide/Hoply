@@ -45,4 +45,6 @@ public class LivefeedViewmodel extends AndroidViewModel {
     public LiveData<List<HoplyComment>> getCommentList() {
         return commentList;
     }
+
+    public Integer getLatestID() {return repo.getLatestID();}
 }
