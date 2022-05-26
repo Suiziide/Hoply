@@ -39,11 +39,11 @@ public class HoplyReaction {
         @NonNull
         private long timestamp;
 
-        public HoplyReaction(String userId, Integer postId, int reactionType){
+        public HoplyReaction(@NonNull String userId, @NonNull Integer postId, int reactionType, long timestamp) {
                 this.userId = userId;
                 this.postId = postId;
                 this.reactionType = reactionType;
-                this.timestamp = System.nanoTime();
+                this.timestamp = timestamp;
         }
 
         public String getUserId() {return userId;}

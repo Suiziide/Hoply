@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
@@ -68,27 +69,11 @@ public class Repo {
     public void insertLocalReaction(HoplyReaction reaction) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertReaction(reaction));
         sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions", convertReactionToString(reaction));
-        //remove already stored remote data concerning this reaction.
     }
 
     public void insertRemoteReactionToLocal(HoplyReaction reaction) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertReaction(reaction));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void insertLocation(HoplyLocation location){
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
@@ -149,8 +134,53 @@ public class Repo {
 
     public LiveData<List<HoplyPost>> getAllPosts() {
         getAllRemotePostsAndUsers();
-        // getAllRemoteReactions(); // måske skal det bare være en del af getAllRemotePostAndUsers metoden
+        getAllRemoteReactions();
         return allPosts;
+    }
+
+    private void getAllRemoteReactions() {
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> {
+            int inserts = createAndInsertRemoteReactions(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/reactions"));
+            return inserts > 0;
+        });
+        try {
+            completionService.take().get(); // waits here until everything has been inserted into the local db
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int createAndInsertRemoteReactions(String[] responseBody) {
+        String currentReaction = "";
+        int inserts = 0;
+        clearAllLocalReactions();
+        while (inserts < responseBody.length) {
+            currentReaction = responseBody[inserts];
+            Log.d("reactionreactionreactionreaction", currentReaction);
+            String userId = currentReaction.substring(currentReaction.indexOf("\"user_id\"") + 11,
+                    currentReaction.indexOf("\"post_id\"") - 2);
+            Integer postId = Integer.parseInt(currentReaction.substring(currentReaction.indexOf("\"post_id\"") + 10,
+                    currentReaction.indexOf("\"type\"") - 1));
+            int type = Integer.parseInt(currentReaction.substring(currentReaction.indexOf("\"type\"") + 7,
+                    currentReaction.indexOf("\"stamp\"") - 1));
+            long timeMillis = Timestamp.valueOf((currentReaction.substring(currentReaction.lastIndexOf("\"stamp\"") + 9,
+                    currentReaction.length() - 7).replace("T", " "))).getTime();
+            Log.d("reactionreactionreactionreaction", "" + userId + ", " +  postId + ", " + type + ", " + timeMillis);
+            insertRemoteReactionToLocal(new HoplyReaction(userId, postId, type, timeMillis));
+            inserts++;
+        }
+        return inserts;
+    }
+
+    public void clearAllLocalReactions() {
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> {
+            dao.clearAllLocalReactions();
+            return true;
+        });
     }
 
 
@@ -161,13 +191,7 @@ public class Repo {
 
 
 
-
-
-
-
-
-
-    public Integer returnReactionsFromTypeAndID (Integer postid, Integer reactionType){
+    public Integer returnReactionsFromTypeAndID(Integer postid, Integer reactionType) {
         ExecutorCompletionService<Integer> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnReactionsFromTypeAndID(postid, reactionType));
@@ -189,7 +213,6 @@ public class Repo {
         }
     }
 
-
     public Integer removeUserReactionFromPost (String userId, Integer postId){
         ExecutorCompletionService<Integer> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
@@ -200,7 +223,6 @@ public class Repo {
             return null;
         }
     }
-
 
     // Other Auxiliary methods for syncing with the remote database
 
@@ -240,15 +262,11 @@ public class Repo {
     // made it to a while loop, should maybe be made into a for loop again.
     private int createAndInsertPosts(String[] responseBody) {
         String currentPost;
-        int lastId;
-        if (allPosts.getValue() != null) {
-            lastId = allPosts.getValue().get(0).getPostId();
-        } else
-            lastId = 1;
         int inserts = responseBody.length-1;
         while (inserts >= 0) {
             currentPost = responseBody[inserts];
-            Integer postId = lastId + inserts;
+            Integer postId = Integer.parseInt(currentPost.substring(currentPost.indexOf("\"id\"") + 5,
+                    currentPost.indexOf("\"user_id\"") - 1));
             String userId = currentPost.substring(currentPost.indexOf("\"user_id\"") + 11,
                     currentPost.indexOf("\"content\"") - 2);
             String content = currentPost.substring(currentPost.indexOf("\"content\"") + 11,
@@ -318,11 +336,14 @@ public class Repo {
                 output.write(data.getBytes());
             }
 
-            StringBuilder response = new StringBuilder();
-            Reader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                for (int c; (c = in.read()) >= 0;)
-                    response.append((char) c);
-            Log.d("postpostpostpostpost response from db", response.toString());
+            HttpURLConnection connection = (HttpURLConnection) con;
+            StringBuilder sb = new StringBuilder();
+            if (connection.getResponseCode()/100 == 4 || connection.getResponseCode()/100 == 5) {
+                Reader errorStream = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                for (int c;(c = errorStream.read()) >= 0;)
+                    sb.append((char)c);
+            }
+            Log.d("postpostpostpost response", sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -345,10 +366,10 @@ public class Repo {
     }
 
     private String convertReactionToString(HoplyReaction reaction) {
-        return "\"user_id\":\"" + reaction.getUserId() + "\"" +
+        return "{\"user_id\":\"" + reaction.getUserId() + "\"" +
                 ",\"post_id\":" + reaction.getPostId() +
                 ",\"type\":" + reaction.getReactionType() +
-                ",\"stamp\":" + new Timestamp(reaction.getTimestamp()).toString().trim()
+                ",\"stamp\":\"" + new Timestamp(reaction.getTimestamp()).toString().trim()
                 .replace(" ", "T") + "+02:00\"}";
     }
 }
