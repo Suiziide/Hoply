@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -36,6 +39,13 @@ public class Repo {
         allPosts = dao.getAllPosts();
         allComments = dao.getAllComments();
     }
+
+
+    public void startTimer() {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(this::getAllPosts, 0, 1, TimeUnit.SECONDS);
+    }
+
 
     public void insertLocalUser(HoplyUser user) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertUser(user));

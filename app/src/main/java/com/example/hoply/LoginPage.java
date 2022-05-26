@@ -32,7 +32,7 @@ public class LoginPage extends AppCompatActivity {
             return false;
         });
         myRepo = new Repo(this.getApplication());
-        myRepo.getAllPosts();
+        myRepo.startTimer();
 
     }
 
