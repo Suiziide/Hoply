@@ -231,7 +231,7 @@ public class Repo {
             String content = currentPost.substring(currentPost.indexOf("\"content\"") + 11,
                     currentPost.indexOf("\"stamp\"") - 2);
             if (content.contains("$LA§:") && content.contains("$LO§:")) {
-                 latitude = Double.parseDouble(content.substring(content.indexOf("$LA§:") + 5, content.indexOf("$LO§:")));
+                latitude = Double.parseDouble(content.substring(content.indexOf("$LA§:") + 5, content.indexOf("$LO§:")));
                 longitude = Double.parseDouble(content.substring(content.indexOf("$LO§:") + 5));
                 content = content.substring(0, content.indexOf("$LA§:"));
             }
@@ -239,7 +239,7 @@ public class Repo {
                     currentPost.length() - 7).replace("T", " "))).getTime();
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
             if (latitude != 200 && longitude != 200)
-                insertLocation(new HoplyLocation(latitude,longitude, postId));
+                insertLocation(new HoplyLocation(latitude ,longitude, postId));
             inserts--;
 
         }
@@ -252,7 +252,6 @@ public class Repo {
         clearAllLocalReactions();
         while (inserts < responseBody.length) {
             currentReaction = responseBody[inserts];
-            //Log.d("reactionreactionreactionreaction", currentReaction);
             String userId = currentReaction.substring(currentReaction.indexOf("\"user_id\"") + 11,
                     currentReaction.indexOf("\"post_id\"") - 2);
             Integer postId = Integer.parseInt(currentReaction.substring(currentReaction.indexOf("\"post_id\"") + 10,
@@ -261,7 +260,6 @@ public class Repo {
                     currentReaction.indexOf("\"stamp\"") - 1));
             long timeMillis = Timestamp.valueOf((currentReaction.substring(currentReaction.lastIndexOf("\"stamp\"") + 9,
                     currentReaction.length() - 7).replace("T", " "))).getTime();
-            //Log.d("reactionreactionreactionreaction", "" + userId + ", " +  postId + ", " + type + ", " + timeMillis);
             insertRemoteReactionToLocal(new HoplyReaction(userId, postId, type, timeMillis));
             inserts++;
         }
@@ -379,15 +377,6 @@ public class Repo {
                 "\",\"stamp\":\"" + new Timestamp(user.getTimestamp()).toString().trim()
                 .replace(" ", "T") + "+02:00\"}";
     }
-
-    //  private String convertPostToString(HoplyPost post, double latitude, double longitude) {
-    //      return "{\"id\":" + post.getPostId() +
-    //              ",\"user_id\":\"" + post.getUserId() + "\""
-    //              + ",\"content\":\"" + post.getContent() + "\""
-    //              + ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
-    //              .replace(" ", "T") + "+02:00\"}";
-    //  }
-
 
     private String convertPostToString(HoplyPost post, double latitude, double longitude) {
         return "{\"id\":" + post.getPostId() +
