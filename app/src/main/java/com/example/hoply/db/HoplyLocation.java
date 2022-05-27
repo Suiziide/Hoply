@@ -13,14 +13,14 @@ import androidx.room.PrimaryKey;
 foreignKeys = {@ForeignKey(
         entity = HoplyPost.class,
         parentColumns = "id",
-        childColumns = "postid",
+        childColumns = "postId",
         onDelete = CASCADE)})
 
 public class HoplyLocation {
 
     @PrimaryKey()
-    @ColumnInfo(name = "postid")
-    Integer postid;
+    @ColumnInfo(name = "postId")
+    Integer postId;
 
     @ColumnInfo(name = "latitude")
     @NonNull
@@ -30,14 +30,14 @@ public class HoplyLocation {
     @NonNull
     private double longitude;
 
-    public HoplyLocation (double latitude, double longitude, Integer postid){
+    public HoplyLocation (double latitude, double longitude, Integer postId){
         this.latitude = latitude;
         this.longitude = longitude;
-        this.postid = postid;
+        this.postId = postId;
     }
 
-    public Integer getPostid() {
-        return postid;
+    public Integer getPostId() {
+        return postId;
     }
 
     public double getLatitude() {

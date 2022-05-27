@@ -12,12 +12,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -56,9 +54,9 @@ public class Repo {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertUser(user));
     }
 
-    public void insertLocalPost(HoplyPost post) {
+    public void insertLocalPost(HoplyPost post, double latitude, double longitude) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertPost(post));
-        sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts", convertPostToString(post));
+        sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts", convertPostToString(post, latitude, longitude));
     }
 
     public void insertRemotePostToLocal(HoplyPost post) {
@@ -131,7 +129,7 @@ public class Repo {
     }
 
     public LiveData<List<HoplyPost>> getAllPosts() {
-        clearAllLocalReactions(); // clear local
+        clearAllLocalReactions();
         getAllRemotePostsAndUsers();
         getAllRemoteReactions();
         return allPosts;
@@ -219,9 +217,10 @@ public class Repo {
         return inserts;
     }
 
-    // made it to a while loop, should maybe be made into a for loop again.
     private int createAndInsertPosts(String[] responseBody) {
         String currentPost;
+        double latitude = 200;
+        double longitude = 200;
         int inserts = responseBody.length-1;
         while (inserts >= 0) {
             currentPost = responseBody[inserts];
@@ -231,10 +230,18 @@ public class Repo {
                     currentPost.indexOf("\"content\"") - 2);
             String content = currentPost.substring(currentPost.indexOf("\"content\"") + 11,
                     currentPost.indexOf("\"stamp\"") - 2);
+            if (content.contains("$LA§:") && content.contains("$LO§:")) {
+                 latitude = Double.parseDouble(content.substring(content.indexOf("$LA§:") + 5, content.indexOf("$LO§:")));
+                longitude = Double.parseDouble(content.substring(content.indexOf("$LO§:") + 5));
+                content = content.substring(0, content.indexOf("$LA§:"));
+            }
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
+            if (latitude != 200 && longitude != 200)
+                insertLocation(new HoplyLocation(latitude,longitude, postId));
             inserts--;
+
         }
         return inserts;
     }
@@ -332,7 +339,6 @@ public class Repo {
                 for (int c;(c = errorStream.read()) >= 0;)
                     sb.append((char)c);
             }
-            //Log.d("postpostpostpost response", sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -374,10 +380,21 @@ public class Repo {
                 .replace(" ", "T") + "+02:00\"}";
     }
 
-    private String convertPostToString(HoplyPost post) {
+    //  private String convertPostToString(HoplyPost post, double latitude, double longitude) {
+    //      return "{\"id\":" + post.getPostId() +
+    //              ",\"user_id\":\"" + post.getUserId() + "\""
+    //              + ",\"content\":\"" + post.getContent() + "\""
+    //              + ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
+    //              .replace(" ", "T") + "+02:00\"}";
+    //  }
+
+
+    private String convertPostToString(HoplyPost post, double latitude, double longitude) {
         return "{\"id\":" + post.getPostId() +
                 ",\"user_id\":\"" + post.getUserId() + "\""
-                + ",\"content\":\"" + post.getContent() + "\""
+                + ",\"content\":\"" + post.getContent()
+                + "$LA§:" + latitude
+                + "$LO§:" + longitude + "\""
                 + ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
                 .replace(" ", "T") + "+02:00\"}";
     }

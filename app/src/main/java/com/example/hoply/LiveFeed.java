@@ -74,9 +74,9 @@ public class LiveFeed extends AppCompatActivity {
                         postId = viewModel.getLatestID() + 1;
                     assert result.getData() != null;
                     HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), result.getData().getStringExtra("CONTENT"));
-                    viewModel.insertLocalPost(post);
                     double latitude = result.getData().getDoubleExtra("LATITUDE", 200.0);
                     double longitude = result.getData().getDoubleExtra("LONGITUDE", 200.0);
+                    viewModel.insertLocalPost(post, latitude, longitude);
                     if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
                         viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
                     Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
