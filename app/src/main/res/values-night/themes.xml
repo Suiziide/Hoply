@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_emerald_green</item>
         <item name="colorPrimaryVariant">@color/darker_orange</item>
-        <item name="colorOnPrimary">@color/bright_orange</item>
+        <item name="colorOnPrimary">@color/orange</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black</item>
         <item name="colorSecondaryVariant">#1E1D1D</item>
