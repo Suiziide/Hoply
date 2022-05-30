@@ -46,13 +46,6 @@ public class HoplyComment {
                 this.timestamp = timestamp;
         }
 
-        public HoplyComment(String userId, Integer postId, String content, long timeStamp){
-                this.userId = userId;
-                this.postId = postId;
-                this.content = content;
-                this.timestamp = timeStamp;
-        }
-
         @NonNull
         public Integer getPostId() {
                 return postId;
