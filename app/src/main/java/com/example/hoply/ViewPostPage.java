@@ -27,7 +27,6 @@ import com.example.hoply.db.HoplyPost;
 import com.example.hoply.db.HoplyUser;
 import com.example.hoply.db.Repo;
 import com.example.hoply.viewmodel.LivefeedViewmodel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,7 +82,7 @@ public class ViewPostPage extends AppCompatActivity {
                     commentText.getText().toString().isEmpty())
                 Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
-                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString()));
+                viewModel.insertLocalComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString()));
                 commentText.setText("");
                 hideKeyboard(view);
             }
