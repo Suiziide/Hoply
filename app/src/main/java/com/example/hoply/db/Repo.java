@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.hoply.ViewPostPage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,9 +45,8 @@ public class Repo {
 
     public void startTimer() {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(this::getAllPosts, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::getAllPosts, 0, 3, TimeUnit.SECONDS);
     }
-
 
     public void insertLocalUser(HoplyUser user) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertUser(user));
@@ -77,13 +78,6 @@ public class Repo {
     public void insertLocation(HoplyLocation location){
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
     }
-
-
-
-
-
-
-
 
     public void insertLocalComment(HoplyComment comment){
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
@@ -292,12 +286,17 @@ public class Repo {
                 commentId = Integer.parseInt(content.substring(content.indexOf("$pid§:") + 6, content.indexOf("$uid§:")));
                 commentUserId = content.substring(content.indexOf("$uid§:") + 6, content.indexOf("$tim§"));
                 timestamp = Long.parseLong(content.substring(content.indexOf("$tim") + 6));
-
                 content = content.substring(0, content.indexOf("$con§:"));
             }
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
+
+            HoplyPost oldCurrentPost = returnPostFromId(postId);
+            if (!oldCurrentPost.getContent().equals(content))
+                oldCurrentPost.setContent(content);
+
+
             if (longitude != 200 && latitude != 200)
                 insertLocation(new HoplyLocation(latitude ,longitude, postId));
             if (!commentId.equals(-1))
