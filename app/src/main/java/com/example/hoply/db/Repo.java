@@ -108,20 +108,6 @@ public class Repo {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public HoplyLocation returnLocationFromId (Integer postId){
         ExecutorCompletionService<HoplyLocation> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
@@ -228,7 +214,7 @@ public class Repo {
 
     private void getAllRemotePostsAndUsers() {
         ExecutorCompletionService<Boolean> completionService =
-                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+                new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
         completionService.submit(
                 (() -> {
                     int localUserInserts = createAndInsertUser(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/users"));
@@ -291,12 +277,9 @@ public class Repo {
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
-
-            HoplyPost oldCurrentPost = returnPostFromId(postId);
-            if (!oldCurrentPost.getContent().equals(content))
-                oldCurrentPost.setContent(content);
-
-
+            Log.d("maybemaybe", "didididididididid");
+            maybeUpdateContentForPost(content, postId);
+            Log.d("maybemaybe", "dodododododododod");
             if (longitude != 200 && latitude != 200)
                 insertLocation(new HoplyLocation(latitude ,longitude, postId));
             if (!commentId.equals(-1))
@@ -305,6 +288,22 @@ public class Repo {
 
         }
         return inserts;
+    }
+
+    private void maybeUpdateContentForPost(String newContent, Integer postId) {
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(Executors.newCachedThreadPool());
+        completionService.submit(() -> {
+            HoplyPost oldCurrentPost = returnPostFromId(postId);
+            if (!oldCurrentPost.getContent().equals(newContent))
+                oldCurrentPost.setContent(newContent);
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private int createAndInsertRemoteReactions(String[] responseBody) {
