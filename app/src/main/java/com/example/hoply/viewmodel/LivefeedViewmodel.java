@@ -1,7 +1,6 @@
 package com.example.hoply.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -39,7 +38,7 @@ public class LivefeedViewmodel extends AndroidViewModel {
     }
 
     public void insertComment(HoplyComment comment){
-        repo.insertComment(comment);
+        repo.insertLocalComment(comment);
     }
 
     public LiveData<List<HoplyComment>> getCommentList() {

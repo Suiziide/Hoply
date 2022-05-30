@@ -33,7 +33,6 @@ public class LoginPage extends AppCompatActivity {
         });
         myRepo = new Repo(this.getApplication());
         myRepo.startTimer();
-
     }
 
     public void tryLogin(View v) {

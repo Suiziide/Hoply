@@ -39,11 +39,11 @@ public class HoplyComment {
         @NonNull
         private long timestamp;
 
-        public HoplyComment(String userId, Integer postId, String content){
+        public HoplyComment(String userId, Integer postId, String content, long timestamp){
                 this.userId = userId;
                 this.postId = postId;
                 this.content = content;
-                this.timestamp = System.nanoTime();
+                this.timestamp = timestamp;
         }
 
         @NonNull

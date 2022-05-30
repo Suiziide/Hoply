@@ -83,7 +83,7 @@ public class ViewPostPage extends AppCompatActivity {
                     commentText.getText().toString().isEmpty())
                 Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
-                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString()));
+                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString(), System.currentTimeMillis()));
                 commentText.setText("");
                 hideKeyboard(view);
             }

@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -76,9 +77,72 @@ public class Repo {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
     }
 
-    public void insertComment (HoplyComment comment){
+    public void insertLocalComment(HoplyComment comment){
+        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
+        updateRemoteComments(comment);
+    }
+
+    public void insertRemoteCommentToLocal(HoplyComment comment) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void updateRemoteComments(HoplyComment newComment) {
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+        completionService.submit(() -> {
+            String oldContent = getRemoteDataFrom(
+                    "https://caracal.imada.sdu.dk/app2022/posts?id=eq."
+                            + newComment.getPostId())[0];
+            oldContent = oldContent.substring(oldContent.indexOf("\"content\"") + 11, oldContent.lastIndexOf("\"stamp\"") - 2);
+            Log.d("maybemaybe oldcontent", oldContent);
+
+            String newContent = oldContent +
+                    " ¤$con§:" + newComment.getContent() + "$pid§:" + newComment.getPostId()
+                    + "$uid§:" + newComment.getUserId() + "$tim§:" + newComment.getTimestamp() + "¤";
+            Log.d("maybemaybe newContent", newContent);
+            patchDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?id=eq."
+                    + newComment.getPostId(),"{\"content\":\"" + newContent + "\"}");
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public HoplyLocation returnLocationFromId (Integer postId){
         ExecutorCompletionService<HoplyLocation> completionService =
@@ -129,6 +193,7 @@ public class Repo {
     }
 
     public LiveData<List<HoplyPost>> getAllPosts() {
+        // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?user_id=eq.faxekondiaddict");
         clearAllLocalReactions();
         getAllRemotePostsAndUsers();
         getAllRemoteReactions();
@@ -140,10 +205,10 @@ public class Repo {
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> {
             int inserts = createAndInsertRemoteReactions(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/reactions"));
-            return inserts > 0;
+            return inserts >= 0;
         });
         try {
-            completionService.take().get(); // waits here until everything has been inserted into the local db
+            completionService.take().get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -194,14 +259,14 @@ public class Repo {
                     return localPostInserts > 0 && localUserInserts > 0;
                 }));
         try {
-            completionService.take().get(); // waits here until everything has been inserted into the local db
+            completionService.take().get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private int createAndInsertUser(String[] responseBody) {
-        String currentUser = "";
+        String currentUser;
         int inserts = 0;
         while (inserts < responseBody.length) {
             currentUser = responseBody[inserts];
@@ -218,12 +283,13 @@ public class Repo {
     }
 
     private int createAndInsertPosts(String[] responseBody) {
-        String currentPost;
+
         double latitude = 200;
         double longitude = 200;
         int inserts = responseBody.length-1;
+        String[] comments = null;
         while (inserts >= 0) {
-            currentPost = responseBody[inserts];
+            String currentPost = responseBody[inserts];
             Integer postId = Integer.parseInt(currentPost.substring(currentPost.indexOf("\"id\"") + 5,
                     currentPost.indexOf("\"user_id\"") - 1));
             String userId = currentPost.substring(currentPost.indexOf("\"user_id\"") + 11,
@@ -235,19 +301,51 @@ public class Repo {
                 longitude = Double.parseDouble(content.substring(content.indexOf("$LO§:") + 5));
                 content = content.substring(0, content.indexOf("$LA§:"));
             }
+            if (content.contains("$con§") && content.contains("$pid§") && content.contains("$uid§")
+                    && content.contains("$tim§")) {
+                comments = extractComments(content);
+                content = content.substring(0, content.indexOf("¤$con§:"));
+            }
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
             if (latitude != 200 && longitude != 200)
                 insertLocation(new HoplyLocation(latitude ,longitude, postId));
+            if (comments != null && comments.length > 0)
+                createAndInsertComments(comments);
             inserts--;
-
         }
         return inserts;
     }
 
+    private void createAndInsertComments(String[] comments) {
+        int inserts = comments.length-1;
+        while (inserts >= 0) {
+            String currentComment = comments[inserts];
+            String commentContent = currentComment.substring(currentComment.indexOf("$con§:") + 6, currentComment.indexOf("$pid§:"));
+            Integer commentId = Integer.parseInt(currentComment.substring(currentComment.indexOf("$pid§:") + 6, currentComment.indexOf("$uid§:")));
+            String commentUserId = currentComment.substring(currentComment.indexOf("$uid§:") + 6, currentComment.indexOf("$tim§"));
+            Long timestamp = Long.parseLong(currentComment.substring(currentComment.indexOf("$tim") + 6));
+            insertRemoteCommentToLocal(new HoplyComment(commentUserId, commentId, commentContent, timestamp));
+            inserts--;
+        }
+    }
+
+    private String[] extractComments(String content) {
+        List<Integer> dataPoints = new ArrayList<>();
+        for (int i = 0; i < content.length(); i++)
+            if (content.charAt(i) == '¤')
+                dataPoints.add(i);
+        String[] dataList = new String[dataPoints.size()/2];
+        for (int i = 1; i < dataPoints.size(); i+=2)
+            dataList[(i-1)/2] = (content.substring(dataPoints.get(i - 1) + 1, dataPoints.get(i)));
+        return dataList;
+    }
+
     private int createAndInsertRemoteReactions(String[] responseBody) {
-        String currentReaction = "";
+        if (responseBody.length <= 0)
+            return 0;
+        String currentReaction;
         int inserts = 0;
         clearAllLocalReactions();
         while (inserts < responseBody.length) {
@@ -273,6 +371,11 @@ public class Repo {
             dao.clearAllLocalReactions();
             return true;
         });
+        try {
+            completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private String[] getRemoteDataFrom(String remoteDBURL) {
@@ -304,7 +407,7 @@ public class Repo {
             else if (res.charAt(i) == '}')
                 dataEnd.add(i);
         String[] dataList = new String[dataStart.size()];
-        for (int i = 0; i < dataStart.size(); i++)
+        for (int i = 0; i < dataList.length; i++)
             dataList[i] = (res.substring(dataStart.get(i) + 1, dataEnd.get(i)));
         return dataList;
     }
@@ -321,6 +424,7 @@ public class Repo {
     }
 
     private boolean sendLocalDataTo(String remoteDBURL, String data) {
+        Log.d("maybemaybe senddata", data);
         try {
             URL url = new URL(remoteDBURL);
             URLConnection con = url.openConnection();
@@ -337,6 +441,7 @@ public class Repo {
                 for (int c;(c = errorStream.read()) >= 0;)
                     sb.append((char)c);
             }
+            Log.d("maybemaybe Stringbuilder Senddata", sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -359,6 +464,7 @@ public class Repo {
                     for (int c;(c = errorStream.read()) >= 0;)
                         sb.append((char)c);
                 }
+                Log.d("maybemaybe Stringbuilder deleteremotedata", sb.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -371,6 +477,30 @@ public class Repo {
         }
     }
 
+    public void patchDataToRemoteDB(String remoteRequest, String data) {
+        try {
+            URL url = new URL(remoteRequest);
+            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            con.setRequestMethod("PATCH");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Authorization" , "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwMjAyMiJ9.iEPYaqBPWoAxc7iyi507U3sexbkLHRKABQgYNDG4Awk");
+            con.setDoOutput(true);
+            try (OutputStream output = con.getOutputStream()) {
+                output.write(data.getBytes());
+            }
+            StringBuilder sb = new StringBuilder();
+            if (con.getResponseCode()/100 == 4 || con.getResponseCode()/100 == 5) {
+                Reader errorStream = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                for (int c;(c = errorStream.read()) >= 0;)
+                    sb.append((char)c);
+            }
+            Log.d("maybemaybe Stringbuilder patchdata", sb.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String convertUserToString(HoplyUser user) {
         return "{\"id\":\"" + user.getUserId() +
                 "\",\"name\":\"" + user.getUserName() +
@@ -379,13 +509,18 @@ public class Repo {
     }
 
     private String convertPostToString(HoplyPost post, double latitude, double longitude) {
-        return "{\"id\":" + post.getPostId() +
+        String postString =  "{\"id\":" + post.getPostId() +
                 ",\"user_id\":\"" + post.getUserId() + "\""
-                + ",\"content\":\"" + post.getContent()
-                + "$LA§:" + latitude
-                + "$LO§:" + longitude + "\""
-                + ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
-                .replace(" ", "T") + "+02:00\"}";
+                + ",\"content\":\"" + post.getContent() + "\"";
+        if(latitude != 200 && longitude != 200)
+            postString += "$LA§:" + latitude
+                    + "$LO§:" + longitude + "\""
+                    + ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
+                    .replace(" ", "T") + "+02:00\"}";
+        else
+            postString += ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
+                    .replace(" ", "T") + "+02:00\"}";
+        return postString;
     }
 
     private String convertReactionToString(HoplyReaction reaction) {
