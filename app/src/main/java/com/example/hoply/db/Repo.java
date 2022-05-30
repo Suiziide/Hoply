@@ -42,7 +42,6 @@ public class Repo {
         allComments = dao.getAllComments();
     }
 
-
     public void startTimer() {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(this::getAllPosts, 0, 3, TimeUnit.SECONDS);
@@ -277,9 +276,7 @@ public class Repo {
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
-            Log.d("maybemaybe", "didididididididid");
             maybeUpdateContentForPost(content, postId);
-            Log.d("maybemaybe", "dodododododododod");
             if (longitude != 200 && latitude != 200)
                 insertLocation(new HoplyLocation(latitude ,longitude, postId));
             if (!commentId.equals(-1))
