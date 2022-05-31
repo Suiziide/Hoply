@@ -58,21 +58,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         holder.postNeutralReactions.setText(neutrals.toString());
 
         holder.postLikeReactionsIMG.setOnClickListener(view -> {
-            if(hasReacted(currentUser, hoplyPost.getPostId(), 1)) {
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 1))
                 repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 1, System.currentTimeMillis()));
-            }
             notifyDataSetChanged();
         });
         holder.postDislikeReactionsIMG.setOnClickListener(view -> {
-            if(hasReacted(currentUser, hoplyPost.getPostId(), 2)) {
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 2))
                 repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 2, System.currentTimeMillis()));
-            }
             notifyDataSetChanged();
         });
         holder.postNeutralReactionsIMG.setOnClickListener(view -> {
-            if(hasReacted(currentUser, hoplyPost.getPostId(), 3)) {
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 3))
                 repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 3, System.currentTimeMillis()));
-            }
             notifyDataSetChanged();
         });
 

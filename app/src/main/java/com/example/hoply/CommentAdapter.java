@@ -30,7 +30,6 @@ public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.Recycle
         repo = new Repo(application);
     }
 
-
     @NonNull
     @Override
     public CommentAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

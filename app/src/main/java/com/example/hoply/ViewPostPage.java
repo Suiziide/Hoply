@@ -83,7 +83,7 @@ public class ViewPostPage extends AppCompatActivity {
                     commentText.getText().toString().isEmpty())
                 Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
-                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentText.getText().toString(), System.currentTimeMillis()));
+                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, reverseAndTrim(commentText.getText().toString()), System.currentTimeMillis()));
                 commentText.setText("");
                 hideKeyboard(view);
             }
@@ -101,6 +101,18 @@ public class ViewPostPage extends AppCompatActivity {
                         .collect(Collectors.toList()));
             }
         });
+    }
+
+    private String reverseAndTrim(String content) {
+        content = content.trim();
+        String tempReverse = "";
+        for (int i = content.length()-1; i >= 0; i--)
+            tempReverse += content.charAt(i);
+        tempReverse = tempReverse.trim();
+        String tempDoubleReverse = "";
+        for (int i = tempReverse.length()-1; i >= 0; i--)
+            tempDoubleReverse += tempReverse.charAt(i);
+        return tempDoubleReverse;
     }
 
     public void goToLiveFeed(View v) {

@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -55,7 +56,7 @@ public class CreatePostPage extends AppCompatActivity {
                     text.getText().toString().isEmpty())
                 Toast.makeText(this, "Post is empty", Toast.LENGTH_SHORT).show();
             else {
-                data.putExtra("CONTENT",text.getText().toString());
+                data.putExtra("CONTENT", reverseAndTrim(text.getText().toString()));
                 if (lastKnownLocation != null) {
                     data.putExtra("LATITUDE", lastKnownLocation.getLatitude());
                     data.putExtra("LONGITUDE", lastKnownLocation.getLongitude());
@@ -64,6 +65,18 @@ public class CreatePostPage extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private String reverseAndTrim(String content) {
+        content = content.trim();
+        String tempReverse = "";
+        for (int i = content.length()-1; i >= 0; i--)
+            tempReverse += content.charAt(i);
+        tempReverse = tempReverse.trim();
+        String tempDoubleReverse = "";
+        for (int i = tempReverse.length()-1; i >= 0; i--)
+            tempDoubleReverse += tempReverse.charAt(i);
+        return tempDoubleReverse;
     }
 
     public void goToLiveFeed(View v) {

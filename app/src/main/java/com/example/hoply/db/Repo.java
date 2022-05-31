@@ -158,7 +158,8 @@ public class Repo {
     }
 
     public LiveData<List<HoplyPost>> getAllPosts() {
-        //deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?user_id=eq.faxekondiaddict");
+        // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions");
+        // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts");
         clearAllLocalReactions();
         getAllRemotePostsAndUsers();
         getAllRemoteReactions();

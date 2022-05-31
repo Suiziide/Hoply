@@ -33,13 +33,13 @@ public class HoplyReaction {
 
         @ColumnInfo(name = "type")
         @NonNull
-        private int reactionType;
+        private Integer reactionType;
 
         @ColumnInfo(name = "stamp")
         @NonNull
         private long timestamp;
 
-        public HoplyReaction(@NonNull String userId, @NonNull Integer postId, int reactionType, long timestamp) {
+        public HoplyReaction(@NonNull String userId, @NonNull Integer postId, Integer reactionType, long timestamp) {
                 this.userId = userId;
                 this.postId = postId;
                 this.reactionType = reactionType;
@@ -50,7 +50,7 @@ public class HoplyReaction {
 
         public Integer getPostId() {return postId;}
 
-        public int getReactionType() {return reactionType;}
+        public Integer getReactionType() {return reactionType;}
 
         public long getTimestamp() {return timestamp;}
 
@@ -61,11 +61,4 @@ public class HoplyReaction {
         public void setReactionType(int reactionType) {this.reactionType = reactionType;}
 
         public void setTimestamp(long timestamp) {this.timestamp = timestamp;}
-
-
-
-
-
-
-
 }
