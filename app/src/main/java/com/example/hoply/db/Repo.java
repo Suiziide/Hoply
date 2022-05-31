@@ -160,28 +160,20 @@ public class Repo {
     public LiveData<List<HoplyPost>> getAllPosts() {
         //deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?user_id=eq.faxekondiaddict");
         clearAllLocalReactions();
-        Log.d("markermarkermarkermarkermarker", "1");
         getAllRemotePostsAndUsers();
-        Log.d("markermarkermarkermarkermarker", "2");
         getAllRemoteReactions();
-        Log.d("markermarkermarkermarkermarker", "3");
         return allPosts;
     }
 
     private void getAllRemoteReactions() {
-        Log.d("markermarkermarkermarkermarker", "4");
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> {
-            Log.d("markermarkermarkermarkermarker", "6");
             int inserts = createAndInsertRemoteReactions(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/reactions"));
-            Log.d("markermarkermarkermarkermarker", "7");
             return inserts >= 0;
         });
         try {
-            Log.d("markermarkermarkermarkermarker", "5");
             completionService.take().get();
-            Log.d("markermarkermarkermarkermarker", "8");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -256,7 +248,6 @@ public class Repo {
     }
 
     private int createAndInsertPosts(String[] responseBody) {
-
         double latitude = 200;
         double longitude = 200;
         int inserts = responseBody.length-1;
@@ -320,9 +311,7 @@ public class Repo {
             return 0;
         String currentReaction;
         int inserts = 0;
-        Log.d("markermarkermarkermarkermarker", "12");
         clearAllLocalReactions();
-        Log.d("markermarkermarkermarkermarker", "13");
         while (inserts < responseBody.length) {
             currentReaction = responseBody[inserts];
             String userId = currentReaction.substring(currentReaction.indexOf("\"user_id\"") + 11,
@@ -333,7 +322,6 @@ public class Repo {
                     currentReaction.indexOf("\"stamp\"") - 1));
             long timeMillis = Timestamp.valueOf((currentReaction.substring(currentReaction.lastIndexOf("\"stamp\"") + 9,
                     currentReaction.length() - 7).replace("T", " "))).getTime();
-            Log.d("markermarkermarkermarkermarker", "14");
             insertRemoteReactionToLocal(new HoplyReaction(userId, postId, type, timeMillis));
             inserts++;
         }
@@ -341,27 +329,20 @@ public class Repo {
     }
 
     public void clearAllLocalReactions() {
-        Log.d("markermarkermarkermarkermarker", "13");
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
-        Log.d("markermarkermarkermarkermarker", "14");
         completionService.submit(() -> {
-            Log.d("markermarkermarkermarkermarker", "17");
             dao.clearAllLocalReactions();
-            Log.d("markermarkermarkermarkermarker", "18");
             return true;
         });
         try {
-            Log.d("markermarkermarkermarkermarker", "15");
             completionService.take().get();
-            Log.d("markermarkermarkermarkermarker", "16");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private String[] getRemoteDataFrom(String remoteDBURL) {
-        Log.d("markermarkermarkermarkermarker", "10");
         String[] responseBody = new String[0];
         try {
             URL url = new URL(remoteDBURL);
@@ -378,7 +359,6 @@ public class Repo {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("markermarkermarkermarkermarker", "11");
         return responseBody;
     }
 
@@ -408,7 +388,6 @@ public class Repo {
     }
 
     private boolean sendLocalDataTo(String remoteDBURL, String data) {
-        Log.d("maybemaybe senddata", data);
         try {
             URL url = new URL(remoteDBURL);
             URLConnection con = url.openConnection();
