@@ -39,12 +39,10 @@ public class Repo {
         allComments = dao.getAllComments();
     }
 
-
     public void startTimer() {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(this::getAllPosts, 0, 1, TimeUnit.SECONDS);
     }
-
 
     public void insertLocalUser(HoplyUser user) {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertUser(user));
@@ -86,26 +84,6 @@ public class Repo {
         HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void updateRemoteComments(HoplyComment newComment) {
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
@@ -130,19 +108,6 @@ public class Repo {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public HoplyLocation returnLocationFromId (Integer postId){
         ExecutorCompletionService<HoplyLocation> completionService =
@@ -193,22 +158,30 @@ public class Repo {
     }
 
     public LiveData<List<HoplyPost>> getAllPosts() {
-        // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?user_id=eq.faxekondiaddict");
+        //deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?user_id=eq.faxekondiaddict");
         clearAllLocalReactions();
+        Log.d("markermarkermarkermarkermarker", "1");
         getAllRemotePostsAndUsers();
+        Log.d("markermarkermarkermarkermarker", "2");
         getAllRemoteReactions();
+        Log.d("markermarkermarkermarkermarker", "3");
         return allPosts;
     }
 
     private void getAllRemoteReactions() {
+        Log.d("markermarkermarkermarkermarker", "4");
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> {
+            Log.d("markermarkermarkermarkermarker", "6");
             int inserts = createAndInsertRemoteReactions(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/reactions"));
+            Log.d("markermarkermarkermarkermarker", "7");
             return inserts >= 0;
         });
         try {
+            Log.d("markermarkermarkermarkermarker", "5");
             completionService.take().get();
+            Log.d("markermarkermarkermarkermarker", "8");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -304,7 +277,7 @@ public class Repo {
             if (content.contains("$con§") && content.contains("$pid§") && content.contains("$uid§")
                     && content.contains("$tim§")) {
                 comments = extractComments(content);
-                content = content.substring(0, content.indexOf("¤$con§:"));
+                content = content.substring(0, content.indexOf("$con§:"));
             }
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
@@ -347,7 +320,9 @@ public class Repo {
             return 0;
         String currentReaction;
         int inserts = 0;
+        Log.d("markermarkermarkermarkermarker", "12");
         clearAllLocalReactions();
+        Log.d("markermarkermarkermarkermarker", "13");
         while (inserts < responseBody.length) {
             currentReaction = responseBody[inserts];
             String userId = currentReaction.substring(currentReaction.indexOf("\"user_id\"") + 11,
@@ -358,6 +333,7 @@ public class Repo {
                     currentReaction.indexOf("\"stamp\"") - 1));
             long timeMillis = Timestamp.valueOf((currentReaction.substring(currentReaction.lastIndexOf("\"stamp\"") + 9,
                     currentReaction.length() - 7).replace("T", " "))).getTime();
+            Log.d("markermarkermarkermarkermarker", "14");
             insertRemoteReactionToLocal(new HoplyReaction(userId, postId, type, timeMillis));
             inserts++;
         }
@@ -365,20 +341,27 @@ public class Repo {
     }
 
     public void clearAllLocalReactions() {
+        Log.d("markermarkermarkermarkermarker", "13");
         ExecutorCompletionService<Boolean> completionService =
-                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+                new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
+        Log.d("markermarkermarkermarkermarker", "14");
         completionService.submit(() -> {
+            Log.d("markermarkermarkermarkermarker", "17");
             dao.clearAllLocalReactions();
+            Log.d("markermarkermarkermarkermarker", "18");
             return true;
         });
         try {
+            Log.d("markermarkermarkermarkermarker", "15");
             completionService.take().get();
+            Log.d("markermarkermarkermarkermarker", "16");
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private String[] getRemoteDataFrom(String remoteDBURL) {
+        Log.d("markermarkermarkermarkermarker", "10");
         String[] responseBody = new String[0];
         try {
             URL url = new URL(remoteDBURL);
@@ -395,6 +378,7 @@ public class Repo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("markermarkermarkermarkermarker", "11");
         return responseBody;
     }
 

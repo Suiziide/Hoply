@@ -11,7 +11,6 @@ import java.util.List;
 @Dao
 public interface HoplyDao {
 
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertUser(HoplyUser user);
 
