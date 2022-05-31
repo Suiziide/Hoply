@@ -2,7 +2,7 @@ package com.example.hoply;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import org.json.*;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,11 +79,12 @@ public class ViewPostPage extends AppCompatActivity {
                     .commit();
         }
         submitComment.setOnClickListener(view -> {
-            if (commentText.getText().toString().matches("\\s+") ||
-                    commentText.getText().toString().isEmpty())
+            String commentContent = formatContent(commentText.getText().toString());
+            if (commentContent.matches("\\s+") || commentContent.isEmpty())
                 Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
-                viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, reverseAndTrim(commentText.getText().toString()), System.currentTimeMillis()));
+                if (!viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentContent, System.currentTimeMillis())))
+                    Toast.makeText(commentText.getContext(), "Illegal character use", Toast.LENGTH_SHORT).show();
                 commentText.setText("");
                 hideKeyboard(view);
             }
@@ -93,17 +94,12 @@ public class ViewPostPage extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(LivefeedViewmodel.class);
-        viewModel.getCommentList().observe(ViewPostPage.this, new Observer<List<HoplyComment>>() {
-            @Override
-            public void onChanged(List<HoplyComment> commentList) {
-                adapter.addItems(commentList.stream()
-                        .filter(hoplyComment -> hoplyComment.getPostId().equals(postId))
-                        .collect(Collectors.toList()));
-            }
-        });
+        viewModel.getCommentList().observe(ViewPostPage.this, commentList -> adapter.addItems(commentList.stream()
+                .filter(hoplyComment -> hoplyComment.getPostId().equals(postId))
+                .collect(Collectors.toList())));
     }
 
-    private String reverseAndTrim(String content) {
+    private String formatContent(String content) {
         content = content.trim();
         String tempReverse = "";
         for (int i = content.length()-1; i >= 0; i--)
@@ -112,6 +108,10 @@ public class ViewPostPage extends AppCompatActivity {
         String tempDoubleReverse = "";
         for (int i = tempReverse.length()-1; i >= 0; i--)
             tempDoubleReverse += tempReverse.charAt(i);
+        tempDoubleReverse = tempDoubleReverse.replace("/\n/g", "\\n")
+                .replace("/\r/g", "\\r").replace("/\t/g", "\\t")
+                .replace("/{/g", "\\{").replace("/}/g", "\\}")
+                .replace("/[/g", "\\[").replace("/]/g", "\\]");
         return tempDoubleReverse;
     }
 

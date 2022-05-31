@@ -25,8 +25,8 @@ public class LivefeedViewmodel extends AndroidViewModel {
         commentList = repo.getAllComments();
     }
 
-    public void insertLocalPost(HoplyPost post, double latitude, double longitude){
-        repo.insertLocalPost(post, latitude, longitude);
+    public boolean insertLocalPost(HoplyPost post, double latitude, double longitude){
+        return repo.insertLocalPost(post, latitude, longitude);
     }
 
     public void insertLocation(HoplyLocation location){
@@ -37,8 +37,8 @@ public class LivefeedViewmodel extends AndroidViewModel {
         return postList;
     }
 
-    public void insertComment(HoplyComment comment){
-        repo.insertLocalComment(comment);
+    public boolean insertComment(HoplyComment comment){
+        return repo.insertLocalComment(comment);
     }
 
     public LiveData<List<HoplyComment>> getCommentList() {

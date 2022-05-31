@@ -55,4 +55,7 @@ public interface HoplyDao {
 
     @Query("DELETE FROM REACTIONS")
     void clearAllLocalReactions();
+
+    @Query("DELETE FROM USERS")
+    void clearAllData();
 }

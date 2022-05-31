@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,21 +69,23 @@ public class LiveFeed extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     int postId;
-                    if(viewModel.getPostList().getValue().size() == 0)
-                        postId = 1; // post id rework pls
+                    List<HoplyPost> hoplyPostList= viewModel.getPostList().getValue();
+                    if (hoplyPostList == null || hoplyPostList.size() == 0)
+                        postId = 1;
                     else
                         postId = viewModel.getLatestID() + 1;
                     assert result.getData() != null;
                     HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), result.getData().getStringExtra("CONTENT"));
                     double latitude = result.getData().getDoubleExtra("LATITUDE", 200.0);
                     double longitude = result.getData().getDoubleExtra("LONGITUDE", 200.0);
-                    viewModel.insertLocalPost(post, latitude, longitude);
-                    if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
-                        viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
-                    Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
-                } else {
+                    if (viewModel.insertLocalPost(post, latitude, longitude)) {
+                        if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
+                            viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
+                        Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(this, "Illegal character combination of '\\, \"'!", Toast.LENGTH_SHORT).show();
+                } else
                     Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
-                }
             });
 
     @Override
