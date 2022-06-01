@@ -50,7 +50,7 @@ public interface HoplyDao {
     @Query("SELECT * FROM comments ORDER BY stamp DESC")
     LiveData<List<HoplyComment>> getAllComments();
 
-    @Query("DELETE FROM REACTIONS WHERE user_id = :userid AND post_id = :postid")
+    @Query("DELETE FROM reactions WHERE user_id = :userid AND post_id = :postid")
     Integer removeUserReactionFromPost(String userid, Integer postid);
 
     @Query("DELETE FROM reactions")
