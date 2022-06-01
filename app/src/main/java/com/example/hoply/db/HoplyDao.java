@@ -53,9 +53,9 @@ public interface HoplyDao {
     @Query("DELETE FROM REACTIONS WHERE user_id = :userid AND post_id = :postid")
     Integer removeUserReactionFromPost(String userid, Integer postid);
 
-    @Query("DELETE FROM REACTIONS")
+    @Query("DELETE FROM reactions")
     void clearAllLocalReactions();
 
-    @Query("DELETE FROM USERS")
+    @Query("DELETE FROM users")
     void clearAllData();
 }
