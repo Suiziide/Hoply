@@ -58,7 +58,10 @@ public class Repo {
     }
 
     public boolean insertLocalPost(HoplyPost post, double latitude, double longitude) {
-        if (sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts", convertPostToString(post, latitude, longitude))) {
+        post.setContent(doubleTrimAndReverse(post.getContent()));
+        HoplyPost remotePost = post.copy();
+        remotePost.setContent(formatContent(remotePost.getContent()));
+        if (sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts", convertPostToString(remotePost, latitude, longitude))) {
             HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertPost(post));
             return true;
         } else
@@ -83,6 +86,9 @@ public class Repo {
     }
 
     public boolean insertLocalComment(HoplyComment comment){
+        comment.setContent(doubleTrimAndReverse(comment.getContent()));
+        HoplyComment remoteComment = comment.copy();
+        remoteComment.setContent(formatContent(remoteComment.getContent()));
         if (updateRemoteComments(comment)) {
             HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
             return true;
@@ -261,6 +267,10 @@ public class Repo {
             }
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
+            if (content.contains("\\"))
+                content = content.replace("\\\\n", "\n")
+                        .replace("\\\\r", "\r").replace("\\\\t", "\t")
+                        .replace("\\\\", "\\").replace("\\\"","\"");
             insertRemotePostToLocal(new HoplyPost(postId, userId, content, timeMillis));
             if (latitude != 200 && longitude != 200)
                 insertLocation(new HoplyLocation(latitude ,longitude, postId));
@@ -279,6 +289,10 @@ public class Repo {
             Integer commentId = Integer.parseInt(currentComment.substring(currentComment.indexOf("$pid§:") + 6, currentComment.indexOf("$uid§:")));
             String commentUserId = currentComment.substring(currentComment.indexOf("$uid§:") + 6, currentComment.indexOf("$tim§"));
             Long timestamp = Long.parseLong(currentComment.substring(currentComment.indexOf("$tim") + 6));
+            if (commentContent.contains("\\"))
+                commentContent = commentContent.replace("\\\\n", "\n")
+                        .replace("\\\\r", "\r").replace("\\\\t", "\t")
+                        .replace("\\\\", "\\").replace("\\\"","\"");
             insertRemoteCommentToLocal(new HoplyComment(commentUserId, commentId, commentContent, timestamp));
             inserts--;
         }
@@ -315,20 +329,6 @@ public class Repo {
             inserts++;
         }
         return inserts;
-    }
-
-    public void clearAllLocalReactions() {
-        ExecutorCompletionService<Boolean> completionService =
-                new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
-        completionService.submit(() -> {
-            dao.clearAllLocalReactions();
-            return true;
-        });
-        try {
-            completionService.take().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private String[] getRemoteDataFrom(String remoteDBURL) {
@@ -391,7 +391,6 @@ public class Repo {
 
     private boolean sendLocalDataTo(String remoteDBURL, String data) {
         boolean result = true;
-        Log.d("maybemaybemaybe data", data);
         try {
             URL url = new URL(remoteDBURL);
             URLConnection con = url.openConnection();
@@ -454,11 +453,9 @@ public class Repo {
                     "https://caracal.imada.sdu.dk/app2022/posts?id=eq."
                             + newComment.getPostId())[0];
             oldContent = oldContent.substring(oldContent.indexOf("\"content\"") + 11, oldContent.lastIndexOf("\"stamp\"") - 2);
-            Log.d("maybemaybemaybemaybe oldContent", oldContent);
             String newContent = oldContent +
                     " ¤$con§:" + newComment.getContent() + "$pid§:" + newComment.getPostId()
                     + "$uid§:" + newComment.getUserId() + "$tim§:" + newComment.getTimestamp() + "¤";
-            Log.d("maybemaybemaybemaybe newContent", newContent);
             return patchDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts?id=eq."
                     + newComment.getPostId(),"{\"content\":\"" + newContent + "\"}");
         });
@@ -496,6 +493,20 @@ public class Repo {
         return response;
     }
 
+    public void clearAllLocalReactions() {
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
+        completionService.submit(() -> {
+            dao.clearAllLocalReactions();
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String convertUserToString(HoplyUser user) {
         return "{\"id\":\"" + user.getUserId() +
                 "\",\"name\":\"" + user.getUserName() +
@@ -524,5 +535,23 @@ public class Repo {
                 ",\"type\":" + reaction.getReactionType() +
                 ",\"stamp\":\"" + new Timestamp(reaction.getTimestamp()).toString().trim()
                 .replace(" ", "T") + "+02:00\"}";
+    }
+
+    private String formatContent(String content) {
+        return content.replace("\n", "\\n")
+                .replace("\r", "\\r").replace("\t", "\\t")
+                .replace("\\", "\\\\").replace("\"","\\\"");
+    }
+
+    private String doubleTrimAndReverse(String content) {
+        content = content.trim();
+        String tempReverse = "";
+        for (int i = content.length()-1; i >= 0 ; i--)
+            tempReverse += content.charAt(i);
+        tempReverse = tempReverse.trim();
+        content = "";
+        for (int i = tempReverse.length()-1; i >= 0 ; i--)
+            content += tempReverse.charAt(i);
+        return content;
     }
 }

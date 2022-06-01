@@ -83,7 +83,7 @@ public class LiveFeed extends AppCompatActivity {
                             viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
                         Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
                     } else
-                        Toast.makeText(this, "Illegal character combination of '\\, \"'!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Illegal character combination of ('\\, \"')!", Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(this, "Post not saved!", Toast.LENGTH_SHORT).show();
             });

@@ -79,4 +79,8 @@ public class HoplyComment {
         }
 
         public void setTimestamp(long timestamp) {this.timestamp = timestamp;}
+
+        public HoplyComment copy() {
+                return (new HoplyComment(this.userId, this.postId,this.content, this.timestamp));
+        }
 }

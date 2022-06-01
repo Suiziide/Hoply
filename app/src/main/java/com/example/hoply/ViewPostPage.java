@@ -55,7 +55,6 @@ public class ViewPostPage extends AppCompatActivity {
         Intent intent = getIntent();
         postId = intent.getIntExtra("POSTID", -200);
         myRepo = new Repo(this.getApplication());
-        Log.d("TESTes", postId + "");
         if(postId == -200){
             startActivity(new Intent(this.getApplication(), LiveFeed.class));
         }
@@ -101,18 +100,18 @@ public class ViewPostPage extends AppCompatActivity {
 
     private String formatContent(String content) {
         content = content.trim();
-        String tempReverse = "";
+        StringBuilder tempReverse = new StringBuilder();
         for (int i = content.length()-1; i >= 0; i--)
-            tempReverse += content.charAt(i);
-        tempReverse = tempReverse.trim();
-        String tempDoubleReverse = "";
+            tempReverse.append(content.charAt(i));
+        tempReverse = new StringBuilder(tempReverse.toString().trim());
+        StringBuilder tempDoubleReverse = new StringBuilder();
         for (int i = tempReverse.length()-1; i >= 0; i--)
-            tempDoubleReverse += tempReverse.charAt(i);
-        tempDoubleReverse = tempDoubleReverse.replace("/\n/g", "\\n")
+            tempDoubleReverse.append(tempReverse.charAt(i));
+        tempDoubleReverse = new StringBuilder(tempDoubleReverse.toString().replace("/\n/g", "\\n")
                 .replace("/\r/g", "\\r").replace("/\t/g", "\\t")
                 .replace("/{/g", "\\{").replace("/}/g", "\\}")
-                .replace("/[/g", "\\[").replace("/]/g", "\\]");
-        return tempDoubleReverse;
+                .replace("/[/g", "\\[").replace("/]/g", "\\]"));
+        return tempDoubleReverse.toString();
     }
 
     public void goToLiveFeed(View v) {

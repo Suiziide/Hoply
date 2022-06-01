@@ -80,4 +80,8 @@ public class HoplyPost {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    public HoplyPost copy() {
+        return (new HoplyPost(this.postId, this.userId, this.content, this.timestamp));
+    }
 }

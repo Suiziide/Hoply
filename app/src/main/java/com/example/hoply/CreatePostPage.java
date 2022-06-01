@@ -55,7 +55,7 @@ public class CreatePostPage extends AppCompatActivity {
             if (text.getText().toString().matches("\\s+") || text.getText().toString().isEmpty())
                 Toast.makeText(this, "Post is empty", Toast.LENGTH_SHORT).show();
             else {
-                data.putExtra("CONTENT", formatContent(text.getText().toString()));
+                data.putExtra("CONTENT", text.getText().toString());
                 if (lastKnownLocation != null) {
                     data.putExtra("LATITUDE", lastKnownLocation.getLatitude());
                     data.putExtra("LONGITUDE", lastKnownLocation.getLongitude());
@@ -64,22 +64,6 @@ public class CreatePostPage extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private String formatContent(String content) {
-        content = content.trim();
-        StringBuilder tempReverse = new StringBuilder();
-        for (int i = content.length()-1; i >= 0; i--)
-            tempReverse.append(content.charAt(i));
-        tempReverse = new StringBuilder(tempReverse.toString().trim());
-        StringBuilder tempDoubleReverse = new StringBuilder();
-        for (int i = tempReverse.length()-1; i >= 0; i--)
-            tempDoubleReverse.append(tempReverse.charAt(i));
-        tempDoubleReverse = new StringBuilder(tempDoubleReverse.toString().replace("/\n/g", "\\n")
-                .replace("/\r/g", "\\r").replace("/\t/g", "\\t")
-                .replace("/{/g", "\\{").replace("/}/g", "\\}")
-                .replace("/[/g", "\\[").replace("/]/g", "\\]"));
-        return tempDoubleReverse.toString();
     }
 
     public void goToLiveFeed(View v) {

@@ -48,7 +48,6 @@ public class MapFragment extends Fragment {
                 if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
                     googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.darkmap));
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                Log.d("testet", "Latitude: " + latitude + ", Longitude: " + longitude);
                 LatLng latLng = new LatLng(latitude, longitude);
                 googleMap.addMarker(new MarkerOptions()
                         .position(latLng));
