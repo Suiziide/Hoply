@@ -254,11 +254,13 @@ public class Repo {
                     currentPost.indexOf("\"stamp\"") - 2);
             if (content.contains("$LA§:") && content.contains("$LO§:")) {
                 latitude = Double.parseDouble(content.substring(content.indexOf("$LA§:") + 5, content.indexOf("$LO§:")));
-                if (content.contains("¤$con§"))
+                if (content.contains("¤$con§")) {
                     longitude = Double.parseDouble(content.substring(content.indexOf("$LO§:") + 5, content.indexOf("¤$con§:")));
-                else
+                    content = content.substring(0, content.indexOf("$LA§:")) + content.substring(content.indexOf("¤$con§"));
+                } else {
                     longitude = Double.parseDouble(content.substring(content.indexOf("$LO§:") + 5));
-                content = content.substring(0, content.indexOf("$LA§:"));
+                    content = content.substring(0, content.indexOf("$LA§:"));
+                }
             }
             if (content.contains("$con§") && content.contains("$pid§") && content.contains("$uid§")
                     && content.contains("$tim§")) {
