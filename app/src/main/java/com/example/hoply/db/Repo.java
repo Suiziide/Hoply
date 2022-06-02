@@ -573,14 +573,9 @@ public class Repo {
                     + "$LO§:" + longitude + "\""
                     + ",\"stamp\":\"" + OffsetDateTime
                     .ofInstant(Instant.ofEpochMilli(post.getTimestamp()), ZoneId.systemDefault())+ "\"}";
-/*                    new Timestamp(post.getTimestamp()).toString().trim()
-                    .replace(" ", "T") + "+02:00\"}";*/
         else
             postString += "\",\"stamp\":\"" + OffsetDateTime
                     .ofInstant(Instant.ofEpochMilli(post.getTimestamp()), ZoneId.systemDefault()) + "\"}";
-/*                    new Timestamp(post.getTimestamp()).toString().trim()
-                    .replace(" ", "T") + "+02:00\"}";*/
-        Log.d("JAJAJAJ", postString);
         return postString;
     }
 
@@ -590,8 +585,6 @@ public class Repo {
                 ",\"type\":" + reaction.getReactionType() +
                 ",\"stamp\":\"" + OffsetDateTime
                 .ofInstant(Instant.ofEpochMilli(reaction.getTimestamp()), ZoneId.systemDefault())+ "\"}";
-/*                new Timestamp(reaction.getTimestamp()).toString().trim()
-                .replace(" ", "T") + "+02:00\"}";*/
     }
 
     private String formatContent(String content) {
