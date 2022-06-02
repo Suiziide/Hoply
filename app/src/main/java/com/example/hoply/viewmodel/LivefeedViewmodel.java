@@ -21,7 +21,7 @@ public class LivefeedViewmodel extends AndroidViewModel {
     public LivefeedViewmodel(Application application){
         super(application);
         repo = new Repo(application);
-        postList = repo.getAllPosts();
+        postList = repo.syncWithRemote();
         commentList = repo.getAllComments();
     }
 

@@ -78,7 +78,7 @@ public class ViewPostPage extends AppCompatActivity {
                     .commit();
         }
         submitComment.setOnClickListener(view -> {
-            String commentContent = formatContent(commentText.getText().toString());
+            String commentContent = commentText.getText().toString();
             if (commentContent.matches("\\s+") || commentContent.isEmpty())
                 Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
@@ -96,22 +96,6 @@ public class ViewPostPage extends AppCompatActivity {
         viewModel.getCommentList().observe(ViewPostPage.this, commentList -> adapter.addItems(commentList.stream()
                 .filter(hoplyComment -> hoplyComment.getPostId().equals(postId))
                 .collect(Collectors.toList())));
-    }
-
-    private String formatContent(String content) {
-        content = content.trim();
-        StringBuilder tempReverse = new StringBuilder();
-        for (int i = content.length()-1; i >= 0; i--)
-            tempReverse.append(content.charAt(i));
-        tempReverse = new StringBuilder(tempReverse.toString().trim());
-        StringBuilder tempDoubleReverse = new StringBuilder();
-        for (int i = tempReverse.length()-1; i >= 0; i--)
-            tempDoubleReverse.append(tempReverse.charAt(i));
-        tempDoubleReverse = new StringBuilder(tempDoubleReverse.toString().replace("/\n/g", "\\n")
-                .replace("/\r/g", "\\r").replace("/\t/g", "\\t")
-                .replace("/{/g", "\\{").replace("/}/g", "\\}")
-                .replace("/[/g", "\\[").replace("/]/g", "\\]"));
-        return tempDoubleReverse.toString();
     }
 
     public void goToLiveFeed(View v) {

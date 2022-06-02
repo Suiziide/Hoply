@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hoply.db.HoplyComment;
+import com.example.hoply.db.HoplyDatabase;
 import com.example.hoply.db.HoplyPost;
 import com.example.hoply.db.HoplyReaction;
 import com.example.hoply.db.HoplyUser;
@@ -25,12 +26,17 @@ import com.example.hoply.db.Repo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Executors;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHolder>{
 
     private List<HoplyPost> postList = new ArrayList<>();
     private Application application;
     private Repo repo;
+    private final ExecutorCompletionService<Boolean> completionService = new
+            ExecutorCompletionService<>(Executors.newWorkStealingPool());
 
     public PostAdapter(Application application){
         this.application = application;
@@ -58,20 +64,49 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         holder.postNeutralReactions.setText(neutrals.toString());
 
         holder.postLikeReactionsIMG.setOnClickListener(view -> {
-            if(hasReacted(currentUser, hoplyPost.getPostId(), 1))
-                repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 1, System.currentTimeMillis()));
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 1)) {
+                completionService.submit(() -> {
+                    repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 1, System.currentTimeMillis()));
+                    return true;
+                });
+                try {
+                    completionService.take().get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             notifyDataSetChanged();
         });
         holder.postDislikeReactionsIMG.setOnClickListener(view -> {
-            if(hasReacted(currentUser, hoplyPost.getPostId(), 2))
-                repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 2, System.currentTimeMillis()));
+            if (hasReacted(currentUser, hoplyPost.getPostId(), 2)) {
+                completionService.submit(() -> {
+                    repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 2, System.currentTimeMillis()));
+                    return true;
+                });
+                try {
+                    completionService.take().get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             notifyDataSetChanged();
         });
         holder.postNeutralReactionsIMG.setOnClickListener(view -> {
-            if(hasReacted(currentUser, hoplyPost.getPostId(), 3))
-                repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 3, System.currentTimeMillis()));
+            if(hasReacted(currentUser, hoplyPost.getPostId(), 3)) {
+                completionService.submit(() -> {
+                    repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 3, System.currentTimeMillis()));
+                    return true;
+                });
+
+                try {
+                    completionService.take().get();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             notifyDataSetChanged();
         });
+
 
         holder.viewComments.setOnClickListener(view -> {
             Context context = view.getContext();
@@ -87,12 +122,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         if (reactionType == null) {
             return true;
         } else if (reactionType == reaction) {
-            repo.removeUserReactionFromPost(user.getUserId(), postId);
             repo.deleteDataFromRemoteDB(request);
+            repo.removeUserReactionFromPost(user.getUserId(), postId);
             return false;
         } else {
             repo.deleteDataFromRemoteDB(request);
-            return repo.removeUserReactionFromPost(user.getUserId(), postId) > 0;
+            repo.removeUserReactionFromPost(user.getUserId(), postId);
+            return true;
         }
     }
 

@@ -16,7 +16,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -41,20 +40,22 @@ public class Repo {
 
     public void startTimer() {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(this::getAllPosts, 0, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::syncWithRemote, 0, 3, TimeUnit.SECONDS);
     }
 
     public void clearAllData() {
-        HoplyDatabase.databaseWriteExecutor.execute(dao::clearAllData);
+        ExecutorCompletionService<Boolean> completionService =
+                new ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
+        completionService.submit(() -> 0 < dao.clearAllData());
     }
 
     public void insertLocalUser(HoplyUser user) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertUser(user));
+        HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertUser(user));
         sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/users", convertUserToString(user));
     }
 
     public void insertRemoteUserToLocal(HoplyUser user) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertUser(user));
+        HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertUser(user));
     }
 
     public boolean insertLocalPost(HoplyPost post, double latitude, double longitude) {
@@ -62,7 +63,7 @@ public class Repo {
         HoplyPost remotePost = post.copy();
         remotePost.setContent(formatContent(remotePost.getContent()));
         if (sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts", convertPostToString(remotePost, latitude, longitude))) {
-            HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertPost(post));
+            HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertPost(post));
             return true;
         } else
             return false;
@@ -83,7 +84,7 @@ public class Repo {
     }
 
     public void insertLocalReaction(HoplyReaction reaction) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertReaction(reaction));
+        HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertReaction(reaction));
         sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions", convertReactionToString(reaction));
     }
 
@@ -120,7 +121,7 @@ public class Repo {
         HoplyComment remoteComment = comment.copy();
         remoteComment.setContent(formatContent(remoteComment.getContent()));
         if (updateRemoteComments(comment)) {
-            HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
+            HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertComment(comment));
             return true;
         } else
             return false;
@@ -188,18 +189,22 @@ public class Repo {
         return allComments;
     }
 
-    public LiveData<List<HoplyPost>> getAllPosts() {
+    public LiveData<List<HoplyPost>> syncWithRemote() {
         // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions");
         // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts");
-            clearAllLocalReactions();
-            getAllRemotePostsAndUsers();
-            getAllRemoteReactions();
+        clearAllLocalReactions();
+        getAllRemotePostsAndUsers();
+        getAllRemoteReactions();
         return allPosts;
     }
 
+
+
+
+
     private void getAllRemoteReactions() {
         ExecutorCompletionService<Boolean> completionService =
-                new ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
+                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> {
             int inserts = createAndInsertRemoteReactions(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/reactions"));
             return inserts >= 0;
