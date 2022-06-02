@@ -15,6 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -568,11 +571,16 @@ public class Repo {
         if(latitude != 200 && longitude != 200)
             postString += "$LA§:" + latitude
                     + "$LO§:" + longitude + "\""
-                    + ",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
-                    .replace(" ", "T") + "+02:00\"}";
+                    + ",\"stamp\":\"" + OffsetDateTime
+                    .ofInstant(Instant.ofEpochMilli(post.getTimestamp()), ZoneId.systemDefault())+ "\"}";
+/*                    new Timestamp(post.getTimestamp()).toString().trim()
+                    .replace(" ", "T") + "+02:00\"}";*/
         else
-            postString += "\",\"stamp\":\"" + new Timestamp(post.getTimestamp()).toString().trim()
-                    .replace(" ", "T") + "+02:00\"}";
+            postString += "\",\"stamp\":\"" + OffsetDateTime
+                    .ofInstant(Instant.ofEpochMilli(post.getTimestamp()), ZoneId.systemDefault()) + "\"}";
+/*                    new Timestamp(post.getTimestamp()).toString().trim()
+                    .replace(" ", "T") + "+02:00\"}";*/
+        Log.d("JAJAJAJ", postString);
         return postString;
     }
 
@@ -580,8 +588,10 @@ public class Repo {
         return "{\"user_id\":\"" + reaction.getUserId() + "\"" +
                 ",\"post_id\":" + reaction.getPostId() +
                 ",\"type\":" + reaction.getReactionType() +
-                ",\"stamp\":\"" + new Timestamp(reaction.getTimestamp()).toString().trim()
-                .replace(" ", "T") + "+02:00\"}";
+                ",\"stamp\":\"" + OffsetDateTime
+                .ofInstant(Instant.ofEpochMilli(reaction.getTimestamp()), ZoneId.systemDefault())+ "\"}";
+/*                new Timestamp(reaction.getTimestamp()).toString().trim()
+                .replace(" ", "T") + "+02:00\"}";*/
     }
 
     private String formatContent(String content) {
