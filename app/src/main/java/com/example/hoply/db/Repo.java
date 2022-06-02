@@ -41,7 +41,7 @@ public class Repo {
 
     public void startTimer() {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(this::getAllPosts, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(this::getAllPosts, 0, 3, TimeUnit.SECONDS);
     }
 
     public void clearAllData() {
@@ -199,7 +199,7 @@ public class Repo {
 
     private void getAllRemoteReactions() {
         ExecutorCompletionService<Boolean> completionService =
-                new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
+                new ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
         completionService.submit(() -> {
             int inserts = createAndInsertRemoteReactions(getRemoteDataFrom("https://caracal.imada.sdu.dk/app2022/reactions"));
             return inserts >= 0;
@@ -537,7 +537,7 @@ public class Repo {
 
     public void clearAllLocalReactions() {
         ExecutorCompletionService<Boolean> completionService =
-                new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
+                new ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
         completionService.submit(() -> {
             dao.clearAllLocalReactions();
             return true;
