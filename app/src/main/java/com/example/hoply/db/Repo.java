@@ -69,7 +69,17 @@ public class Repo {
     }
 
     public void insertRemotePostToLocal(HoplyPost post) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertPost(post));
+        ExecutorCompletionService<Boolean> completionService = new
+                ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
+        completionService.submit(() -> {
+            dao.insertPost(post);
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void insertLocalReaction(HoplyReaction reaction) {
@@ -78,11 +88,31 @@ public class Repo {
     }
 
     public void insertRemoteReactionToLocal(HoplyReaction reaction) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertReaction(reaction));
+        ExecutorCompletionService<Boolean> completionService = new
+                ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
+        completionService.submit(() -> {
+            dao.insertReaction(reaction);
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void insertLocation(HoplyLocation location){
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertLocation(location));
+        ExecutorCompletionService<Boolean> completionService = new
+                ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
+        completionService.submit(() -> {
+            dao.insertLocation(location);
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean insertLocalComment(HoplyComment comment){
@@ -97,10 +127,20 @@ public class Repo {
     }
 
     public void insertRemoteCommentToLocal(HoplyComment comment) {
-        HoplyDatabase.databaseWriteExecutor.execute(() -> dao.insertComment(comment));
+        ExecutorCompletionService<Boolean> completionService = new
+                ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
+        completionService.submit(() -> {
+            dao.insertComment(comment);
+            return true;
+        });
+        try {
+            completionService.take().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
-    public HoplyLocation returnLocationFromId (Integer postId){
+    public HoplyLocation returnLocationFromId (Integer postId) {
         ExecutorCompletionService<HoplyLocation> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.returnLocationFromId(postId));
@@ -151,9 +191,9 @@ public class Repo {
     public LiveData<List<HoplyPost>> getAllPosts() {
         // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions");
         // deleteDataFromRemoteDB("https://caracal.imada.sdu.dk/app2022/posts");
-        clearAllLocalReactions();
-        getAllRemotePostsAndUsers();
-        getAllRemoteReactions();
+            clearAllLocalReactions();
+            getAllRemotePostsAndUsers();
+            getAllRemoteReactions();
         return allPosts;
     }
 
