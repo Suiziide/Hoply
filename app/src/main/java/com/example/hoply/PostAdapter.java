@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +37,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     private Application application;
     private Repo repo;
     private final ExecutorCompletionService<Boolean> completionService = new
-            ExecutorCompletionService<>(Executors.newWorkStealingPool());
+            ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
 
     public PostAdapter(Application application){
         this.application = application;
@@ -78,6 +79,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             notifyDataSetChanged();
         });
         holder.postDislikeReactionsIMG.setOnClickListener(view -> {
+            ImageView v = (ImageView) view;
+            v.setEnabled(false);
             if (hasReacted(currentUser, hoplyPost.getPostId(), 2)) {
                 completionService.submit(() -> {
                     repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 2, System.currentTimeMillis()));
@@ -90,8 +93,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
                 }
             }
             notifyDataSetChanged();
+            v.setEnabled(true);
         });
         holder.postNeutralReactionsIMG.setOnClickListener(view -> {
+            ImageView v = (ImageView) view;
+            v.setEnabled(false);
             if(hasReacted(currentUser, hoplyPost.getPostId(), 3)) {
                 completionService.submit(() -> {
                     repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 3, System.currentTimeMillis()));
@@ -105,6 +111,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
                 }
             }
             notifyDataSetChanged();
+            v.setEnabled(true);
         });
 
 
