@@ -5,7 +5,6 @@
     <string name="sign_out">Sign out</string>
     <string name="back">Back</string>
     <string name="save_changes">Save changes</string>
-    <string name="username">Username</string>
     <string name="enter_name">Enter name</string>
     <string name="create_account">Create account</string>
     <string name="login">Login</string>
@@ -18,4 +17,6 @@
     <string name="locationOn">LOCATION: ON</string>
     <string name="locationOff">LOCATION: OFF</string>
     <string name="commentHint">Write your comment here…</string>
+    <string name="enter_userId">Enter userID</string>
+    <string name="enter_userid">Enter userID</string>
 </resources>
