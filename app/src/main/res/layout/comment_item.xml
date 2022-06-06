@@ -38,6 +38,5 @@
             android:textColor="#DDDDDD"
             />
 
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
