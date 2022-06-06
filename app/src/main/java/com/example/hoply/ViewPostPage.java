@@ -84,7 +84,8 @@ public class ViewPostPage extends AppCompatActivity {
             else {
                 if (!viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentContent, System.currentTimeMillis())))
                     Toast.makeText(commentText.getContext(), "Illegal character use", Toast.LENGTH_SHORT).show();
-                commentText.setText("");
+                else
+                    commentText.setText("");
                 hideKeyboard(view);
             }
         });

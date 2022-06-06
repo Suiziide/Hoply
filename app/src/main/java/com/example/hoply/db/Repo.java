@@ -128,7 +128,7 @@ public class Repo {
         comment.setContent(doubleTrimAndReverse(comment.getContent()));
         HoplyComment remoteComment = comment.copy();
         remoteComment.setContent(formatContent(remoteComment.getContent()));
-        if (updateRemoteComments(comment)) {
+        if (updateRemoteComments(remoteComment)) {
             HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertComment(comment));
             return true;
         } else
@@ -496,6 +496,7 @@ public class Repo {
     }
 
     private boolean updateRemoteComments(HoplyComment newComment) {
+        Log.d("mememememememeememem", newComment.getContent());
         boolean response = false;
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
