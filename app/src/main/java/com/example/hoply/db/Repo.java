@@ -58,7 +58,7 @@ public class Repo {
     }
 
     public void insertRemoteUserToLocal(HoplyUser user) {
-        HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertUser(user));
+        HoplyDatabase.databaseLocalInsertExecutor.submit(() -> dao.insertUser(user));
     }
 
     public boolean insertLocalPost(HoplyPost post, double latitude, double longitude) {
