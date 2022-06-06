@@ -19,4 +19,6 @@
     <string name="commentHint">Write your comment here…</string>
     <string name="enter_userId">Enter userID</string>
     <string name="enter_userid">Enter userID</string>
+    <string name="failedToCreateUser">Failed to create user</string>
+    <string name="FailedToCreateUser">Failed to create user</string>
 </resources>

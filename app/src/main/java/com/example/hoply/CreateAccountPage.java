@@ -43,7 +43,8 @@ public class CreateAccountPage extends AppCompatActivity {
                 HoplyUser user = new HoplyUser(username.getText().toString(), id.getText().toString());
                 Toast.makeText(getApplication(), R.string.userCreated, Toast.LENGTH_LONG).show();
                 goToLoginPage(v);
-                myRepo.insertLocalUser(user);
+                if(!myRepo.insertLocalUser(user))
+                    Toast.makeText(getApplication(), R.string.FailedToCreateUser, Toast.LENGTH_LONG).show();
             } else
                 Toast.makeText(getApplication(), R.string.userAlreadyExists, Toast.LENGTH_LONG).show();
         } else {

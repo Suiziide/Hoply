@@ -57,9 +57,12 @@ public class Repo {
         }
     }
 
-    public void insertLocalUser(HoplyUser user) {
-        HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertUser(user));
-        sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/users", convertUserToString(user));
+    public boolean insertLocalUser(HoplyUser user) {
+       if (sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/users", convertUserToString(user))) {
+            HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertUser(user));
+            return true;
+        } else
+            return false;
     }
 
     public void insertRemoteUserToLocal(HoplyUser user) {
@@ -92,8 +95,8 @@ public class Repo {
     }
 
     public void insertLocalReaction(HoplyReaction reaction) {
-        HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertReaction(reaction));
-        sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions", convertReactionToString(reaction));
+        if (sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/reactions", convertReactionToString(reaction)))
+            HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertReaction(reaction));
     }
 
     public void insertRemoteReactionToLocal(HoplyReaction reaction) {
