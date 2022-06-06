@@ -51,9 +51,9 @@ public class ViewPostPage extends AppCompatActivity {
         Intent intent = getIntent();
         postId = intent.getIntExtra("POSTID", -200);
         myRepo = new Repo(this.getApplication());
-        if(postId == -200){
+        if (postId == -200)
             startActivity(new Intent(this.getApplication(), LiveFeed.class));
-        }
+
         HoplyPost hoplyPost = myRepo.returnPostFromId(postId);
         HoplyUser hoplyUser = myRepo.returnUserFromId(hoplyPost.getUserId());
         TextView postUser = findViewById(R.id.post_user);
@@ -65,7 +65,7 @@ public class ViewPostPage extends AppCompatActivity {
         postContent.setText(hoplyPost.getContent());
         HoplyLocation location = myRepo.returnLocationFromId(postId);
         Fragment fragment;
-        if(location != null) {
+        if (location != null) {
             FrameLayout frame = findViewById(R.id.frame_layout);
             frame.setVisibility(View.VISIBLE);
             fragment = new MapFragment(location.getLatitude(), location.getLongitude());
@@ -79,7 +79,7 @@ public class ViewPostPage extends AppCompatActivity {
                 Toast.makeText(commentText.getContext(), "Textfield is empty", Toast.LENGTH_SHORT).show();
             else {
                 if (!viewModel.insertComment(new HoplyComment(LoginPage.currentUser.getUserId(), postId, commentContent, System.currentTimeMillis())))
-                    Toast.makeText(commentText.getContext(), "Illegal character use", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(commentText.getContext(), "failed to insert post", Toast.LENGTH_SHORT).show();
                 else
                     commentText.setText("");
                 hideKeyboard(view);
