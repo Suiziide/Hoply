@@ -201,10 +201,6 @@ public class Repo {
         return allPosts;
     }
 
-
-
-
-
     private void getAllRemoteReactions() {
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
