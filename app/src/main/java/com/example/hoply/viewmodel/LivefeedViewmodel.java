@@ -29,10 +29,6 @@ public class LivefeedViewmodel extends AndroidViewModel {
         return repo.insertLocalPost(post, latitude, longitude);
     }
 
-    public void insertLocation(HoplyLocation location){
-        repo.insertLocation(location);
-    }
-
     public LiveData<List<HoplyPost>> getPostList() {
         return postList;
     }

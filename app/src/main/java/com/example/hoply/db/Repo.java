@@ -75,6 +75,8 @@ public class Repo {
         remotePost.setContent(formatContent(remotePost.getContent()));
         if (sendLocalDataToRemoteDB("https://caracal.imada.sdu.dk/app2022/posts", convertPostToString(remotePost, latitude, longitude))) {
             HoplyDatabase.databaseWriteExecutor.submit(() -> dao.insertPost(post));
+            if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
+                insertLocation(new HoplyLocation(latitude, longitude, post.getPostId()));
             return true;
         } else
             return false;
@@ -567,8 +569,8 @@ public class Repo {
     private String convertUserToString(HoplyUser user) {
         return "{\"id\":\"" + user.getUserId() +
                 "\",\"name\":\"" + user.getUserName() +
-                "\",\"stamp\":\"" + new Timestamp(user.getTimestamp()).toString().trim()
-                .replace(" ", "T") + "+02:00\"}";
+                "\",\"stamp\":\"" + OffsetDateTime
+                .ofInstant(Instant.ofEpochMilli(user.getTimestamp()), ZoneId.systemDefault())+ "\"}";
     }
 
     private String convertPostToString(HoplyPost post, double latitude, double longitude) {

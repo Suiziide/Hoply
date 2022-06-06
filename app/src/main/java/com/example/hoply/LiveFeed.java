@@ -46,7 +46,6 @@ public class LiveFeed extends AppCompatActivity {
 
         FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
         createPostButton.setOnClickListener(view ->
-                /*              startActivityForResult(new Intent(LiveFeed.this, CreatePostPage.class), ADD_NOTE_REQUEST) */
                 activityResultLaunch.launch(new Intent(LiveFeed.this, CreatePostPage.class))
         );
 
@@ -75,8 +74,6 @@ public class LiveFeed extends AppCompatActivity {
                     double latitude = result.getData().getDoubleExtra("LATITUDE", 200.0);
                     double longitude = result.getData().getDoubleExtra("LONGITUDE", 200.0);
                     if (viewModel.insertLocalPost(post, latitude, longitude)) {
-                        if (latitude >= -180.0 && longitude <= 180.0 && longitude >= -180.0 && latitude <= 180.0)
-                            viewModel.insertLocation(new HoplyLocation(latitude, longitude, postId));
                         Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
                     } else
                         Toast.makeText(this, "Illegal character combination of ('\\, \"')!", Toast.LENGTH_SHORT).show();
