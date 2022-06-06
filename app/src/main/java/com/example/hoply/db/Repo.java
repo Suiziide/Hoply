@@ -50,6 +50,11 @@ public class Repo {
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseLocalInsertExecutor);
         completionService.submit(() -> 0 < dao.clearAllData());
+        try {
+            completionService.take().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void insertLocalUser(HoplyUser user) {
@@ -296,6 +301,11 @@ public class Repo {
                     currentPost.indexOf("\"content\"") - 2);
             String content = currentPost.substring(currentPost.indexOf("\"content\"") + 11,
                     currentPost.indexOf("\"stamp\"") - 2);
+            if (content.contains("$con§") && content.contains("$pid§") && content.contains("$uid§")
+                    && content.contains("$tim§")) {
+                comments = extractComments(content);
+                content = content.substring(0, content.indexOf("¤$con§:"));
+            }
             if (content.contains("$LA§:") && content.contains("$LO§:")) {
                 latitude = Double.parseDouble(content.substring(content.indexOf("$LA§:") + 5, content.indexOf("$LO§:")));
                 if (content.contains("¤$con§")) {
@@ -305,11 +315,6 @@ public class Repo {
                     longitude = Double.parseDouble(content.substring(content.indexOf("$LO§:") + 5));
                     content = content.substring(0, content.indexOf("$LA§:"));
                 }
-            }
-            if (content.contains("$con§") && content.contains("$pid§") && content.contains("$uid§")
-                    && content.contains("$tim§")) {
-                comments = extractComments(content);
-                content = content.substring(0, content.indexOf("¤$con§:"));
             }
             long timeMillis = Timestamp.valueOf((currentPost.substring(currentPost.lastIndexOf("\"stamp\"") + 9,
                     currentPost.length() - 7).replace("T", " "))).getTime();
