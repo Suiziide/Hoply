@@ -292,11 +292,13 @@ public class Repo {
     }
 
     private int createAndInsertPosts(String[] responseBody) {
-        double latitude = 200;
-        double longitude = 200;
+        double latitude;
+        double longitude;
         int inserts = responseBody.length-1;
         String[] comments = null;
         while (inserts >= 0) {
+            latitude = 200;
+            longitude = 200;
             String currentPost = responseBody[inserts];
             Integer postId = Integer.parseInt(currentPost.substring(currentPost.indexOf("\"id\"") + 5,
                     currentPost.indexOf("\"user_id\"") - 1));
