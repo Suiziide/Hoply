@@ -201,10 +201,6 @@ public class Repo {
         return allPosts;
     }
 
-
-
-
-
     private void getAllRemoteReactions() {
         ExecutorCompletionService<Boolean> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
@@ -241,14 +237,14 @@ public class Repo {
         }
     }
 
-    public Integer removeUserReactionFromPost (String userId, Integer postId){
+    public void removeUserReactionFromPost (String userId, Integer postId){
         ExecutorCompletionService<Integer> completionService =
                 new ExecutorCompletionService<>(HoplyDatabase.databaseWriteExecutor);
         completionService.submit(() -> dao.removeUserReactionFromPost(userId, postId));
         try {
-            return completionService.take().get();
+            completionService.take().get();
         } catch (ExecutionException | InterruptedException e) {
-            return null;
+            e.printStackTrace();
         }
     }
 
