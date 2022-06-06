@@ -79,8 +79,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             notifyDataSetChanged();
         });
         holder.postDislikeReactionsIMG.setOnClickListener(view -> {
-            ImageView v = (ImageView) view;
-            v.setEnabled(false);
             if (hasReacted(currentUser, hoplyPost.getPostId(), 2)) {
                 completionService.submit(() -> {
                     repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 2, System.currentTimeMillis()));
@@ -93,11 +91,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
                 }
             }
             notifyDataSetChanged();
-            v.setEnabled(true);
         });
         holder.postNeutralReactionsIMG.setOnClickListener(view -> {
-            ImageView v = (ImageView) view;
-            v.setEnabled(false);
             if(hasReacted(currentUser, hoplyPost.getPostId(), 3)) {
                 completionService.submit(() -> {
                     repo.insertLocalReaction(new HoplyReaction(currentUser.getUserId(), hoplyPost.getPostId(), 3, System.currentTimeMillis()));
@@ -111,7 +106,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
                 }
             }
             notifyDataSetChanged();
-            v.setEnabled(true);
         });
 
 

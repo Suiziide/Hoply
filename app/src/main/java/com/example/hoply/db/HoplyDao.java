@@ -29,7 +29,7 @@ public interface HoplyDao {
     @Query("SELECT * FROM posts WHERE id = :postid")
     HoplyPost returnPostFromId(Integer postid);
 
-    @Query("SELECT * FROM posts ORDER BY stamp DESC")
+    @Query("SELECT * FROM posts ORDER BY stamp DESC LIMIT 25")
     LiveData<List<HoplyPost>> getAllPosts();
 
     @Query("SELECT id FROM posts ORDER BY id DESC LIMIT 1")
