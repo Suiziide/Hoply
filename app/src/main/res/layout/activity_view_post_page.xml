@@ -21,84 +21,10 @@
         android:layout_marginTop="10dp"
         android:text="BACK" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:orientation="vertical"
-        android:background="?attr/colorOnSecondary"
-        >
-
-    <TextView
-        android:id="@+id/post_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginStart="4dp"
-        android:text="User"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="?attr/colorOnPrimary"
-        />
-
-    <TextView
-        android:id="@+id/post_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Content"
-        android:textColor="#DDDDDD"
-        />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
-        <EditText
-            android:id="@+id/comment_textfield"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:minHeight="35dp"
-            android:layout_marginStart="20dp"
-            android:background="?attr/colorOnSecondary"
-            android:hint="Write your comment here..."
-            android:textColorHint="#DDDDDD"
-            android:textColor="#DDDDDD"
-            />
-        <ImageView
-            android:id="@+id/submit_comment"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:padding="4dp"
-            android:src="@drawable/send"
-            android:layout_marginStart="20dp"
-            app:tint="@color/darker_orange"
-            android:layout_gravity="right"
-            />
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,14 +33,95 @@
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="SpeakableTextPresentCheck">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_comments"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:itemCount="5"
-            tools:listitem="@layout/comment_item">
+            android:orientation="vertical">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="vertical"
+                android:background="?attr/colorOnSecondary"
+                >
+
+                <TextView
+                    android:id="@+id/post_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginStart="4dp"
+                    android:text="User"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="?attr/colorOnPrimary"
+                    />
+
+                <TextView
+                    android:id="@+id/post_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Content"
+                    android:textColor="#DDDDDD"
+                    />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <EditText
+                    android:id="@+id/comment_textfield"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="35dp"
+                    android:layout_marginStart="20dp"
+                    android:background="?attr/colorOnSecondary"
+                    android:hint="Write your comment here..."
+                    android:textColorHint="#DDDDDD"
+                    android:textColor="#DDDDDD"
+                    />
+                <ImageView
+                    android:id="@+id/submit_comment"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:padding="4dp"
+                    android:src="@drawable/send"
+                    android:layout_marginStart="20dp"
+                    app:tint="@color/darker_orange"
+                    android:layout_gravity="right"
+                    />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="5"
+                tools:listitem="@layout/comment_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>
