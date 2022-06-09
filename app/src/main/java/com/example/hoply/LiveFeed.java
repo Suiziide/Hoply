@@ -30,13 +30,19 @@ public class LiveFeed extends AppCompatActivity {
     private RecyclerView recyclerView;
     private static int length = 0;
 
+    /**
+     * Builds functionality, retrieves data, and sets values in accordance with the XML-layout for this page
+     * @param savedInstanceState
+     */
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
+        // Sets layout for this page
         setContentView(R.layout.activity_live_feed);
+        // Hides keyboard when something else is touched
         findViewById(R.id.livefeed_content).setOnTouchListener((view, motionEvent) -> {
             hideKeyboard(view);
             return false;
@@ -44,6 +50,7 @@ public class LiveFeed extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
 
+        // Sets onClickListener that creates a new intent and redirects to CreatePostPage when button is clicked
         FloatingActionButton createPostButton = findViewById(R.id.floatingActionButton);
         createPostButton.setOnClickListener(view ->
                 activityResultLaunch.launch(new Intent(LiveFeed.this, CreatePostPage.class))
@@ -59,6 +66,7 @@ public class LiveFeed extends AppCompatActivity {
         viewModel.getPostList().observe(LiveFeed.this, postList -> adapter.addItems(postList));
     }
 
+    // Makes a new post based on the result of previous activity
     ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -73,6 +81,7 @@ public class LiveFeed extends AppCompatActivity {
                     HoplyPost post = new HoplyPost(postId, LoginPage.currentUser.getUserId(), result.getData().getStringExtra("CONTENT"));
                     double latitude = result.getData().getDoubleExtra("LATITUDE", 200.0);
                     double longitude = result.getData().getDoubleExtra("LONGITUDE", 200.0);
+                    // Notifies the user of the result of the attempt at making a new post
                     if (viewModel.insertLocalPost(post, latitude, longitude)) {
                         Toast.makeText(this, "Post saved!", Toast.LENGTH_SHORT).show();
                     } else
@@ -82,7 +91,7 @@ public class LiveFeed extends AppCompatActivity {
             });
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         if(LoginPage.currentUser == null)
             startActivity(new Intent(LiveFeed.this, LoginPage.class));
@@ -93,6 +102,7 @@ public class LiveFeed extends AppCompatActivity {
         startActivity(new Intent(LiveFeed.this, LoginPage.class));
     }
 
+    // Makes the keyboard go away
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

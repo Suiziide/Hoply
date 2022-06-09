@@ -34,6 +34,10 @@ public class CreatePostPage extends AppCompatActivity {
     private Location lastKnownLocation;
     int PERMISSION_ID = 22;
 
+    /**
+     * Builds functionality, retrieves data, and sets values in accordance with the XML-layout for this page
+     * @param savedInstanceState
+     */
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,9 @@ public class CreatePostPage extends AppCompatActivity {
         lastKnownLocation = null;
         flc = LocationServices.getFusedLocationProviderClient(this);
         getSupportActionBar().hide();
+        // Sets layout for this page
         setContentView(R.layout.activity_create_post_page);
+        // Hides keyboard when something else is touched
         findViewById(R.id.create_post_content).setOnTouchListener((view, motionEvent) -> {
             hideKeyboard(view);
             return false;
@@ -150,6 +156,7 @@ public class CreatePostPage extends AppCompatActivity {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    // If result of requesting for permission is successful, "getLastLocation()" is called again to return the location
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -172,6 +179,7 @@ public class CreatePostPage extends AppCompatActivity {
         }
     }
 
+    // Makes the keyboard go away
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

@@ -20,13 +20,19 @@ public class LoginPage extends AppCompatActivity {
     public static HoplyUser currentUser;
     private Repo myRepo;
 
+    /**
+     * Builds functionality, retrieves data, and sets values in accordance with the XML-layout for this page
+     * @param savedInstanceState
+     */
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
+        // Sets layout for this page
         setContentView(R.layout.activity_login_page);
+        // Hides keyboard when something else is touched
         findViewById(R.id.login_content).setOnTouchListener((view, motionEvent) -> {
             hideKeyboard(view);
             return false;
@@ -36,6 +42,12 @@ public class LoginPage extends AppCompatActivity {
         myRepo.startTimer();
     }
 
+    /**
+     * Attempts to make a login with the input from the EditText-element on LoginPage
+     * - Redirect to LiveFeed if successful
+     * - Notifies user if unsuccessful
+     * @param v
+     */
     public void tryLogin(View v) {
         EditText userid = findViewById(R.id.loginPageName);
         userToCheck = myRepo.returnUserFromId(userid.getText().toString());
@@ -55,6 +67,7 @@ public class LoginPage extends AppCompatActivity {
         startActivity(new Intent(LoginPage.this, LiveFeed.class));
     }
 
+    // Makes the keyboard go away
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
