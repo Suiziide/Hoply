@@ -18,6 +18,12 @@ public class LivefeedViewmodel extends AndroidViewModel {
     private final LiveData<List<HoplyComment>> commentList;
     private final Repo repo;
 
+    /**
+     * Instantiates the viewmodel which is responsible for managing the data for an Activity.
+     * It holds the information that is necessary for the livefeed activity, and the activity
+     * is observing changes in the data the viewmodel is holding (ie. postlist and commentlist)
+     * @param application
+     */
     public LivefeedViewmodel(Application application){
         super(application);
         repo = new Repo(application);
