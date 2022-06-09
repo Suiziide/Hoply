@@ -12,8 +12,6 @@ import java.util.concurrent.Executors;
 @Database(entities = {HoplyUser.class, HoplyPost.class, HoplyReaction.class, HoplyLocation.class, HoplyComment.class}, version = 1, exportSchema = false)
 public abstract class HoplyDatabase extends RoomDatabase {
 
-
-
     public abstract HoplyDao hoplyDao();
     private static volatile HoplyDatabase INSTANCE;
     public static final ExecutorService databaseWriteExecutor = Executors.newSingleThreadExecutor();

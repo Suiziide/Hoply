@@ -39,6 +39,13 @@ public class HoplyComment {
         @NonNull
         private long timestamp;
 
+        /**
+         * Constructor for creating comments based on the given parameters
+         * @param userId - the id of the user which created the comment
+         * @param postId - the id of the post the comment is related to
+         * @param content - the content contained within the comment
+         * @param timestamp - the time of which the comment was created
+         */
         public HoplyComment(String userId, Integer postId, String content, long timestamp){
                 this.userId = userId;
                 this.postId = postId;
@@ -46,40 +53,61 @@ public class HoplyComment {
                 this.timestamp = timestamp;
         }
 
+        /**
+         * Returns the postId related to this comments
+         * @return this comments postId
+         */
         @NonNull
         public Integer getPostId() {
                 return postId;
         }
 
+        /**
+         * Returns the userId related to this comment
+         * @return this comments userId
+         */
         @NonNull
         public String getUserId() {
                 return userId;
         }
 
+        /**
+         * Returns the content related to this comment
+         * @return this comments content
+         */
         @NonNull
         public String getContent() {
                 return content;
         }
 
+        /**
+         * Returns the timestamp related to this comment
+         * @return this posts timestamp
+         */
         public long getTimestamp() {return timestamp;}
 
+        /**
+         * sets the postId of this comment
+         * @param postId - the id of the post the comment is related to
+         */
         @NonNull
         public void setPostId(Integer postId) {
                 this.postId = postId;
         }
 
-        @NonNull
-        public void setUserId(String userId) {
-                this.userId = userId;
-        }
-
+        /**
+         * sets the content of this comment
+         * @param content - the content of the string
+         */
         @NonNull
         public void setContent(String content) {
                 this.content = content;
         }
 
-        public void setTimestamp(long timestamp) {this.timestamp = timestamp;}
-
+        /**
+         * creates and returns a copy of this comment
+         * @return a copy of this comment
+         */
         public HoplyComment copy() {
                 return (new HoplyComment(this.userId, this.postId,this.content, this.timestamp));
         }
