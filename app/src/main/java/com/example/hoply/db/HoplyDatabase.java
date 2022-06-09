@@ -17,6 +17,11 @@ public abstract class HoplyDatabase extends RoomDatabase {
     public static final ExecutorService databaseWriteExecutor = Executors.newSingleThreadExecutor();
     public static final ExecutorService databaseLocalInsertExecutor = Executors.newSingleThreadExecutor();
 
+    /**
+     * Method for instantiating the database if it doesn't exist, then it will return the database
+     * @param context the application context of the database
+     * @return the instance of the database
+     */
     static HoplyDatabase getDatabase(final Context context) {
         if (INSTANCE == null)
             synchronized (HoplyDatabase.class) {

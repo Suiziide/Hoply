@@ -22,6 +22,12 @@ public class MapFragment extends Fragment {
     double latitude;
     double longitude;
 
+    /**
+     * Constructor for making the mapfragment which displays the google map. Added extra arguments to
+     * take the lat and long of a location
+     * @param latitude the latitude of a location
+     * @param longitude the longitude of a location
+     */
     public MapFragment(double latitude, double longitude){
         super();
         this.latitude = latitude;
@@ -38,21 +44,17 @@ public class MapFragment extends Fragment {
         SupportMapFragment supportMapFragment=(SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.google_map);
 
-        // Async map
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                int nightModeFlags =  view.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
-                    googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.darkmap));
-                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                LatLng latLng = new LatLng(latitude, longitude);
-                googleMap.addMarker(new MarkerOptions()
-                        .position(latLng));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13 ));
+        // Actions to take when map is ready
+        supportMapFragment.getMapAsync(googleMap -> {
+            int nightModeFlags =  view.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
+                googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.darkmap));
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            LatLng latLng = new LatLng(latitude, longitude);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(latLng));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13 ));
 
-            }
         });
         // Return view
         return view;

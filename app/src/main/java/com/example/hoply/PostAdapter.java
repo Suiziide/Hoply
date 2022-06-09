@@ -31,6 +31,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     private final ExecutorCompletionService<Boolean> completionService = new
             ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
 
+    /**
+     * Constructor for the adapter which provides a binding from a data set to a recyclerview
+     * @param application
+     */
     public PostAdapter(Application application){
         this.application = application;
         repo = new Repo(application);
@@ -42,6 +46,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         return new RecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false));
     }
 
+    // Defines what to do with each element in the viewmodel lists
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         HoplyPost hoplyPost = postList.get(position);
@@ -109,6 +114,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         });
     }
 
+    /**
+     * Returns true if a user has not reacted or if a user has reacted to something else than the
+     * one being clicked on. Returns false if the user has reacted on the one being clicked on.
+     * This is responsible for deleting and updating the status of comments on a post
+     * @param user the user reacting to the post
+     * @param postId the postID of the post being reacted to
+     * @param reaction the reaction being made
+     * @return
+     */
     private boolean hasReacted(HoplyUser user, Integer postId, int reaction) {
         Integer reactionType = repo.returnUserReactionToPost(user.getUserId(), postId);
         String request = "https://caracal.imada.sdu.dk/app2022/reactions?user_id=eq." + user.getUserId() + "&post_id=eq." + postId;
