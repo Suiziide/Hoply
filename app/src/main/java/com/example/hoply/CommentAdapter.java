@@ -22,6 +22,10 @@ public class CommentAdapter  extends RecyclerView.Adapter<CommentAdapter.Recycle
     private Application application;
     private Repo repo;
 
+    /**
+     * Constructor for the adapter which provides a binding from a data set to a recyclerview
+     * @param application
+     */
     public CommentAdapter(Application application){
         this.application = application;
         repo = new Repo(application);
